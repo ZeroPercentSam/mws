@@ -34,7 +34,12 @@ export default function Process() {
             <div className="h-px bg-border w-full" />
             <motion.div
               className="absolute top-0 left-0 h-px bg-accent origin-left"
-              style={{ width: lineWidth }}
+              style={{
+                width: lineWidth,
+                WebkitBackfaceVisibility: "hidden",
+                backfaceVisibility: "hidden",
+                willChange: "width",
+              }}
             />
             {/* Step nodes on the line */}
             <div className="absolute top-0 left-0 right-0 flex justify-between -translate-y-1/2">

@@ -23,9 +23,20 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 h-16 md:h-20 flex items-center px-6 md:px-8 transition-all duration-300 ${
         scrolled
-          ? "bg-bg-primary/80 backdrop-blur-xl border-b border-border"
+          ? "border-b border-border"
           : "bg-transparent"
       }`}
+      style={{
+        WebkitBackfaceVisibility: "hidden",
+        backfaceVisibility: "hidden",
+        ...(scrolled
+          ? {
+              backgroundColor: "rgba(5, 5, 5, 0.85)",
+              WebkitBackdropFilter: "blur(24px)",
+              backdropFilter: "blur(24px)",
+            }
+          : {}),
+      }}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <a

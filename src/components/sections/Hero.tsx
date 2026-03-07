@@ -13,7 +13,13 @@ export default function Hero() {
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
       <OrbBackground />
 
-      <div className="relative z-10 text-center max-w-5xl mx-auto">
+      <div
+        className="relative z-10 text-center max-w-5xl mx-auto"
+        style={{
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
+        }}
+      >
         {/* Label */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}

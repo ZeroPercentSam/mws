@@ -9,10 +9,18 @@ export default function ScrollIndicator() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1.5, duration: 0.8 }}
+      style={{
+        WebkitBackfaceVisibility: "hidden",
+        backfaceVisibility: "hidden",
+      }}
     >
       <div
-        className="flex flex-col items-center gap-2"
-        style={{ animation: "scroll-bounce 2s ease-in-out infinite" }}
+        className="flex flex-col items-center gap-2 will-change-transform"
+        style={{
+          animation: "scroll-bounce 2s ease-in-out infinite",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
+        }}
       >
         <span className="text-text-secondary text-xs uppercase tracking-[0.2em]">
           Scroll

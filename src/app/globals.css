@@ -21,28 +21,28 @@
   --radius-button: 0.625rem;
 }
 
-/* Gradient orb animations */
+/* Gradient orb animations — use translate3d for GPU compositing on iOS */
 @keyframes orb-float-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(30px, -50px, 0) scale(1.05); }
+  66% { transform: translate3d(-20px, 20px, 0) scale(0.95); }
 }
 
 @keyframes orb-float-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-40px, 30px) scale(0.95); }
-  66% { transform: translate(25px, -40px) scale(1.08); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(-40px, 30px, 0) scale(0.95); }
+  66% { transform: translate3d(25px, -40px, 0) scale(1.08); }
 }
 
 @keyframes orb-float-3 {
-  0%, 100% { transform: translate(0, 0) scale(1.02); }
-  33% { transform: translate(20px, 40px) scale(0.98); }
-  66% { transform: translate(-30px, -20px) scale(1.05); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.02); }
+  33% { transform: translate3d(20px, 40px, 0) scale(0.98); }
+  66% { transform: translate3d(-30px, -20px, 0) scale(1.05); }
 }
 
 @keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(8px); opacity: 0.5; }
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 1; }
+  50% { transform: translate3d(0, 8px, 0); opacity: 0.5; }
 }
 
 html {
@@ -55,6 +55,15 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Force GPU compositing for all animated/transformed elements on iOS.
+   backface-visibility: hidden prevents text flickering during transforms. */
+[style*="transform"],
+[style*="opacity"] {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 ::selection {

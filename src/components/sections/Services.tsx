@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
 import StaggerChildren, {
@@ -26,13 +25,12 @@ export default function Services() {
       >
         {SERVICES.map((service) => (
           <StaggerItem key={service.number}>
-            <motion.div
-              className="relative bg-bg-card border border-border rounded-[var(--radius-card)] p-8 md:p-10 overflow-hidden group cursor-default"
-              whileHover={{
-                y: -4,
-                borderColor: "rgba(255, 107, 0, 0.3)",
+            <div
+              className="relative bg-bg-card border border-border rounded-[var(--radius-card)] p-8 md:p-10 overflow-hidden group cursor-default transition-all duration-300 hover:-translate-y-1 hover:border-border-hover"
+              style={{
+                WebkitBackfaceVisibility: "hidden",
+                backfaceVisibility: "hidden",
               }}
-              transition={{ duration: 0.3 }}
             >
               {/* Decorative number */}
               <span className="absolute top-4 right-6 text-8xl font-extrabold text-white/[0.03] font-[family-name:var(--font-heading)] select-none pointer-events-none">
@@ -50,7 +48,7 @@ export default function Services() {
                   {service.description}
                 </p>
               </div>
-            </motion.div>
+            </div>
           </StaggerItem>
         ))}
       </StaggerChildren>
