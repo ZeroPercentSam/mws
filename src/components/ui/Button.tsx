@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Link from "next/link";
 import { type ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -27,6 +28,19 @@ export default function Button({
   const classes = `${base} ${variants[variant]} ${className}`;
 
   if (href) {
+    // Internal links use Next.js Link for client-side navigation
+    const isInternal = href.startsWith("/");
+
+    if (isInternal) {
+      return (
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Link href={href} className={classes}>
+            {children}
+          </Link>
+        </motion.div>
+      );
+    }
+
     return (
       <motion.a
         href={href}

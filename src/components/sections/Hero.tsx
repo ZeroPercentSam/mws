@@ -20,11 +20,24 @@ export default function Hero() {
           backfaceVisibility: "hidden",
         }}
       >
+        {/* Trust badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ ...transition, delay: 0 }}
+          className="mb-6"
+        >
+          <span className="inline-flex items-center gap-2 text-xs font-medium text-text-muted border border-border rounded-full px-4 py-1.5 bg-bg-card/50 backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            Trusted by 20+ businesses
+          </span>
+        </motion.div>
+
         {/* Label */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ ...transition, delay: 0 }}
+          transition={{ ...transition, delay: 0.1 }}
           className="text-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-[family-name:var(--font-body)] mb-8"
         >
           Business Consulting & AI Systems
@@ -63,7 +76,7 @@ export default function Hero() {
           transition={{ ...transition, delay: 0.7 }}
           className="mt-10"
         >
-          <Button href="#contact" variant="primary">
+          <Button href="/contact" variant="primary">
             Start Your Transformation
           </Button>
         </motion.div>

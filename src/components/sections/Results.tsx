@@ -19,6 +19,7 @@ export default function Results() {
           <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-bold tracking-tight">
             Results That Speak
           </h2>
+          <p className="text-text-muted text-sm mt-3">Across all client engagements</p>
         </div>
       </FadeInWhenVisible>
 

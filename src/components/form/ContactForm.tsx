@@ -3,10 +3,16 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import Button from "@/components/ui/Button";
+import DrawCheckmark from "@/components/ui/DrawCheckmark";
 
 type FormStatus = "idle" | "sending" | "sent" | "error";
 
-export default function ContactForm() {
+interface ContactFormProps {
+  /** Show the extended version with Project Type and Budget Range */
+  extended?: boolean;
+}
+
+export default function ContactForm({ extended = false }: ContactFormProps) {
   const [status, setStatus] = useState<FormStatus>("idle");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -26,9 +32,7 @@ export default function ContactForm() {
         className="text-center py-12"
       >
         <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
+          <DrawCheckmark size={32} className="text-accent" />
         </div>
         <h3 className="font-[family-name:var(--font-heading)] text-2xl font-bold mb-2">
           Message Sent
@@ -43,8 +47,11 @@ export default function ContactForm() {
   const inputClasses =
     "w-full bg-bg-card border border-border rounded-[var(--radius-button)] px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/20 transition-colors duration-200 font-[family-name:var(--font-body)]";
 
+  const selectClasses =
+    "w-full bg-bg-card border border-border rounded-[var(--radius-button)] px-4 py-3 text-text-primary focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/20 transition-colors duration-200 font-[family-name:var(--font-body)] appearance-none cursor-pointer";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 max-w-xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="name" className="sr-only">
@@ -87,6 +94,61 @@ export default function ContactForm() {
         />
       </div>
 
+      {extended && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="relative">
+            <label htmlFor="projectType" className="sr-only">
+              Project Type
+            </label>
+            <select
+              id="projectType"
+              name="projectType"
+              className={selectClasses}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Project type
+              </option>
+              <option value="website">Website / Web App</option>
+              <option value="ai">AI Integration</option>
+              <option value="automation">Automation & Systems</option>
+              <option value="multiple">Multiple Services</option>
+              <option value="other">Other / Not Sure</option>
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div className="relative">
+            <label htmlFor="budget" className="sr-only">
+              Budget Range
+            </label>
+            <select
+              id="budget"
+              name="budget"
+              className={selectClasses}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Budget range
+              </option>
+              <option value="15-25k">$15K - $25K</option>
+              <option value="25-50k">$25K - $50K</option>
+              <option value="50-100k">$50K - $100K</option>
+              <option value="100k+">$100K+</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div>
         <label htmlFor="message" className="sr-only">
           Message
@@ -95,7 +157,7 @@ export default function ContactForm() {
           id="message"
           name="message"
           required
-          rows={4}
+          rows={extended ? 5 : 4}
           placeholder="Tell us about your project..."
           className={`${inputClasses} resize-none`}
         />
