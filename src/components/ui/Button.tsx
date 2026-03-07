@@ -6,6 +6,7 @@ import { type ButtonHTMLAttributes } from "react";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
   href?: string;
+  onClick?: () => void;
 }
 
 export default function Button({
@@ -13,6 +14,7 @@ export default function Button({
   children,
   className = "",
   href,
+  onClick,
   ...props
 }: ButtonProps) {
   const base =
@@ -31,6 +33,7 @@ export default function Button({
       <motion.a
         href={href}
         className={classes}
+        onClick={onClick}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
