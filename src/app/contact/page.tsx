@@ -90,22 +90,22 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                {/* Mini Testimonial */}
+                {/* Project Highlight */}
                 <div className="border border-border rounded-[var(--radius-card)] bg-bg-card p-6 md:p-8">
                   <span className="text-3xl text-accent leading-none font-serif">
                     &ldquo;
                   </span>
                   <p className="text-text-primary leading-relaxed mt-2">
-                    Working with MWS felt like having a world-class tech team on
-                    demand. They understood our challenges before we finished explaining
-                    them.
+                    We replaced the entire in-store tailor experience with AI —
+                    virtual try-on, camera-based measurement, 280+ fabrics. Customers
+                    design their custom suit without leaving their screen.
                   </p>
                   <div className="mt-4 pt-4 border-t border-border">
                     <p className="text-text-primary text-sm font-semibold">
-                      David Park
+                      Alpha Gentlemen Suits
                     </p>
                     <p className="text-text-muted text-xs">
-                      Founder, NovaBridge
+                      E-Commerce Platform
                     </p>
                   </div>
                 </div>

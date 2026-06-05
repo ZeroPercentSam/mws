@@ -3,47 +3,55 @@ import type { ClientLogo, Testimonial, NavLink } from "@/lib/types";
 export const NAV_LINKS: NavLink[] = [
   { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
+  { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
 ];
 
 export const CLIENTS: ClientLogo[] = [
-  { name: "Meridian Corp", abbreviation: "MC" },
-  { name: "Apex Dynamics", abbreviation: "AD" },
-  { name: "Velox Systems", abbreviation: "VS" },
-  { name: "NovaBridge", abbreviation: "NB" },
-  { name: "Quantum Reach", abbreviation: "QR" },
-  { name: "Stratos Digital", abbreviation: "SD" },
-  { name: "Ironclad Analytics", abbreviation: "IA" },
-  { name: "Pinnacle Group", abbreviation: "PG" },
+  { name: "Alpha Gentlemen Suits", abbreviation: "AGS" },
+  { name: "Exotics By The Bay", abbreviation: "EBTB" },
+  { name: "Purity Science", abbreviation: "PS" },
+  { name: "ADARE", abbreviation: "AD" },
+  { name: "JMI Capital", abbreviation: "JMI" },
+  { name: "Luxury Boutique", abbreviation: "LB" },
+  { name: "OSINT4ALL", abbreviation: "O4A" },
+  { name: "Lubecision", abbreviation: "LBC" },
+  { name: "Clariven Labs", abbreviation: "CL" },
+  { name: "Queen Creek", abbreviation: "QC" },
+  { name: "Bioveris", abbreviation: "BV" },
+  { name: "Situ Travel", abbreviation: "ST" },
+  { name: "ReelPulse", abbreviation: "RP" },
+  { name: "ModelManager", abbreviation: "MM" },
+  { name: "Luxury Pipeline", abbreviation: "LP" },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "Modern Web Systems didn't just build us a website — they transformed our entire digital strategy. Our organic traffic increased 312% in six months, and the automation systems they built save our team 20 hours every week.",
-    name: "Sarah Chen",
-    title: "CEO",
-    company: "Meridian Corp",
+      "We replaced the entire in-store tailor experience with AI. Virtual try-on, camera-based measurement, 280+ fabric swatches — customers design and visualize their custom suit without leaving their screen.",
+    name: "Alpha Gentlemen Suits",
+    title: "AI-Powered E-Commerce",
+    company: "Luxury Fashion",
   },
   {
     quote:
-      "The AI chatbot they deployed handles 73% of our customer inquiries without human intervention. That's not a small improvement — that's a paradigm shift for our support team.",
-    name: "Marcus Webb",
-    title: "VP of Operations",
-    company: "Apex Dynamics",
+      "A pharmaceutical platform where every buyer is license-verified, every batch has a COA, and orders are automatically blocked in restricted states. Compliance isn't an afterthought — it's the architecture.",
+    name: "Purity Science",
+    title: "Regulated B2B Platform",
+    company: "Pharmaceutical",
   },
   {
     quote:
-      "We went from spending three days on monthly reporting to having real-time dashboards that update automatically. The ROI was clear within the first month.",
-    name: "Elena Rodriguez",
-    title: "Head of Marketing",
-    company: "Velox Systems",
+      "28 pages. Three Florida cities. Fleet catalog, jets, yachts, sprinters, wedding packages — all with vehicle specs, brand filtering, and Google Analytics tracking every conversion path.",
+    name: "Exotics By The Bay",
+    title: "Fleet Catalog & Booking",
+    company: "Luxury Automotive",
   },
   {
     quote:
-      "Working with MWS felt like having a world-class tech team on demand. They understood our business challenges before we even finished explaining them.",
-    name: "David Park",
-    title: "Founder",
-    company: "NovaBridge",
+      "1,411 OSINT tools. 77 categories. Live/dead status tracking on every single one. We turned a chaotic bookmark collection into the definitive intelligence directory for the security community.",
+    name: "OSINT4ALL",
+    title: "Intelligence Directory",
+    company: "Cybersecurity",
   },
 ];

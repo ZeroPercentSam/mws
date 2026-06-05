@@ -9,16 +9,18 @@ export interface CaseStudy {
   slug: string;
   title: string;
   client: string;
-  category: "websites" | "ai" | "automation";
+  category: "websites" | "ecommerce" | "platforms";
+  industry?: string;
   description: string;
   challenge: string;
   approach: string;
   technologies: string[];
   results: MetricItem[];
   testimonial?: Testimonial;
+  liveUrl?: string;
   featured: boolean;
-  gradient: string; // CSS gradient for abstract thumbnail
-  heroGradient: string; // CSS gradient for hero section
+  gradient: string;
+  heroGradient: string;
 }
 
 export interface Testimonial {
@@ -65,4 +67,27 @@ export interface Value {
 export interface NavLink {
   label: string;
   href: string;
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: "websites" | "ai" | "automation" | "strategy";
+  author: string;
+  authorRole: string;
+  date: string; // ISO date string
+  readTime: string;
+  gradient: string;
+  featured: boolean;
+  content: BlogSection[];
+  relatedSlugs?: string[];
+}
+
+export interface BlogSection {
+  type: "paragraph" | "heading" | "subheading" | "list" | "callout" | "stat" | "quote";
+  text?: string;
+  items?: string[];
+  stat?: { value: string; label: string };
+  source?: string;
 }

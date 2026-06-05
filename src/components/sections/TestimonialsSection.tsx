@@ -10,12 +10,12 @@ export default function TestimonialsSection() {
     <SectionWrapper id="testimonials">
       <FadeInWhenVisible>
         <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-accent">
-          Client Voices
+          Project Highlights
         </span>
       </FadeInWhenVisible>
       <div className="mt-3">
         <AnimatedHeading
-          text="What They Say."
+          text="What We've Built."
           as="h2"
           className="text-3xl md:text-5xl font-800 leading-[1.1] tracking-tight"
           accentLastPeriod
@@ -23,7 +23,7 @@ export default function TestimonialsSection() {
       </div>
       <FadeInWhenVisible delay={0.2}>
         <p className="mt-4 text-text-secondary text-lg max-w-2xl mb-12">
-          Don&apos;t take our word for it. Here&apos;s what our clients have to say.
+          Real projects, real features, real results. Here are some highlights from our portfolio.
         </p>
       </FadeInWhenVisible>
 

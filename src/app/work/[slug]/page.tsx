@@ -101,6 +101,24 @@ export default function CaseStudyPage() {
             >
               {study.description}
             </motion.p>
+            {study.liveUrl && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1], delay: 0.65 }}
+                className="mt-6"
+              >
+                <a
+                  href={study.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white text-sm font-semibold rounded-lg hover:bg-accent/90 transition-colors"
+                >
+                  View Live Site
+                  <span className="text-xs">↗</span>
+                </a>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

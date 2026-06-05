@@ -11,7 +11,7 @@ import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import CTABanner from "@/components/ui/CTABanner";
 import { CASE_STUDIES, WORK_METRICS } from "@/lib/constants";
 
-const CATEGORIES = ["all", "websites", "ai", "automation"];
+const CATEGORIES = ["all", "websites", "ecommerce", "platforms"];
 
 export default function WorkPage() {
   const [activeFilter, setActiveFilter] = useState("all");

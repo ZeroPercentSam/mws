@@ -125,21 +125,23 @@ function TeamSection() {
       <FadeInWhenVisible>
         <div className="text-center mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
-            The Team
+            The Founder
           </span>
           <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-800 mt-3 tracking-tight">
-            The people behind the work.
+            The person behind the work.
           </h2>
           <p className="text-text-secondary mt-4 text-lg max-w-2xl mx-auto">
-            A focused team of specialists who actually care about your outcomes.
+            One founder, AI-augmented workflows, and the output of an entire agency.
           </p>
         </div>
       </FadeInWhenVisible>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {TEAM.map((member, i) => (
-          <TeamCard key={member.name} member={member} delay={i * 0.1} />
-        ))}
+      <div className="flex justify-center">
+        <div className="w-full max-w-sm">
+          {TEAM.map((member, i) => (
+            <TeamCard key={member.name} member={member} delay={i * 0.1} />
+          ))}
+        </div>
       </div>
     </SectionWrapper>
   );
@@ -149,9 +151,9 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        label="About Us"
+        label="About"
         heading="Technology That Means Business."
-        subtext="We're a focused team of strategists, engineers, and designers building digital solutions that actually move the needle."
+        subtext="A solo founder with AI-augmented workflows, building digital solutions that actually move the needle — across 16+ projects and 8 industries."
         showOrbs
       />
 
