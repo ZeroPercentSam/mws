@@ -18,6 +18,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mws-sams-projects-4db6d193.vercel.app"),
   title: "Modern Web Systems | Business Consulting, AI Websites & Automation",
   description:
     "We build AI-driven websites, automation systems, and workflows that help businesses outcompete, increase efficiency, lower costs, and dramatically grow revenue.",

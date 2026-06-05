@@ -37,7 +37,7 @@ export default function CaseStudyPage() {
   const lineRef = useRef<HTMLDivElement>(null);
   const lineInView = useInView(lineRef, { once: true, amount: 0.5 });
 
-  // Generate abstract gallery gradients from case study gradient
+  // Generate abstract gallery gradients from case study gradient (fallback)
   const galleryGradients = [
     study.gradient,
     study.gradient.replace("135deg", "45deg"),
@@ -47,13 +47,24 @@ export default function CaseStudyPage() {
     study.gradient.replace("135deg", "315deg"),
   ];
 
+  // Real screenshots from live sites (when available)
+  const screenshotBase = `/work/screenshots/${study.slug}`;
+  const galleryScreenshots = [
+    `${screenshotBase}/hero.jpg`,
+    `${screenshotBase}/content.jpg`,
+    `${screenshotBase}/features.jpg`,
+    `${screenshotBase}/hero.jpg`, // repeat hero for remaining slots
+    `${screenshotBase}/content.jpg`,
+    `${screenshotBase}/features.jpg`,
+  ];
+
   const galleryLabels = [
-    "Landing Page",
-    "Dashboard View",
-    "Mobile Interface",
-    "Analytics Panel",
-    "Settings Module",
-    "User Flow",
+    "Homepage",
+    "Key Content",
+    "Features",
+    "Hero Section",
+    "Content Detail",
+    "Feature Detail",
   ];
 
   return (
@@ -186,7 +197,7 @@ export default function CaseStudyPage() {
           </h2>
         </FadeInWhenVisible>
         <FadeInWhenVisible delay={0.2}>
-          <ImageGallery gradients={galleryGradients} labels={galleryLabels} />
+          <ImageGallery gradients={galleryGradients} labels={galleryLabels} screenshots={galleryScreenshots} />
         </FadeInWhenVisible>
       </SectionWrapper>
 

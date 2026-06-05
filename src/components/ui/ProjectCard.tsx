@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
+import { useState } from "react";
 import type { CaseStudy } from "@/lib/types";
 
 interface ProjectCardProps {
@@ -10,6 +12,8 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ study }: ProjectCardProps) {
   const primaryMetric = study.results[0];
+  const [imgError, setImgError] = useState(false);
+  const thumbSrc = `/work/screenshots/${study.slug}/thumb.jpg`;
 
   return (
     <motion.div
@@ -21,12 +25,23 @@ export default function ProjectCard({ study }: ProjectCardProps) {
     >
       <Link href={`/work/${study.slug}`} className="group block">
         <div className="border border-border rounded-[var(--radius-card)] overflow-hidden bg-bg-card transition-all duration-300 hover:border-border-hover hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5">
-          {/* Abstract gradient thumbnail */}
+          {/* Thumbnail — real screenshot with gradient fallback */}
           <div className="relative h-48 md:h-56 overflow-hidden">
-            <div
-              className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-              style={{ background: study.gradient }}
-            />
+            {!imgError ? (
+              <Image
+                src={thumbSrc}
+                alt={`${study.client} — ${study.title}`}
+                fill
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                style={{ background: study.gradient }}
+              />
+            )}
             {/* Category pill */}
             <div className="absolute top-4 left-4">
               <span className="text-[10px] uppercase tracking-wider font-semibold bg-bg-primary/70 backdrop-blur-sm text-text-secondary px-3 py-1 rounded-full border border-border">

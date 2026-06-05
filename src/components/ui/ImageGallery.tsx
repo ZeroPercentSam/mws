@@ -1,16 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 
 interface ImageGalleryProps {
-  /** Array of CSS gradient strings for abstract visuals */
+  /** Array of CSS gradient strings for abstract visuals (fallback) */
   gradients: string[];
   labels?: string[];
+  /** Array of real screenshot paths (e.g. /work/screenshots/slug/hero.jpg) */
+  screenshots?: string[];
 }
 
-export default function ImageGallery({ gradients, labels }: ImageGalleryProps) {
+export default function ImageGallery({ gradients, labels, screenshots }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const hasScreenshots = screenshots && screenshots.length > 0;
 
   return (
     <>
@@ -28,13 +32,23 @@ export default function ImageGallery({ gradients, labels }: ImageGalleryProps) {
               backfaceVisibility: "hidden",
             }}
           >
-            <div
-              className="absolute inset-0"
-              style={{ background: gradient }}
-            />
+            {hasScreenshots && screenshots[i] ? (
+              <Image
+                src={screenshots[i]}
+                alt={labels?.[i] || `Project screenshot ${i + 1}`}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
+            ) : (
+              <div
+                className="absolute inset-0"
+                style={{ background: gradient }}
+              />
+            )}
             {labels?.[i] && (
-              <div className="absolute bottom-2 left-3 right-3">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-white/60">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-2 px-3">
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-white/80">
                   {labels[i]}
                 </span>
               </div>
@@ -63,16 +77,27 @@ export default function ImageGallery({ gradients, labels }: ImageGalleryProps) {
             >
               <motion.div
                 layoutId={`gallery-${selectedIndex}`}
-                className="w-full max-w-4xl aspect-video rounded-xl overflow-hidden border border-border"
+                className="w-full max-w-5xl aspect-video rounded-xl overflow-hidden border border-border"
                 style={{
                   WebkitBackfaceVisibility: "hidden",
                   backfaceVisibility: "hidden",
                 }}
               >
-                <div
-                  className="w-full h-full"
-                  style={{ background: gradients[selectedIndex] }}
-                />
+                {hasScreenshots && screenshots[selectedIndex] ? (
+                  <Image
+                    src={screenshots[selectedIndex]}
+                    alt={labels?.[selectedIndex] || `Project screenshot ${selectedIndex + 1}`}
+                    fill
+                    className="object-cover object-top"
+                    sizes="90vw"
+                    priority
+                  />
+                ) : (
+                  <div
+                    className="w-full h-full"
+                    style={{ background: gradients[selectedIndex] }}
+                  />
+                )}
               </motion.div>
 
               {/* Close hint */}
