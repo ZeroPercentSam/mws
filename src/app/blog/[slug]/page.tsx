@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
+import Image from "next/image";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
 import BlogContent from "@/components/ui/BlogContent";
@@ -46,11 +47,19 @@ export default function BlogPostPage() {
         <motion.div
           className="absolute inset-0"
           style={{
-            background: post.gradient,
             scale: heroScale,
             opacity: heroOpacity,
           }}
-        />
+        >
+          <Image
+            src={`/blog/${post.slug}.jpg`}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0" style={{ background: post.gradient, opacity: 0.3 }} />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/90 via-bg-primary/40 to-transparent" />
 
         {/* Content overlay */}
@@ -140,10 +149,15 @@ export default function BlogPostPage() {
                     href={`/blog/${related!.slug}`}
                     className="group block border border-border rounded-[var(--radius-card)] overflow-hidden bg-bg-card transition-all duration-300 hover:border-border-hover hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5"
                   >
-                    <div
-                      className="h-32 transition-transform duration-500 group-hover:scale-105"
-                      style={{ background: related!.gradient }}
-                    />
+                    <div className="relative h-32 overflow-hidden">
+                      <Image
+                        src={`/blog/${related!.slug}.jpg`}
+                        alt={related!.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                     <div className="p-5">
                       <p className="text-text-muted text-xs uppercase tracking-wider mb-1">
                         {categoryLabels[related!.category] || related!.category}{" "}
