@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { useState } from "react";
+import GradientThumb from "@/components/ui/GradientThumb";
 import type { BlogPost } from "@/lib/types";
 
 interface BlogCardProps {
@@ -11,9 +11,6 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post }: BlogCardProps) {
-  const [imgError, setImgError] = useState(false);
-  const imgSrc = `/blog/${post.slug}.jpg`;
-
   const categoryLabels: Record<string, string> = {
     websites: "Websites",
     ai: "AI Intelligence",
@@ -33,21 +30,16 @@ export default function BlogCard({ post }: BlogCardProps) {
         <div className="border border-border rounded-[var(--radius-card)] overflow-hidden bg-bg-card transition-all duration-300 hover:border-border-hover hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5">
           {/* Blog image with gradient fallback */}
           <div className="relative h-48 md:h-56 overflow-hidden">
-            {!imgError ? (
-              <Image
-                src={imgSrc}
-                alt={post.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                onError={() => setImgError(true)}
-              />
-            ) : (
-              <div
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-                style={{ background: post.gradient }}
-              />
-            )}
+            <GradientThumb gradient={post.gradient} />
+            <Image
+              src={`/blog/${post.slug}.webp`}
+              alt={post.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+            {/* Bottom scrim for depth + pill legibility */}
+            <div className="absolute inset-0 bg-gradient-to-t from-bg-card/60 via-transparent to-transparent" />
             {/* Category pill */}
             <div className="absolute top-4 left-4">
               <span className="text-[10px] uppercase tracking-wider font-semibold bg-bg-primary/70 backdrop-blur-sm text-text-secondary px-3 py-1 rounded-full border border-border">
