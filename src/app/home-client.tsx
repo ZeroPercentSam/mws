@@ -52,6 +52,7 @@ import {
   PULSE,
   VIEW_TIGHT,
 } from "@/lib/animations";
+import { useInstantEntrance, INSTANT_TRANSITION } from "@/lib/use-instant-entrance";
 import {
   HERO,
   RIG_THEMES,
@@ -234,10 +235,12 @@ function HeroRig() {
                   },
                 },
               }}
-              className="pointer-events-none absolute inset-0"
+              /* whole beat md+ only: its long opacity timeline runs while
+                 mobile users scroll the hero — iOS flicker trigger */
+              className="pointer-events-none absolute inset-0 hidden md:block"
             >
               <div
-                className="absolute inset-0 hidden md:block md:mix-blend-color"
+                className="absolute inset-0 md:mix-blend-color"
                 style={{ backgroundColor: theme.accent, opacity: 0.35 }}
               />
               <span
@@ -455,6 +458,9 @@ const VIGNETTES: Record<string, React.ReactNode> = {
 const slugByClient = new Map(CASE_STUDIES.map((c) => [c.client, c.slug]));
 
 export default function HomeClient() {
+  // mobile: timed scroll entrances flicker on iOS Safari — snap instead
+  const instant = useInstantEntrance();
+  const T = (t: object) => (instant ? INSTANT_TRANSITION : t);
   return (
     <MotionConfig reducedMotion="user">
       <div>
@@ -609,7 +615,7 @@ export default function HomeClient() {
                     <div className="flex h-full flex-col p-7 md:p-8">
                       <motion.p
                         variants={scaleIn}
-                        transition={{ duration: DUR_REVEAL, ease: EASE }}
+                        transition={T({ duration: DUR_REVEAL, ease: EASE })}
                         className="font-[family-name:var(--font-heading)] text-4xl font-extrabold tracking-tight text-accent md:text-5xl"
                       >
                         {card.metric}
@@ -701,7 +707,7 @@ export default function HomeClient() {
                 <GlowCard className="h-full">
                   <motion.div
                     variants={fadeInUp}
-                    transition={{ duration: DUR_REVEAL, ease: EASE, delay: i * STAG_CARD }}
+                    transition={T({ duration: DUR_REVEAL, ease: EASE, delay: i * STAG_CARD })}
                     className="relative flex h-full flex-col p-7 md:p-8"
                   >
                     <div
@@ -831,7 +837,7 @@ export default function HomeClient() {
                 >
                   <motion.p
                     variants={scaleIn}
-                    transition={{ duration: DUR_REVEAL, ease: EASE }}
+                    transition={T({ duration: DUR_REVEAL, ease: EASE })}
                     className="font-[family-name:var(--font-heading)] text-3xl font-extrabold text-accent md:text-4xl"
                   >
                     {stat.figure}
@@ -970,18 +976,28 @@ export default function HomeClient() {
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            variants={{
-                              hidden: { pathLength: 0, opacity: 0 },
-                              visible: {
-                                pathLength: 1,
-                                opacity: 1,
-                                transition: {
-                                  duration: DUR_REVEAL,
-                                  ease: EASE,
-                                  delay: i * STAG_CARD,
-                                },
-                              },
-                            }}
+                            variants={
+                              instant
+                                ? {
+                                    hidden: { opacity: 0 },
+                                    visible: {
+                                      opacity: 1,
+                                      transition: INSTANT_TRANSITION,
+                                    },
+                                  }
+                                : {
+                                    hidden: { pathLength: 0, opacity: 0 },
+                                    visible: {
+                                      pathLength: 1,
+                                      opacity: 1,
+                                      transition: {
+                                        duration: DUR_REVEAL,
+                                        ease: EASE,
+                                        delay: i * STAG_CARD,
+                                      },
+                                    },
+                                  }
+                            }
                           />
                         </motion.svg>
                         <span className="text-sm leading-relaxed text-text-secondary">

@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import { defaultViewport } from "@/lib/animations";
+import { defaultViewport, EASE } from "@/lib/animations";
+import { useInstantEntrance, INSTANT_TRANSITION } from "@/lib/use-instant-entrance";
 
 interface AnimatedHeadingProps {
   text: string;
@@ -17,6 +18,8 @@ export default function AnimatedHeading({
   accentLastPeriod = false,
 }: AnimatedHeadingProps) {
   const words = text.split(" ");
+  // mobile: snap visible — per-word timed reveals flicker on iOS Safari
+  const instant = useInstantEntrance();
 
   return (
     <Tag className={className}>
@@ -26,7 +29,7 @@ export default function AnimatedHeading({
         viewport={defaultViewport}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.05 } },
+          visible: { transition: { staggerChildren: instant ? 0 : 0.05 } },
         }}
         className="inline"
       >
@@ -39,11 +42,15 @@ export default function AnimatedHeading({
           return (
             <motion.span
               key={i}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+              variants={
+                instant
+                  ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
+                  : {
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }
+              }
+              transition={instant ? INSTANT_TRANSITION : { duration: 0.5, ease: EASE }}
               className="inline-block mr-[0.25em]"
             >
               {displayWord}
