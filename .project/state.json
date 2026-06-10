@@ -1,6 +1,6 @@
 {
   "project": "mws",
-  "description": "Modern Web Systems — agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
+  "description": "Modern Web Systems \u2014 agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
   "started": "2026-06-10",
   "updated": "2026-06-10",
   "currentPhase": "live",
@@ -10,14 +10,20 @@
       "id": "T-001",
       "title": "Victor & Ian proposal + Stripe invoice page (/invoices/victor-ian)",
       "status": "done",
-      "note": "Shipped + deployed (c91dd48). Live Stripe invoice MDSEIGCQ-0001 ($2,000 due 2026-06-10) on Modernwebsystems account; page noindexed, not in nav. Key decision: $2,000 one-time build + $100/mo upkeep (Sam confirmed); customer has Sam's email (Stripe requires one for send_invoice — Sam delivers link himself)."
+      "note": "Shipped + deployed (c91dd48). Live Stripe invoice MDSEIGCQ-0001 ($2,000 due 2026-06-10) on Modernwebsystems account; page noindexed, not in nav. Key decision: $2,000 one-time build + $100/mo upkeep (Sam confirmed); customer has Sam's email (Stripe requires one for send_invoice \u2014 Sam delivers link himself)."
+    },
+    {
+      "id": "T-002",
+      "title": "Homepage V2 redesign at /v2 (noindexed preview)",
+      "status": "done",
+      "note": "Shipped 47ea32e + review-fix 5d33dd1. Signature HeroRig build-sequence, 11 conversion-ordered sections, every number derived from constants. Full 4-agent review: template.tsx LCP gate fixed site-wide, font-800->font-extrabold (v4 no-op class), reduced-motion counter gating, $5K pricing synced incl. ContactForm bracket. Throttled LCP 996ms, CLS 0. Sam decides: promote to / and roll language to other pages."
     }
   ],
   "features": [
     {
       "name": "Client proposal/invoice pages",
       "what": "One-off noindexed proposal pages under /invoices/<client> with hard-coded Stripe hosted-invoice facts in page.tsx (single INVOICE object) and the full design in a sibling 'use client' file",
-      "how": "Pattern reference: src/app/invoices/victor-ian/ — copy the folder for future invoices; fleet imagery via nano-banana into public/invoices/<client>/",
+      "how": "Pattern reference: src/app/invoices/victor-ian/ \u2014 copy the folder for future invoices; fleet imagery via nano-banana into public/invoices/<client>/",
       "connections": "Reuses ui kit (SectionWrapper, GlowCard, AnimatedHeading, Stagger*), lib/animations variants, Stripe MCP (stripe-modernwebsystems) for invoice creation"
     }
   ],
@@ -27,7 +33,7 @@
       "date": "2026-06-10",
       "title": "Stripe customer email workaround",
       "decision": "Stripe rejects send_invoice invoices for email-less customers; created customer 'Victor & Ian' with sam@ovington.io so Stripe emails route to Sam and he shares the hosted link directly (Sam chose no client email).",
-      "consequence": "First customer record cus_Ug4M80pbLl4PLJ is orphaned (no email, no invoice) — harmless; deletable in dashboard."
+      "consequence": "First customer record cus_Ug4M80pbLl4PLJ is orphaned (no email, no invoice) \u2014 harmless; deletable in dashboard."
     },
     {
       "id": "ADR-002",
@@ -35,12 +41,19 @@
       "title": "Page-local design system extensions",
       "decision": "Proposal page keeps ocean-blue palette, wave dividers, icons, and vignettes in-file (no globals.css/Navbar/Footer edits); shared token VALUES referenced via CSS vars, never re-hard-coded.",
       "consequence": "Future invoices copy the folder; globals stay untouched."
+    },
+    {
+      "id": "ADR-003",
+      "date": "2026-06-10",
+      "title": "Pricing repositioned to $5K floor + retainers",
+      "decision": "Sam set homepage floor at $5,000 with monthly retainers (ongoing dev, AI agent orchestration, fractional CTO); services FAQ + contact-form budget brackets synced; $15K-$50K stays as the 'most website engagements land' range.",
+      "consequence": "All public pricing surfaces now agree; /v2, /services, /contact."
     }
   ],
   "openQuestions": [
     {
       "id": "Q-001",
-      "question": "Repo ZeroPercentSam/mws is PUBLIC — live Stripe hosted-invoice URL + client names/pricing are world-readable in source. Make repo private, or accept exposure?",
+      "question": "Repo ZeroPercentSam/mws is PUBLIC \u2014 live Stripe hosted-invoice URL + client names/pricing are world-readable in source. Make repo private, or accept exposure?",
       "raised": "2026-06-10"
     }
   ],
@@ -51,13 +64,17 @@
       "date": "2026-06-10",
       "completed": [
         "Live Stripe invoice MDSEIGCQ-0001 created via MCP ($2,000, due 2026-06-10, customer cus_Ug4NvOkhzdr1Io, product prod_Ug4MkQKJR2lFMv, price price_1TgiDoCzuo5EmjWW53SKhOJU)",
-        "Built /invoices/victor-ian (page.tsx + proposal-client.tsx) — hero, exec-summary letter, fleet cards w/ nano-banana imagery, animated approval-flow stepper, sitemap showcase (16 pages), 1-week timeline, pricing, glowing Pay Invoice CTA",
+        "Built /invoices/victor-ian (page.tsx + proposal-client.tsx) \u2014 hero, exec-summary letter, fleet cards w/ nano-banana imagery, animated approval-flow stepper, sitemap showcase (16 pages), 1-week timeline, pricing, glowing Pay Invoice CTA",
         "Full code review (7 angles, motion semantics source-verified) + fixes: per-value transitions, variant-embedded delays, dasharray/pathLength conflict, wave overscan + whileInView gating, CSS-var tokens, printable PDF CSS, single INVOICE config object",
-        "Deployed to production: https://www.modernwebsystems.com/invoices/victor-ian (commits 4ceb98a, c91dd48)"
+        "Deployed to production: https://www.modernwebsystems.com/invoices/victor-ian (commits 4ceb98a, c91dd48)",
+        "OG card for proposal (opengraph-image convention) + real Schaefer photos swap",
+        "Footer socials removed; founder section removed from /about",
+        "/privacy + /terms (firecrawl-researched, honest to data reality) + cookie notice banner + metadataBase -> custom domain",
+        "/v2 homepage redesign built, 4-agent reviewed, fixed, deployed (LCP 996ms throttled, CLS 0); site-wide template.tsx LCP gate fixed"
       ],
       "inProgress": [],
       "blocked": [],
-      "nextStep": "Sam: rotate the Stripe restricted key pasted in chat (dashboard.stripe.com/acct_1NZ1pCCzuo5EmjWW/apikeys) and decide Q-001 (repo visibility). Optional: backfill this dashboard via /dashboard-backfill."
+      "nextStep": "Sam: review /v2 (modernwebsystems.com/v2) for the promote-to-/ call; run Codex review; rotate the pasted Stripe key; decide repo visibility (Q-001); give governing-law state for /terms; optional font-800 sweep chip pending."
     }
   ],
   "tests": {
