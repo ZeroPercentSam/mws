@@ -205,10 +205,10 @@ export default function TermsOfServicePage() {
           <Section id="governing-law" title="12. Governing law and venue">
             <p>
               These Terms are governed by the laws of the United States and of
-              the state in which Modern Web Systems is organized, without
-              regard to conflict-of-law rules. Any dispute arising out of these
-              Terms or the Site will be brought in the state or federal courts
-              located in that state, and you consent to their jurisdiction.
+              the State of Florida, without regard to conflict-of-law rules.
+              Any dispute arising out of these Terms or the Site will be
+              brought in the state or federal courts located in Florida, and
+              you consent to their jurisdiction.
             </p>
           </Section>
 
