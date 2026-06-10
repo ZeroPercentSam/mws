@@ -44,11 +44,6 @@ export function StaggerItem({
       variants={fadeInUp}
       transition={defaultTransition}
       className={className}
-      style={{
-        WebkitBackfaceVisibility: "hidden",
-        backfaceVisibility: "hidden",
-        willChange: "opacity, transform",
-      }}
     >
       {children}
     </motion.div>

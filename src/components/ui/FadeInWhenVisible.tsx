@@ -22,11 +22,6 @@ export default function FadeInWhenVisible({
       variants={fadeInUp}
       transition={{ ...defaultTransition, delay }}
       className={className}
-      style={{
-        WebkitBackfaceVisibility: "hidden",
-        backfaceVisibility: "hidden",
-        willChange: "opacity, transform",
-      }}
     >
       {children}
     </motion.div>

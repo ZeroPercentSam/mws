@@ -35,17 +35,13 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled || mobileOpen ? "border-b border-border" : "bg-transparent"
         }`}
-        style={{
-          WebkitBackfaceVisibility: "hidden",
-          backfaceVisibility: "hidden",
-          ...(scrolled || mobileOpen
-            ? {
-                backgroundColor: "rgba(5, 5, 5, 0.85)",
-                WebkitBackdropFilter: "blur(24px)",
-                backdropFilter: "blur(24px)",
-              }
-            : {}),
-        }}
+        style={
+          // solid fill, no backdrop-filter: a live blur on a fixed bar
+          // repaints over the page on every scroll frame on iOS (flicker)
+          scrolled || mobileOpen
+            ? { backgroundColor: "rgba(5, 5, 5, 0.97)" }
+            : undefined
+        }
       >
         <div className="h-16 md:h-20 flex items-center px-6 md:px-8 max-w-7xl mx-auto w-full justify-between">
           {/* Brand */}

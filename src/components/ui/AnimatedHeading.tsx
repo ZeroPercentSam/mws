@@ -45,10 +45,6 @@ export default function AnimatedHeading({
               }}
               transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
               className="inline-block mr-[0.25em]"
-              style={{
-                WebkitBackfaceVisibility: "hidden",
-                backfaceVisibility: "hidden",
-              }}
             >
               {displayWord}
               {accentLastPeriod && endsWithPeriod && (

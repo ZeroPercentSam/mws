@@ -987,7 +987,7 @@ export default function V2Client() {
         {/* ======================================================== */}
         <Seam />
         <div className="relative" style={{ backgroundColor: BAND_WARM }}>
-          <div aria-hidden className="absolute inset-0" style={BLUEPRINT} />
+          <div aria-hidden className="absolute inset-0 hidden md:block" style={BLUEPRINT} />
           <SectionWrapper className="relative !py-20 md:!py-28">
             <div className="mx-auto max-w-3xl text-center">
               <FadeInWhenVisible>
@@ -1153,7 +1153,7 @@ export default function V2Client() {
         {/* ======================================================== */}
         <Seam />
         <div className="relative" style={{ backgroundColor: BAND_WARM }}>
-          <div aria-hidden className="absolute inset-0" style={BLUEPRINT} />
+          <div aria-hidden className="absolute inset-0 hidden md:block" style={BLUEPRINT} />
           <SectionWrapper className="relative !py-20 md:!py-28">
             <div className="mx-auto max-w-3xl text-center">
               <FadeInWhenVisible>
