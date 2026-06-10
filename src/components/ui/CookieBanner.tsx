@@ -64,10 +64,18 @@ export default function CookieBanner() {
               </Link>
             </p>
             <div className="mt-4 flex gap-3">
-              <button onClick={() => choose("accepted")} className={buttonClasses}>
+              <button
+                type="button"
+                onClick={() => choose("accepted")}
+                className={buttonClasses}
+              >
                 Accept
               </button>
-              <button onClick={() => choose("declined")} className={buttonClasses}>
+              <button
+                type="button"
+                onClick={() => choose("declined")}
+                className={buttonClasses}
+              >
                 Decline
               </button>
             </div>
