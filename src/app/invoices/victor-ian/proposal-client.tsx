@@ -13,8 +13,10 @@ import { fadeInUp, scaleIn, defaultViewport } from "@/lib/animations";
 interface InvoiceFacts {
   url: string;
   amountLabel: string;
+  totalLabel: string;
   number: string;
   dueLabel: string;
+  terms: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1196,10 +1198,13 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
                     transition={{ duration: 0.6, ease: EASE }}
                     className="font-[family-name:var(--font-heading)] text-6xl md:text-7xl font-extrabold tracking-tight"
                   >
-                    {invoice.amountLabel}
+                    {invoice.totalLabel}
                   </motion.p>
                   <p className="mt-2 text-text-secondary">
-                    Complete build — one-time
+                    Complete build — total
+                  </p>
+                  <p className="mt-3 inline-block rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent">
+                    {invoice.terms}
                   </p>
                   <div className="my-8 h-px bg-border" />
                   <ul className="space-y-4 text-left">
@@ -1262,8 +1267,9 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
             </FadeInWhenVisible>
             <FadeInWhenVisible delay={0.2}>
               <p className="mt-5 text-sm text-text-muted">
-                Secure checkout via Stripe · Invoice {invoice.number} · Due{" "}
-                {invoice.dueLabel}
+                Secure checkout via Stripe · Invoice {invoice.number} ·{" "}
+                {invoice.amountLabel} due {invoice.dueLabel} — remaining $1,000
+                invoiced on completion
               </p>
             </FadeInWhenVisible>
           </div>
