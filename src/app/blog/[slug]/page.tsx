@@ -2,15 +2,16 @@
 
 import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
-import { motion } from "motion/react";
 import Link from "next/link";
-import Image from "next/image";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
 import BlogContent from "@/components/ui/BlogContent";
 import CTABanner from "@/components/ui/CTABanner";
-import GradientThumb from "@/components/ui/GradientThumb";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import StaggerChildren, { StaggerItem } from "@/components/ui/StaggerChildren";
 import { BLOG_POSTS, BLOG_CATEGORY_LABELS } from "@/lib/constants";
+import { eyebrowCls, BLOG_TINTS } from "@/lib/design";
+import { STAG_GRID } from "@/lib/animations";
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -26,6 +27,9 @@ export default function BlogPostPage() {
 
   return (
     <>
+      {/* signature: scroll-linked reading-progress seam */}
+      <ReadingProgress />
+
       {/* Hero */}
       <header className="relative overflow-hidden">
         {/* Background layers */}
@@ -60,14 +64,10 @@ export default function BlogPostPage() {
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg-primary" />
         </div>
 
-        {/* Content */}
+        {/* Content — CSS hero-rise: the article h1 is the LCP, it must
+            never wait on hydration */}
         <div className="relative max-w-7xl mx-auto w-full px-6 md:px-8 pt-32 md:pt-40 pb-14 md:pb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.25, 0.4, 0.25, 1], delay: 0.1 }}
-            className="flex items-center gap-3"
-          >
+          <div className="hero-rise flex items-center gap-3">
             <Link
               href="/blog"
               className="text-xs uppercase tracking-[0.2em] text-text-muted hover:text-accent transition-colors duration-200 font-semibold"
@@ -75,34 +75,35 @@ export default function BlogPostPage() {
               Blog
             </Link>
             <span className="text-text-muted">/</span>
-            <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
+            <span
+              className="text-xs uppercase tracking-[0.2em] font-semibold"
+              style={{
+                color:
+                  BLOG_TINTS[post.category as keyof typeof BLOG_TINTS] ??
+                  "var(--color-accent)",
+              }}
+            >
               {BLOG_CATEGORY_LABELS[post.category] || post.category}
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1], delay: 0.2 }}
-            className="font-[family-name:var(--font-heading)] text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mt-5 max-w-4xl leading-[1.08]"
+          <h1
+            className="hero-rise font-[family-name:var(--font-heading)] text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mt-5 max-w-4xl leading-[1.08]"
+            style={{ animationDelay: "0.08s" }}
           >
             {post.title}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.25, 0.4, 0.25, 1], delay: 0.32 }}
-            className="mt-6 max-w-2xl text-lg md:text-xl text-text-secondary leading-relaxed"
+          <p
+            className="hero-rise mt-6 max-w-2xl text-lg md:text-xl text-text-secondary leading-relaxed"
+            style={{ animationDelay: "0.16s" }}
           >
             {post.excerpt}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1], delay: 0.45 }}
-            className="flex items-center gap-4 mt-9"
+          <div
+            className="hero-rise flex items-center gap-4 mt-9"
+            style={{ animationDelay: "0.26s" }}
           >
             <div className="w-11 h-11 rounded-full bg-accent/15 ring-1 ring-accent/30 flex items-center justify-center">
               <span className="text-accent text-sm font-bold">
@@ -126,7 +127,7 @@ export default function BlogPostPage() {
                 &middot; {post.readTime}
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </header>
 
@@ -137,57 +138,53 @@ export default function BlogPostPage() {
         </div>
       </SectionWrapper>
 
-      {/* Related Articles */}
+      {/* Related — wins-strip language */}
       {relatedPosts.length > 0 && (
         <section className="bg-bg-secondary">
-          <SectionWrapper>
+          <SectionWrapper className="!py-16 md:!py-20">
             <FadeInWhenVisible>
-              <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
-                Keep Reading
-              </span>
-              <h2 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-bold mt-3 mb-10">
-                Related Articles
-              </h2>
+              <span className={eyebrowCls}>Keep reading</span>
             </FadeInWhenVisible>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {relatedPosts.map((related) => (
-                <FadeInWhenVisible key={related!.slug} delay={0.1}>
-                  <Link
-                    href={`/blog/${related!.slug}`}
-                    className="group block border border-border rounded-[var(--radius-card)] overflow-hidden bg-bg-card transition-all duration-300 hover:border-border-hover hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5"
-                  >
-                    <div className="relative h-32 overflow-hidden">
-                      <GradientThumb gradient={related!.gradient} />
-                      <Image
-                        src={`/blog/${related!.slug}.webp`}
-                        alt={related!.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <p className="text-text-muted text-xs uppercase tracking-wider mb-1">
-                        {BLOG_CATEGORY_LABELS[related!.category] || related!.category}{" "}
-                        &middot; {related!.readTime}
-                      </p>
-                      <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-text-primary leading-snug group-hover:text-accent transition-colors duration-200">
+            <StaggerChildren
+              className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2"
+              stagger={STAG_GRID}
+            >
+              {relatedPosts.map((related) => {
+                const tint =
+                  BLOG_TINTS[related!.category as keyof typeof BLOG_TINTS] ??
+                  "var(--color-accent)";
+                return (
+                  <StaggerItem key={related!.slug} className="min-w-0">
+                    <Link
+                      href={`/blog/${related!.slug}`}
+                      className="flex h-full items-baseline gap-3 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-border-hover"
+                    >
+                      <span className="shrink-0 font-[family-name:var(--font-heading)] text-sm font-extrabold text-accent">
+                        {related!.readTime}
+                      </span>
+                      <span className="min-w-0 truncate text-sm text-text-secondary">
                         {related!.title}
-                      </h3>
-                    </div>
-                  </Link>
-                </FadeInWhenVisible>
-              ))}
-            </div>
+                      </span>
+                      <span
+                        className="ml-auto shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                        style={{ color: tint, borderColor: `${tint}40` }}
+                      >
+                        {BLOG_CATEGORY_LABELS[related!.category] || related!.category}
+                      </span>
+                    </Link>
+                  </StaggerItem>
+                );
+              })}
+            </StaggerChildren>
           </SectionWrapper>
         </section>
       )}
 
       {/* CTA */}
       <CTABanner
-        heading="Ready to Put This Into Practice."
-        subtext="Let's discuss how these ideas apply to your business."
-        buttonText="Start a Conversation"
+        heading="Put these numbers to work."
+        subtext="The same math drives every build plan we write. Get yours — scope, price, timeline."
+        buttonText="Get my build plan"
         buttonHref="/contact"
       />
     </>

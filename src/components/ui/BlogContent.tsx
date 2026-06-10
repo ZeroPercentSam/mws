@@ -1,20 +1,26 @@
 "use client";
 
 import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
+import { BAND_WARM, OCEAN_CELL, OCEAN_BORDER, chipCls } from "@/lib/design";
 import type { BlogSection } from "@/lib/types";
 
 interface BlogContentProps {
   sections: BlogSection[];
 }
 
+/* Article prose renders STATIC — an entire article of staggered reveals
+   is the animated-body-text smell. Only the stat cards (furniture, not
+   prose) get an entrance. */
 export default function BlogContent({ sections }: BlogContentProps) {
   return (
     <div className="space-y-6">
-      {sections.map((section, i) => (
-        <FadeInWhenVisible key={i} delay={Math.min(i * 0.03, 0.3)}>
-          {renderSection(section)}
-        </FadeInWhenVisible>
-      ))}
+      {sections.map((section, i) =>
+        section.type === "stat" ? (
+          <FadeInWhenVisible key={i}>{renderSection(section)}</FadeInWhenVisible>
+        ) : (
+          <div key={i}>{renderSection(section)}</div>
+        ),
+      )}
     </div>
   );
 }
@@ -30,7 +36,7 @@ function renderSection(section: BlogSection) {
 
     case "heading":
       return (
-        <h2 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-bold text-text-primary mt-12 mb-2">
+        <h2 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-extrabold tracking-tight text-text-primary mt-12 mb-2">
           {section.text}
         </h2>
       );
@@ -59,8 +65,12 @@ function renderSection(section: BlogSection) {
       );
 
     case "callout":
+      // warm-band language: BAND_WARM fill + accent spine
       return (
-        <div className="border-l-2 border-accent bg-accent/5 rounded-r-lg px-6 py-5 my-8">
+        <div
+          className="my-8 rounded-r-lg border-l-2 border-accent px-6 py-5"
+          style={{ backgroundColor: BAND_WARM }}
+        >
           <p className="text-text-primary leading-relaxed text-lg font-medium">
             {section.text}
           </p>
@@ -68,13 +78,22 @@ function renderSection(section: BlogSection) {
       );
 
     case "stat":
+      // deep-ocean counter-card language (figures are strings — no counter)
       return (
-        <div className="flex items-center gap-6 py-8 my-4">
-          <div className="font-[family-name:var(--font-heading)] text-5xl md:text-6xl font-extrabold text-accent">
-            {section.stat?.value}
-          </div>
-          <div className="text-text-secondary text-sm uppercase tracking-wider max-w-xs">
-            {section.stat?.label}
+        <div
+          className="my-8 rounded-[var(--radius-card)] border p-7"
+          style={{ backgroundColor: OCEAN_CELL, borderColor: OCEAN_BORDER }}
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-muted">
+            In this analysis
+          </p>
+          <div className="mt-3 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+            <span className="font-[family-name:var(--font-heading)] text-5xl font-extrabold text-accent md:text-6xl">
+              {section.stat?.value}
+            </span>
+            <span className="max-w-xs text-sm uppercase tracking-wider text-text-secondary">
+              {section.stat?.label}
+            </span>
           </div>
         </div>
       );
@@ -89,8 +108,8 @@ function renderSection(section: BlogSection) {
             {section.text}
           </p>
           {section.source && (
-            <cite className="block mt-4 text-text-muted text-sm not-italic pl-2">
-              — {section.source}
+            <cite className="mt-4 inline-block not-italic">
+              <span className={`${chipCls} text-text-muted`}>{section.source}</span>
             </cite>
           )}
         </blockquote>
