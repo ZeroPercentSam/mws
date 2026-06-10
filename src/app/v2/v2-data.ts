@@ -55,7 +55,7 @@ export const PAIN = {
     },
     {
       title: "Hours lost to manual work",
-      body: "Quotes retyped, leads chased by hand, the same email sent forty times a week. Your margin is going to tasks software solved years ago.",
+      body: "Quotes retyped, leads chased by hand, the same email sent dozens of times a week. Your margin is going to tasks software solved years ago.",
       icon: "clock",
     },
     {
@@ -112,7 +112,7 @@ export const RESULT_CARDS = [
     metricLabel: "tools cataloged",
     sub: `${fmt(metric("osint4all", "Categories"))} categories · ${fmt(metric("osint4all", "Verified Live"))} verified live`,
     story:
-      "A chaotic bookmark pile became the security community's intelligence directory, with live status on every tool.",
+      "A chaotic bookmark pile became a definitive intelligence directory, with live status on every tool.",
     niche: "Platform / Directory",
     client: study("osint4all").client,
   },
@@ -167,7 +167,7 @@ export const WINS = [
     metric: fmt(metric("clariven-labs", "Order Accuracy")),
     tail: "order accuracy",
   },
-].map((w) => ({ ...w, client: study(w.slug).client, industry: study(w.slug).industry ?? "" }));
+].map((w) => ({ ...w, client: study(w.slug).client }));
 
 /* ------------------------------------------------------------------ */
 /*  Services triptych                                                  */
@@ -236,7 +236,7 @@ export const OPS = {
   mechanisms: [
     {
       title: "AI-leveraged pipeline",
-      body: "AI does the repetitive 80% — scaffolding, variants, QA passes. Senior judgment does the 20% that decides whether you win. That's how $3.70-per-$1 economics show up in delivery speed.",
+      body: "AI does the repetition — scaffolding, variants, QA passes, regression checks. Senior judgment makes the decisions that win. That leverage is the whole reason weeks-not-quarters is normal here.",
     },
     {
       title: "Token-systemized design",
@@ -265,7 +265,8 @@ export const BUILD_LOG = {
 export const PRICING = {
   eyebrow: "The investment",
   heading: "Serious work, priced plainly.",
-  floor: "Engagements from $5,000",
+  floorPrefix: "Engagements from ",
+  floorAmount: "$5,000",
   floorNote: "Fixed scope, fixed price — agreed in writing before work begins.",
   ranges: [
     { label: "Websites", range: "Most land $15K–$50K" },
@@ -324,5 +325,5 @@ export const FINAL_CTA = {
   heading: "Your market won't wait.",
   subtext:
     "One call. A written, fixed-price build plan. Then weeks to live — not quarters.",
-  formNote: "No retainer pitch. No newsletter. A written plan, then your call.",
+  formNote: "No pressure pitch. No newsletter. A written plan, then your call.",
 } as const;

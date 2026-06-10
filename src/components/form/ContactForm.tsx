@@ -10,9 +10,14 @@ type FormStatus = "idle" | "sending" | "sent" | "error";
 interface ContactFormProps {
   /** Show the extended version with Project Type and Budget Range */
   extended?: boolean;
+  /** Override the submit button label */
+  submitLabel?: string;
 }
 
-export default function ContactForm({ extended = false }: ContactFormProps) {
+export default function ContactForm({
+  extended = false,
+  submitLabel = "Send Message",
+}: ContactFormProps) {
   const [status, setStatus] = useState<FormStatus>("idle");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -134,6 +139,7 @@ export default function ContactForm({ extended = false }: ContactFormProps) {
               <option value="" disabled>
                 Budget range
               </option>
+              <option value="5-15k">$5K - $15K</option>
               <option value="15-25k">$15K - $25K</option>
               <option value="25-50k">$25K - $50K</option>
               <option value="50-100k">$50K - $100K</option>
@@ -169,7 +175,7 @@ export default function ContactForm({ extended = false }: ContactFormProps) {
         className="w-full sm:w-auto"
         disabled={status === "sending"}
       >
-        {status === "sending" ? "Sending..." : "Send Message"}
+        {status === "sending" ? "Sending..." : submitLabel}
       </Button>
     </form>
   );

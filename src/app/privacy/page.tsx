@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
         <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-accent">
           Legal
         </span>
-        <h1 className="mt-3 font-[family-name:var(--font-heading)] text-4xl md:text-5xl font-800 tracking-tight">
+        <h1 className="mt-3 font-[family-name:var(--font-heading)] text-4xl md:text-5xl font-extrabold tracking-tight">
           Privacy Policy<span className="text-accent">.</span>
         </h1>
         <p className="mt-4 text-text-muted text-sm">

@@ -26,6 +26,7 @@ import {
   motion,
   MotionConfig,
   useInView,
+  useReducedMotion,
   animate as motionAnimate,
 } from "motion/react";
 import Image from "next/image";
@@ -69,7 +70,8 @@ const STAG_GRID = 0.08;
 const STAG_CARD = 0.15;
 const STAG_FLOW = 0.35;
 const LAG_CAPTION = 0.15;
-const PULSE = { duration: 1.1, repeat: 2, ease: "easeOut" as const };
+// repeat is ADDITIONAL iterations: 1 => plays twice total
+const PULSE = { duration: 1.1, repeat: 1, ease: "easeOut" as const };
 const VIEW_TIGHT = { once: true, amount: 0.5 } as const;
 const BAND_WARM = "#0D0703";
 
@@ -84,8 +86,10 @@ const BLUEPRINT: React.CSSProperties = {
 
 const eyebrowCls =
   "text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-accent";
+const chipCls =
+  "rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs";
 const headingCls =
-  "font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-800 tracking-tight";
+  "font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-extrabold tracking-tight";
 
 /* ------------------------------------------------------------------ */
 /*  Seam — 1px gradient hairline (replaces decorative dividers)        */
@@ -182,10 +186,13 @@ function V2Icon({ name, className = "w-5 h-5" }: { name: IconName; className?: s
 function V2Counter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
+  const reduceMotion = useReducedMotion();
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
-    if (!inView) return;
+    // standalone animate() bypasses MotionConfig — reduced-motion users get
+    // the final value straight from render below, no animation started
+    if (!inView || reduceMotion) return;
     const controls = motionAnimate(0, value, {
       duration: 1.4,
       ease: EASE,
@@ -193,11 +200,11 @@ function V2Counter({ value, suffix }: { value: number; suffix: string }) {
         setDisplay(Math.round(latest).toLocaleString("en-US")),
     });
     return () => controls.stop();
-  }, [inView, value]);
+  }, [inView, value, reduceMotion]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      {display}
+      {reduceMotion ? value.toLocaleString("en-US") : display}
       {suffix}
     </span>
   );
@@ -212,21 +219,19 @@ function GlowCTA({ label, href }: { label: string; href: string }) {
     <motion.div
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      initial={{ boxShadow: "0 0 32px rgba(255,107,0,0.22)" }}
-      whileInView={{
-        boxShadow: [
-          "0 0 32px rgba(255,107,0,0.22)",
-          "0 0 64px rgba(255,107,0,0.45)",
-          "0 0 32px rgba(255,107,0,0.22)",
-        ],
-      }}
-      viewport={{ once: true, amount: 0.6 }}
-      transition={{
-        boxShadow: { duration: 2.2, repeat: 2, ease: "easeInOut" },
-        default: { duration: DUR_TAP, ease: "easeOut" },
-      }}
-      className="inline-block rounded-[var(--radius-button)]"
+      transition={{ duration: DUR_TAP, ease: "easeOut" }}
+      className="relative inline-block rounded-[var(--radius-button)] shadow-[0_0_32px_rgba(255,107,0,0.25)]"
     >
+      {/* glow pulse on a separate layer: opacity is compositor-friendly,
+          unlike animating boxShadow (paint) */}
+      <motion.span
+        aria-hidden
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: [0, 0.7, 0] }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 2.2, repeat: 1, ease: "easeInOut" }}
+        className="absolute -inset-3 -z-10 rounded-full bg-accent/40 blur-2xl"
+      />
       <Link
         href={href}
         className="inline-flex items-center gap-3 rounded-[var(--radius-button)] bg-gradient-to-r from-accent to-accent-light px-8 py-4 font-bold text-white md:px-10"
@@ -495,7 +500,7 @@ function VignettePerf() {
           &lt;2s
         </motion.span>
       </div>
-      <p className="mt-2 text-[10px] text-text-muted">First load, mid-range mobile</p>
+      <p className="mt-2 text-[10px] text-text-muted">Performance budget, every build</p>
     </div>
   );
 }
@@ -569,7 +574,7 @@ function VignettePipeline() {
                 duration: 1.6,
                 ease: "easeInOut",
                 delay: 0.4,
-                repeat: 2,
+                repeat: 1,
                 repeatDelay: 0.6,
                 times: [0, 0.1, 0.9, 1],
               },
@@ -693,6 +698,16 @@ export default function V2Client() {
   return (
     <MotionConfig reducedMotion="user">
       <div>
+        {/* Hero text entrance — CSS so the LCP heading never waits on JS;
+            placed BEFORE the hero so streamed rendering can't paint
+            unstyled text first. globals.css reduced-motion neutralizes it. */}
+        <style>{`
+          @keyframes v2-rise {
+            from { opacity: 0; transform: translate3d(0, 16px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+          }
+          .v2-rise { animation: v2-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} both; }
+        `}</style>
         {/* ======================================================== */}
         {/* S1 · HERO                                                 */}
         {/* ======================================================== */}
@@ -712,7 +727,7 @@ export default function V2Client() {
                 {HERO.eyebrow}
               </p>
               <h1
-                className="v2-rise mt-5 font-[family-name:var(--font-heading)] text-4xl font-800 leading-[1.06] tracking-tight md:text-6xl lg:text-[4.2rem]"
+                className="v2-rise mt-5 font-[family-name:var(--font-heading)] text-4xl font-extrabold leading-[1.06] tracking-tight md:text-6xl lg:text-[4.2rem]"
                 style={{ animationDelay: "0.08s" }}
               >
                 {HERO.headlineLines[0]}
@@ -762,7 +777,7 @@ export default function V2Client() {
             >
               {METRICS.map((m) => (
                 <StaggerItem key={m.label} className="text-center">
-                  <p className="font-[family-name:var(--font-heading)] text-4xl font-800 text-accent md:text-5xl">
+                  <p className="font-[family-name:var(--font-heading)] text-4xl font-extrabold text-accent md:text-5xl">
                     <V2Counter value={m.value} suffix={m.suffix} />
                   </p>
                   <p className="mt-2 text-sm text-text-secondary">{m.label}</p>
@@ -832,7 +847,7 @@ export default function V2Client() {
                       <motion.p
                         variants={scaleIn}
                         transition={{ duration: DUR_REVEAL, ease: EASE }}
-                        className="font-[family-name:var(--font-heading)] text-4xl font-800 tracking-tight text-accent md:text-5xl"
+                        className="font-[family-name:var(--font-heading)] text-4xl font-extrabold tracking-tight text-accent md:text-5xl"
                       >
                         {card.metric}
                       </motion.p>
@@ -856,7 +871,7 @@ export default function V2Client() {
                         <p className="min-w-0 truncate text-sm font-semibold text-text-primary">
                           {card.client}
                         </p>
-                        <span className="shrink-0 rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs text-text-secondary">
+                        <span className={`shrink-0 ${chipCls} text-text-secondary`}>
                           {card.niche}
                         </span>
                       </div>
@@ -880,7 +895,7 @@ export default function V2Client() {
                   href={`/work/${w.slug}`}
                   className="flex h-full items-baseline gap-2.5 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-border-hover"
                 >
-                  <span className="shrink-0 font-[family-name:var(--font-heading)] text-base font-800 text-accent">
+                  <span className="shrink-0 font-[family-name:var(--font-heading)] text-base font-extrabold text-accent">
                     {w.metric}
                   </span>
                   <span className="min-w-0 truncate text-sm text-text-secondary">
@@ -894,7 +909,7 @@ export default function V2Client() {
                 href="/work"
                 className="flex h-full items-center justify-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-4 py-3.5 text-sm font-semibold text-accent transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/15"
               >
-                View all 10 live platforms
+                {`View all ${CASE_STUDIES.length} live platforms`}
                 <V2Icon name="arrow" className="h-4 w-4" />
               </Link>
             </StaggerItem>
@@ -935,10 +950,7 @@ export default function V2Client() {
                     </p>
                     <div className="mt-5 flex flex-wrap gap-2">
                       {item.chips.map((chip) => (
-                        <span
-                          key={chip}
-                          className="rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs text-text-secondary"
-                        >
+                        <span key={chip} className={`${chipCls} text-text-secondary`}>
                           {chip}
                         </span>
                       ))}
@@ -1002,7 +1014,7 @@ export default function V2Client() {
                 .flat()
                 .map((tech) => (
                   <StaggerItem key={tech}>
-                    <span className="inline-block rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs text-text-muted">
+                    <span className={`inline-block ${chipCls} text-text-muted`}>
                       {tech}
                     </span>
                   </StaggerItem>
@@ -1038,7 +1050,7 @@ export default function V2Client() {
                   <motion.p
                     variants={scaleIn}
                     transition={{ duration: DUR_REVEAL, ease: EASE }}
-                    className="font-[family-name:var(--font-heading)] text-3xl font-800 text-accent md:text-4xl"
+                    className="font-[family-name:var(--font-heading)] text-3xl font-extrabold text-accent md:text-4xl"
                   >
                     {stat.figure}
                   </motion.p>
@@ -1079,14 +1091,10 @@ export default function V2Client() {
                       {t.quote}
                     </p>
                     <div className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4">
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-text-primary">
-                          {t.name}
-                        </p>
-                        <p className="truncate text-xs text-text-muted">
-                          {t.title} · {t.company}
-                        </p>
-                      </div>
+                      <p className="min-w-0 truncate text-xs text-text-muted">
+                        <span className="font-semibold text-text-primary">{t.name}</span>
+                        {" "}· {t.title} · {t.company}
+                      </p>
                       {slug && (
                         <span className="shrink-0 text-xs font-semibold text-accent">
                           See the build →
@@ -1129,9 +1137,9 @@ export default function V2Client() {
             <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-[1.2fr_0.8fr]">
               <GlowCard className="min-w-0">
                 <div className="p-8 md:p-10">
-                  <p className="font-[family-name:var(--font-heading)] text-3xl font-800 tracking-tight md:text-4xl">
-                    {PRICING.floor.split("$")[0]}
-                    <span className="text-accent">${PRICING.floor.split("$")[1]}</span>
+                  <p className="font-[family-name:var(--font-heading)] text-3xl font-extrabold tracking-tight md:text-4xl">
+                    {PRICING.floorPrefix}
+                    <span className="text-accent">{PRICING.floorAmount}</span>
                   </p>
                   <p className="mt-2 text-sm text-text-muted">{PRICING.floorNote}</p>
                   <div className="my-7 h-px bg-border" />
@@ -1276,7 +1284,7 @@ export default function V2Client() {
               </div>
               <FadeInWhenVisible delay={0.15}>
                 <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-6 md:p-8">
-                  <ContactForm />
+                  <ContactForm submitLabel="Send it — get my build plan" />
                   <p className="mt-4 text-xs text-text-muted">{FINAL_CTA.formNote}</p>
                 </div>
               </FadeInWhenVisible>
@@ -1284,15 +1292,6 @@ export default function V2Client() {
           </SectionWrapper>
         </section>
 
-        {/* Hero text entrance — CSS so the LCP heading never waits on JS.
-            globals.css's prefers-reduced-motion rule neutralizes this. */}
-        <style>{`
-          @keyframes v2-rise {
-            from { opacity: 0; transform: translate3d(0, 16px, 0); }
-            to { opacity: 1; transform: translate3d(0, 0, 0); }
-          }
-          .v2-rise { animation: v2-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} both; }
-        `}</style>
       </div>
     </MotionConfig>
   );

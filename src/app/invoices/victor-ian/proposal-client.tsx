@@ -25,7 +25,7 @@ const BAND = "#07111C";
 const EASE: [number, number, number, number] = [0.25, 0.4, 0.25, 1];
 
 const heading =
-  "font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-800 tracking-tight";
+  "font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-extrabold tracking-tight";
 
 /* ------------------------------------------------------------------ */
 /*  Wave divider — animated SVG seam between sections                  */
@@ -680,7 +680,7 @@ function FleetCard({
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
       </div>
       <div className="p-6 md:p-8">
-        <h3 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-800 tracking-tight">
+        <h3 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-extrabold tracking-tight">
           {title}
         </h3>
         <p className="mt-2 text-text-secondary">{tagline}</p>
@@ -854,7 +854,7 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
               <AnimatedHeading
                 text="Your fleet, booked while you sleep."
                 as="h1"
-                className="font-[family-name:var(--font-heading)] text-4xl md:text-6xl lg:text-7xl font-800 leading-[1.05] tracking-tight"
+                className="font-[family-name:var(--font-heading)] text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight"
                 accentLastPeriod
               />
             </div>
@@ -903,7 +903,7 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
                   Executive Summary
                 </span>
-                <h2 className="mt-3 font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-800 tracking-tight">
+                <h2 className="mt-3 font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-extrabold tracking-tight">
                   Victor, Ian —
                 </h2>
                 <div className="mt-5 space-y-4 text-text-secondary leading-relaxed md:text-lg">
@@ -1194,7 +1194,7 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
                     viewport={{ once: true }}
                     variants={scaleIn}
                     transition={{ duration: 0.6, ease: EASE }}
-                    className="font-[family-name:var(--font-heading)] text-6xl md:text-7xl font-800 tracking-tight"
+                    className="font-[family-name:var(--font-heading)] text-6xl md:text-7xl font-extrabold tracking-tight"
                   >
                     {invoice.amountLabel}
                   </motion.p>
