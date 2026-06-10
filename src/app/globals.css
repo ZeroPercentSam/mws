@@ -64,13 +64,13 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Force GPU compositing for all animated/transformed elements on iOS.
-   backface-visibility: hidden prevents text flickering during transforms. */
-[style*="transform"],
-[style*="opacity"] {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
+/* NOTE: a previous blanket rule forced backface-visibility:hidden onto every
+   element with an inline transform/opacity style. Since motion/react puts
+   inline styles on nearly everything (including the page template wrapper),
+   that promoted half the page into forced compositing layers — the classic
+   iOS Safari cause of content flickering/vanishing while scrolling. Elements
+   that genuinely need GPU isolation (the animated orbs) set
+   backface-visibility + translate3d inline themselves. */
 
 ::selection {
   background-color: rgba(255, 107, 0, 0.3);

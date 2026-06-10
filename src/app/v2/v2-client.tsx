@@ -368,9 +368,10 @@ function HeroRig() {
           </div>
         </div>
 
-        {/* Beat 4 — idle niche morph (desktop only, repeat 2 then settles
-            back to brand accent). Pure opacity layers, no state. */}
-        <div className="hidden md:block">
+        {/* Beat 4 — idle niche morph: chips swap on every breakpoint
+            (opacity-only); the color-blend overlay stays md+ because iOS
+            Safari flickers on mix-blend-mode during scroll. */}
+        <div>
           {RIG_THEMES.map((theme, i) => (
             <motion.div
               key={theme.niche}
@@ -391,7 +392,7 @@ function HeroRig() {
               className="pointer-events-none absolute inset-0"
             >
               <div
-                className="absolute inset-0 mix-blend-color"
+                className="absolute inset-0 hidden md:block md:mix-blend-color"
                 style={{ backgroundColor: theme.accent, opacity: 0.35 }}
               />
               <span
@@ -419,7 +420,7 @@ function HeroRig() {
             transition: { duration: DUR_POP, ease: EASE, delay: 2.4 },
           },
         }}
-        className="absolute -bottom-5 -left-3 md:-left-6 flex items-center gap-3 rounded-xl border border-border bg-bg-card/95 px-4 py-3 shadow-2xl backdrop-blur"
+        className="absolute -bottom-5 -left-3 md:-left-6 flex items-center gap-3 rounded-xl border border-border bg-bg-card px-4 py-3 shadow-2xl"
       >
         <span className="relative flex h-8 w-8 items-center justify-center">
           <svg viewBox="0 0 32 32" fill="none" className="h-8 w-8 -rotate-90">
@@ -564,26 +565,30 @@ function VignettePipeline() {
             <span className="text-[9px] text-text-muted">{label}</span>
           </div>
         ))}
-        {/* connector track */}
+        {/* connector track + transform-only fill (animating `left` is a
+            layout property -> mobile jank; scaleX stays on the compositor) */}
         <div className="absolute left-8 right-8 top-3.5 h-px bg-white/10" />
-        {/* traveling packet — finite, in-view gated by the card group */}
         <motion.span
           variants={{
-            hidden: { left: "12%", opacity: 0 },
+            hidden: { scaleX: 0, opacity: 0 },
             visible: {
-              left: ["12%", "82%"],
-              opacity: [0, 1, 1, 0],
-              transition: {
-                duration: 1.6,
-                ease: "easeInOut",
-                delay: 0.4,
-                repeat: 1,
-                repeatDelay: 0.6,
-                times: [0, 0.1, 0.9, 1],
-              },
+              scaleX: 1,
+              opacity: 1,
+              transition: { duration: 1.2, ease: EASE, delay: 0.4 },
             },
           }}
-          className="absolute top-[11px] h-1.5 w-1.5 rounded-full bg-[#C9A961] shadow-[0_0_8px_rgba(201,169,97,0.8)]"
+          className="absolute left-8 right-8 top-3.5 h-px origin-left bg-gradient-to-r from-[rgba(201,169,97,0.2)] via-[#C9A961] to-[#C9A961]"
+        />
+        <motion.span
+          variants={{
+            hidden: { opacity: 0, scale: 1 },
+            visible: {
+              opacity: [0.7, 0],
+              scale: [1, 2],
+              transition: { ...PULSE, delay: 1.5 },
+            },
+          }}
+          className="absolute right-7 top-2.5 h-3 w-3 rounded-full border border-[#C9A961]"
         />
       </div>
       <p className="mt-2.5 text-[10px] text-text-muted">
@@ -737,7 +742,7 @@ export default function V2Client() {
                 <br />
                 {HERO.headlineLines[1]}
                 <br />
-                <span className="bg-gradient-to-r from-accent via-accent-light to-[#FFB347] bg-clip-text text-transparent">{HERO.headlineAccent}</span>
+                <span className="inline-block bg-gradient-to-r from-accent via-accent-light to-[#FFB347] bg-clip-text text-transparent [backface-visibility:hidden] [transform:translateZ(0)]">{HERO.headlineAccent}</span>
               </h1>
               <p
                 className="v2-rise mt-6 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl"
@@ -1009,7 +1014,7 @@ export default function V2Client() {
             <StaggerChildren className="mt-16 grid gap-6 md:grid-cols-3" stagger={STAG_CARD}>
               {OPS.mechanisms.map((m) => (
                 <StaggerItem key={m.title} className="min-w-0">
-                  <div className="h-full rounded-[var(--radius-card)] border border-border bg-bg-card/60 p-7 backdrop-blur-sm">
+                  <div className="h-full rounded-[var(--radius-card)] border border-border bg-[#15100B] p-7">
                     <h3 className="font-[family-name:var(--font-heading)] text-lg font-bold">
                       {m.title}
                     </h3>

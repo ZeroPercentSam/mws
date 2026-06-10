@@ -48,7 +48,7 @@ export default function CookieBanner() {
           aria-label="Cookie and storage notice"
           className="fixed bottom-4 inset-x-4 z-50 md:inset-x-auto md:right-6 md:bottom-6 md:max-w-sm print:hidden"
         >
-          <div className="rounded-[var(--radius-card)] border border-border bg-bg-card/95 backdrop-blur-md p-5 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+          <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-5 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
             <p className="text-sm text-text-secondary leading-relaxed">
               <span className="font-semibold text-text-primary">
                 No tracking here.
