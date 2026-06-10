@@ -1,6 +1,6 @@
 {
   "project": "mws",
-  "description": "Modern Web Systems \u2014 agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
+  "description": "Modern Web Systems — agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
   "started": "2026-06-10",
   "updated": "2026-06-10",
   "currentPhase": "live",
@@ -10,21 +10,33 @@
       "id": "T-001",
       "title": "Victor & Ian proposal + Stripe invoice page (/invoices/victor-ian)",
       "status": "done",
-      "note": "Shipped + deployed (c91dd48). Live Stripe invoice MDSEIGCQ-0001 ($2,000 due 2026-06-10) on Modernwebsystems account; page noindexed, not in nav. Key decision: $2,000 one-time build + $100/mo upkeep (Sam confirmed); customer has Sam's email (Stripe requires one for send_invoice \u2014 Sam delivers link himself)."
+      "note": "Shipped + deployed (c91dd48). Live Stripe invoice MDSEIGCQ-0001 ($2,000 due 2026-06-10) on Modernwebsystems account; page noindexed, not in nav. Key decision: $2,000 one-time build + $100/mo upkeep (Sam confirmed); customer has Sam's email (Stripe requires one for send_invoice — Sam delivers link himself)."
     },
     {
       "id": "T-002",
       "title": "Homepage V2 redesign at /v2 (noindexed preview)",
       "status": "done",
       "note": "Shipped 47ea32e + review-fix 5d33dd1. Signature HeroRig build-sequence, 11 conversion-ordered sections, every number derived from constants. Full 4-agent review: template.tsx LCP gate fixed site-wide, font-800->font-extrabold (v4 no-op class), reduced-motion counter gating, $5K pricing synced incl. ContactForm bracket. Throttled LCP 996ms, CLS 0. Sam decides: promote to / and roll language to other pages."
+    },
+    {
+      "id": "T-003",
+      "title": "Promote /v2 to homepage + roll language to subpages",
+      "status": "done",
+      "note": "Sam approved. v2 -> src/app/home-{client,data}, /v2 301s to /, noindex lifted, own openGraph block. Promoted: interaction tokens -> lib/animations, V2Counter logic -> AnimatedCounter (locale commas, hydration-safe reduced-motion, decimal-exact so 99.7% never shows 100%), LineIcon/Seam/GlowCTA/OpsFlow extracted. 11 legacy sections + 5 orphaned UI components + 4 dead constants deleted. PageHero orbs (infinite loops) -> static gradient; CTABanner -> warm band + GlowCTA; services font-900 no-op -> font-black; about height anim -> scaleY; DrawCheckmark dead delay fixed (drawPathDelayed). Commits e348b25..589628e."
     }
   ],
   "features": [
     {
       "name": "Client proposal/invoice pages",
       "what": "One-off noindexed proposal pages under /invoices/<client> with hard-coded Stripe hosted-invoice facts in page.tsx (single INVOICE object) and the full design in a sibling 'use client' file",
-      "how": "Pattern reference: src/app/invoices/victor-ian/ \u2014 copy the folder for future invoices; fleet imagery via nano-banana into public/invoices/<client>/",
+      "how": "Pattern reference: src/app/invoices/victor-ian/ — copy the folder for future invoices; fleet imagery via nano-banana into public/invoices/<client>/",
       "connections": "Reuses ui kit (SectionWrapper, GlowCard, AnimatedHeading, Stagger*), lib/animations variants, Stripe MCP (stripe-modernwebsystems) for invoice creation"
+    },
+    {
+      "name": "Homepage (promoted v2 redesign)",
+      "what": "Conversion-ordered 11-section homepage at / — HeroRig signature build-sequence, proof bar, PAS pain, results gallery, triptych, OpsFlow, math band, build log, pricing, FAQ, warm CTA close",
+      "how": "src/app/home-client.tsx + home-data.ts; all numbers derive from lib/constants at module load; interaction tokens from lib/animations",
+      "connections": "Shared promotions consumed site-wide: AnimatedCounter (/work, /work/[slug]), GlowCTA + Seam (CTABanner everywhere), LineIcon, OpsFlow (sections/), tokens (services, about, DrawCheckmark)"
     }
   ],
   "decisions": [
@@ -33,7 +45,7 @@
       "date": "2026-06-10",
       "title": "Stripe customer email workaround",
       "decision": "Stripe rejects send_invoice invoices for email-less customers; created customer 'Victor & Ian' with sam@ovington.io so Stripe emails route to Sam and he shares the hosted link directly (Sam chose no client email).",
-      "consequence": "First customer record cus_Ug4M80pbLl4PLJ is orphaned (no email, no invoice) \u2014 harmless; deletable in dashboard."
+      "consequence": "First customer record cus_Ug4M80pbLl4PLJ is orphaned (no email, no invoice) — harmless; deletable in dashboard."
     },
     {
       "id": "ADR-002",
@@ -48,12 +60,26 @@
       "title": "Pricing repositioned to $5K floor + retainers",
       "decision": "Sam set homepage floor at $5,000 with monthly retainers (ongoing dev, AI agent orchestration, fractional CTO); services FAQ + contact-form budget brackets synced; $15K-$50K stays as the 'most website engagements land' range.",
       "consequence": "All public pricing surfaces now agree; /v2, /services, /contact."
+    },
+    {
+      "id": "ADR-004",
+      "date": "2026-06-10",
+      "title": "Florida governing law in /terms §12",
+      "decision": "Sam chose Florida; neutral 'state in which MWS is organized' wording replaced with State of Florida (law + venue).",
+      "consequence": "Terms are now jurisdiction-specific; any future entity move needs a §12 edit."
+    },
+    {
+      "id": "ADR-005",
+      "date": "2026-06-10",
+      "title": "No Stripe key rotation",
+      "decision": "Sam declined rotating the restricted Stripe key that appeared in chat history ('not rotating keys stop asking').",
+      "consequence": "Standing: do not re-raise unless a NEW exposure event occurs. Recorded in auto-memory."
     }
   ],
   "openQuestions": [
     {
       "id": "Q-001",
-      "question": "Repo ZeroPercentSam/mws is PUBLIC \u2014 live Stripe hosted-invoice URL + client names/pricing are world-readable in source. Make repo private, or accept exposure?",
+      "question": "Repo ZeroPercentSam/mws is PUBLIC — live Stripe hosted-invoice URL + client names/pricing are world-readable in source. Make repo private, or accept exposure?",
       "raised": "2026-06-10"
     }
   ],
@@ -64,17 +90,35 @@
       "date": "2026-06-10",
       "completed": [
         "Live Stripe invoice MDSEIGCQ-0001 created via MCP ($2,000, due 2026-06-10, customer cus_Ug4NvOkhzdr1Io, product prod_Ug4MkQKJR2lFMv, price price_1TgiDoCzuo5EmjWW53SKhOJU)",
-        "Built /invoices/victor-ian (page.tsx + proposal-client.tsx) \u2014 hero, exec-summary letter, fleet cards w/ nano-banana imagery, animated approval-flow stepper, sitemap showcase (16 pages), 1-week timeline, pricing, glowing Pay Invoice CTA",
+        "Built /invoices/victor-ian (page.tsx + proposal-client.tsx) — hero, exec-summary letter, fleet cards w/ nano-banana imagery, animated approval-flow stepper, sitemap showcase (16 pages), 1-week timeline, pricing, glowing Pay Invoice CTA",
         "Full code review (7 angles, motion semantics source-verified) + fixes: per-value transitions, variant-embedded delays, dasharray/pathLength conflict, wave overscan + whileInView gating, CSS-var tokens, printable PDF CSS, single INVOICE config object",
         "Deployed to production: https://www.modernwebsystems.com/invoices/victor-ian (commits 4ceb98a, c91dd48)",
         "OG card for proposal (opengraph-image convention) + real Schaefer photos swap",
         "Footer socials removed; founder section removed from /about",
         "/privacy + /terms (firecrawl-researched, honest to data reality) + cookie notice banner + metadataBase -> custom domain",
-        "/v2 homepage redesign built, 4-agent reviewed, fixed, deployed (LCP 996ms throttled, CLS 0); site-wide template.tsx LCP gate fixed"
+        "/v2 homepage redesign built, 4-agent reviewed, fixed, deployed (LCP 996ms throttled, CLS 0); site-wide template.tsx LCP gate fixed",
+        "Mobile flicker root-caused + fixed (globals blanket backface rule, navbar 24px backdrop-blur on scroll, permanent willChange/backface layer pins in FadeInWhenVisible/StaggerItem/AnimatedHeading, layout-prop animation in v2 pipeline vignette, blend/blur gating); frozen marquee/static rig reproduced under prefers-reduced-motion emulation = OS setting, not a bug",
+        "v2 tagline -> 'shipped in days, not months' + section contrast pass (service tints orange/blue/gold, deep-ocean math band, gradient hero accent, warm CTA close)",
+        "Site-wide font-800 -> font-extrabold sweep (14x, headings were silently weight-400)",
+        "Victor & Ian invoice split: MDSEIGCQ-0001 ($2,000) VOIDED; MDSEIGCQ-0002 ($1,000 due 2026-06-10) live + linked on page; completion $1,000 staged as Stripe DRAFT in_1TgnbpCzuo5EmjWWuHL4wnU7 (finalize when build ships); page shows $2,000 total + split terms; restricted key now in .project/secrets.local.json (gitignored, 600)"
       ],
       "inProgress": [],
       "blocked": [],
-      "nextStep": "Sam: review /v2 (modernwebsystems.com/v2) for the promote-to-/ call; run Codex review; rotate the pasted Stripe key; decide repo visibility (Q-001); give governing-law state for /terms; optional font-800 sweep chip pending."
+      "nextStep": "FINALIZE STRIPE DRAFT in_1TgnbpCzuo5EmjWWuHL4wnU7 ($1,000 completion invoice) when Victor & Ian build ships. Sam pending: /v2 promote-to-/ decision + Codex review; rotate Stripe restricted key (now in .project/secrets.local.json); repo public/private (Q-001); governing-law state for /terms §12; re-test mobile after flicker fixes (check Reduce Motion setting)."
+    },
+    {
+      "id": "S070",
+      "date": "2026-06-10",
+      "completed": [
+        "/terms §12 governing law -> Florida (e348b25)",
+        "Promoted /v2 to homepage (e20bc45): home-{client,data}, /v2 permanent redirect, noindex lifted, turbopack.root pinned, 11 legacy sections + 4 orphan UI components deleted",
+        "Review fixes (7425485): AnimatedCounter hydration-safe reduced-motion + decimal-exact formatting (99.7% bug), DrawCheckmark dead delay -> drawPathDelayed, EASE literals deduped, OpsFlow geometry derived from steps.length, homepage openGraph block, #contact anchor restored, dead homepage constants removed",
+        "Rolled v2 language to subpages (589628e): PageHero static gradient (orb infinite loops deleted), CTABanner warm band + GlowCTA, services font-900 no-op -> font-black, about height-anim -> scaleY, /work double-border fix",
+        "Verification: next build green, Playwright smoke all routes + /work/[slug] + /blog/[slug], zero console errors incl. prefers-reduced-motion pass; scripts/verify-promotion.mjs committed as regression guard"
+      ],
+      "inProgress": [],
+      "blocked": [],
+      "nextStep": "Poll prod for 589628e markers (homepage tagline + /v2 308). Remaining Sam items: repo PUBLIC decision (flip private on go), finalize Victor & Ian draft invoice in_1TgnbpCzuo5EmjWWuHL4wnU7 when boat-platform build ships, mobile re-test on Sam's phone."
     }
   ],
   "tests": {
