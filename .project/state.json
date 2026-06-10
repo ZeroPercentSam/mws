@@ -23,6 +23,12 @@
       "title": "Promote /v2 to homepage + roll language to subpages",
       "status": "done",
       "note": "Sam approved. v2 -> src/app/home-{client,data}, /v2 301s to /, noindex lifted, own openGraph block. Promoted: interaction tokens -> lib/animations, V2Counter logic -> AnimatedCounter (locale commas, hydration-safe reduced-motion, decimal-exact so 99.7% never shows 100%), LineIcon/Seam/GlowCTA/OpsFlow extracted. 11 legacy sections + 5 orphaned UI components + 4 dead constants deleted. PageHero orbs (infinite loops) -> static gradient; CTABanner -> warm band + GlowCTA; services font-900 no-op -> font-black; about height anim -> scaleY; DrawCheckmark dead delay fixed (drawPathDelayed). Commits e348b25..589628e."
+    },
+    {
+      "id": "T-004",
+      "title": "Site-wide redesign: every page to homepage design level",
+      "status": "done",
+      "note": "Sam approved plan (full set pieces + copy rewrite, all surfaces). Shipped per-page: /services Stack Rig + tinted deep-dives w/ derived proof chips; /work wireframe-reveal cards (ProjectCard deleted); /work/[slug] Case File + BuildLogStamp + LiveBadge; /blog Signal Board (FeaturedSignal + stat strip from posts' own stat blocks); /blog/[slug] ReadingProgress seam + static prose + ocean stat cards; /about Studio OS diagram (10 real tiles light up) + voice-of-studio story; /contact After You Hit Send rig + locked-copy FAQ (invented 24h/2-3wk/geo claims deleted); Footer Blueprint Close. Shared: lib/derive (all numbers build-time enforced), lib/design, Band/LiveBadge/WireframeCard/ReadingProgress/Vignettes/BuildLogStamp, engagement.ts. Per-route metadata everywhere (blog/work-slug had NONE). Commits 0202e51..fba39f2, each gated: build + iPhone compositing probe (residue=hamburger-only, filters/blends 0) + smoke + reduced-motion."
     }
   ],
   "features": [
@@ -37,6 +43,12 @@
       "what": "Conversion-ordered 11-section homepage at / — HeroRig signature build-sequence, proof bar, PAS pain, results gallery, triptych, OpsFlow, math band, build log, pricing, FAQ, warm CTA close",
       "how": "src/app/home-client.tsx + home-data.ts; all numbers derive from lib/constants at module load; interaction tokens from lib/animations",
       "connections": "Shared promotions consumed site-wide: AnimatedCounter (/work, /work/[slug]), GlowCTA + Seam (CTABanner everywhere), LineIcon, OpsFlow (sections/), tokens (services, about, DrawCheckmark)"
+    },
+    {
+      "name": "Site-wide design system (derive + design + bands)",
+      "what": "Every page speaks the homepage language: seam-framed warm/ocean bands, tinted services/categories, metric-first copy, one signature rig per page",
+      "how": "lib/derive.ts (study/metric/fmt/siteMetric/post/leadStat — lookups throw at build), lib/design.ts (classes/tints/band colors), ui/Band + LiveBadge + WireframeCard + ReadingProgress, sections/Vignettes + BuildLogStamp",
+      "connections": "home-data owns HERO/OPS/TRIPTYCH copy; engagement.ts owns PRICING+DELIVERY_WINDOWS; Footer + about/contact/services data files import from home-data (single source)"
     }
   ],
   "decisions": [
@@ -116,11 +128,12 @@
         "Rolled v2 language to subpages (589628e): PageHero static gradient (orb infinite loops deleted), CTABanner warm band + GlowCTA, services font-900 no-op -> font-black, about height-anim -> scaleY, /work double-border fix",
         "Verification: next build green, Playwright smoke all routes + /work/[slug] + /blog/[slug], zero console errors incl. prefers-reduced-motion pass; scripts/verify-promotion.mjs committed as regression guard",
         "iOS scroll-flicker round 2 (4c3483b): compositing audit at iPhone viewport (scripts/audit-compositing.mjs) found+fixed backdrop-blur chips on ProjectCard/BlogCard (10+/page), GlowCTA filter:blur(40px) -> pre-blurred radial gradient, hero-rise fill:both holding permanent identity transforms -> backwards fill. Site-wide scroll-time filters now 0; homepage persistent transforms 11 -> 7 (all deliberate/finite). Awaiting Sam on-device confirmation.",
-        "iOS flicker round 3 (4bc487f + f08a93d): Firecrawl research pinned the class — WebKit intermittently renders composited elements in their animation END state while opacity/transform runs mid-scroll (SO 24465619; theme.co iOS17+ 'fade-in-up flickers cards/text', vendor fix = static on mobile; framer.community: CSS transition-all races motion writes). Shipped useInstantEntrance() (max-767px): in-view triggers stay, entrances snap (duration 0); Navbar transition-colors; decorative loops md+ only. Review caught critical follow-up: variant-object swaps left SSR'd transforms applied forever (131 elements) — fixed by keeping variants/trees constant, swapping only transitions. Probes: residue 0, no hydration errors, desktop animates (173 tweens), smoke green."
+        "iOS flicker round 3 (4bc487f + f08a93d): Firecrawl research pinned the class — WebKit intermittently renders composited elements in their animation END state while opacity/transform runs mid-scroll (SO 24465619; theme.co iOS17+ 'fade-in-up flickers cards/text', vendor fix = static on mobile; framer.community: CSS transition-all races motion writes). Shipped useInstantEntrance() (max-767px): in-view triggers stay, entrances snap (duration 0); Navbar transition-colors; decorative loops md+ only. Review caught critical follow-up: variant-object swaps left SSR'd transforms applied forever (131 elements) — fixed by keeping variants/trees constant, swapping only transitions. Probes: residue 0, no hydration errors, desktop animates (173 tweens), smoke green.",
+        "Site-wide redesign executed (plan-approved): 7 pages + footer rebuilt to homepage level, 9 gated commits 0202e51..fba39f2 — see T-004"
       ],
       "inProgress": [],
       "blocked": [],
-      "nextStep": "Sam re-tests mobile on f08a93d (kill Safari tab first). Residual if still flickering: triptych vignette embedded animations + logo marquee — gate those next. Then: repo PUBLIC decision, V&I draft invoice finalize when build ships."
+      "nextStep": "Sam reviews redesigned prod pages (desktop + phone) — fresh copy flagged in *-data.ts files with /* fresh copy */ markers; BLOG_TINTS.strategy steel-gray #7E8CA0 is the one new palette color to confirm. Then: repo PUBLIC decision, V&I draft invoice when boat build ships."
     }
   ],
   "tests": {
