@@ -21,9 +21,10 @@ export default function GradientThumb({
     <div className={`absolute inset-0 ${className}`} aria-hidden>
       {/* Per-post gradient base */}
       <div className="absolute inset-0" style={{ background: gradient }} />
-      {/* Fine grid texture */}
+      {/* Fine grid texture — blend md+ only: mix-blend-mode repaints on
+          every iOS scroll frame (flicker) */}
       <div
-        className="absolute inset-0 opacity-40 mix-blend-overlay"
+        className="absolute inset-0 opacity-40 md:mix-blend-overlay"
         style={{ backgroundImage: GRID, backgroundSize: "32px 32px" }}
       />
       {/* Top-left light sheen for depth */}

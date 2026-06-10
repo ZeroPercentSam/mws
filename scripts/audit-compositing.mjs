@@ -8,7 +8,7 @@ const browser = await engine.launch();
 const ctx = await browser.newContext({ ...devices["iPhone 13"] });
 const page = await ctx.newPage();
 
-for (const route of ["/", "/work", "/services"]) {
+for (const route of ["/", "/work", "/work/osint4all", "/services", "/about", "/contact", "/blog"]) {
   await page.goto(BASE + route, { waitUntil: "networkidle" });
   // scroll through the whole page to fire every whileInView, then settle
   await page.evaluate(async () => {

@@ -2,7 +2,17 @@
 import { chromium } from "playwright";
 
 const BASE = "http://localhost:3100";
-const routes = ["/", "/services", "/work", "/about", "/terms", "/contact", "/blog"];
+const routes = [
+  "/",
+  "/services",
+  "/work",
+  "/work/osint4all",
+  "/about",
+  "/terms",
+  "/contact",
+  "/blog",
+  "/blog/website-speed-costing-you-revenue",
+];
 const errors = [];
 
 const browser = await chromium.launch();
@@ -42,7 +52,10 @@ if (!gov.includes("Florida")) failures.push("/terms §12 missing Florida");
 await page.goto(BASE + "/work", { waitUntil: "networkidle" });
 await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 await page.waitForTimeout(2200);
-const ribbon = await page.locator("section.border-t.bg-bg-secondary").textContent();
+const ribbon = await page
+  .locator("section", { hasText: "Projects Shipped" })
+  .first()
+  .textContent();
 console.log("work ribbon sample:", ribbon.slice(0, 120));
 console.log("comma in counters:", /\d,\d{3}/.test(ribbon));
 
