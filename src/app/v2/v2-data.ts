@@ -26,7 +26,7 @@ export const HERO = {
   eyebrow: "For established businesses that have outgrown their website",
   // Locked by Sam: ROI + speed direction
   headlineLines: ["Websites, AI, and automation", "that pay for themselves —"],
-  headlineAccent: "shipped in weeks, not quarters.",
+  headlineAccent: "shipped in days, not months.",
   subline:
     "A systems-driven studio using AI-leveraged builds to ship premium websites, intelligence, and automation for established businesses.",
   ctaPrimary: "Get my build plan",
@@ -178,18 +178,21 @@ export const TRIPTYCH = {
   items: [
     {
       key: "websites",
+      tint: "#FF6B00",
       title: "High-Performance Websites",
       body: "Sites engineered for the 4.42%-per-second reality: fast, precise, built to convert — not brochure-ware.",
       chips: ["200+ pages shipped", "6–10 week delivery", "28-page, 3-city build live"],
     },
     {
       key: "ai",
+      tint: "#4A9ECB",
       title: "AI Intelligence",
       body: "Chatbots, configurators, and personalization that sell while you're closed — in production, not in decks.",
       chips: ["AI try-on live in production", "$3.70 returned per $1", "4–8 week delivery"],
     },
     {
       key: "automation",
+      tint: "#C9A961",
       title: "Business Automation",
       body: "Your repeatable work, made automatic — compliance included, errors caught before customers see them.",
       chips: ["State-blocking compliance live", "300–500% typical ROI", "8–14 week delivery"],
@@ -232,11 +235,11 @@ export const OPS = {
     },
   ],
   timeline:
-    "Websites: 6–10 weeks. AI: 4–8. Automation: 8–14. The clock starts when the plan is signed.",
+    "Focused builds ship in days. Full websites: 6–10 weeks. AI: 4–8. Automation: 8–14. The clock starts when the plan is signed.",
   mechanisms: [
     {
       title: "AI-leveraged pipeline",
-      body: "AI does the repetition — scaffolding, variants, QA passes, regression checks. Senior judgment makes the decisions that win. That leverage is the whole reason weeks-not-quarters is normal here.",
+      body: "AI does the repetition — scaffolding, variants, QA passes, regression checks. Senior judgment makes the decisions that win. That leverage is the whole reason days-not-months is normal here.",
     },
     {
       title: "Token-systemized design",
@@ -324,6 +327,6 @@ export const FAQ_V2 = [
 export const FINAL_CTA = {
   heading: "Your market won't wait.",
   subtext:
-    "One call. A written, fixed-price build plan. Then weeks to live — not quarters.",
+    "One call. A written, fixed-price build plan. Then days to live — not months.",
   formNote: "No pressure pitch. No newsletter. A written plan, then your call.",
 } as const;

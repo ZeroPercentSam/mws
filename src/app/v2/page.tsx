@@ -5,7 +5,7 @@ import V2Client from "./v2-client";
 export const metadata: Metadata = {
   title: "Modern Web Systems | Websites, AI & Automation That Pay for Themselves",
   description:
-    "A systems-driven studio shipping high-performance websites, AI intelligence, and business automation for established businesses — in weeks, not quarters.",
+    "A systems-driven studio shipping high-performance websites, AI intelligence, and business automation for established businesses — in days, not months.",
   robots: {
     index: false,
     follow: false,

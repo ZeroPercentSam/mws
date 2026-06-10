@@ -525,14 +525,17 @@ function VignetteAI() {
         }}
         className="flex justify-start"
       >
-        <span className="rounded-lg rounded-bl-sm border border-accent/30 bg-accent/10 px-2.5 py-1.5 text-[10px] text-text-primary">
+        <span
+          className="rounded-lg rounded-bl-sm border px-2.5 py-1.5 text-[10px] text-text-primary"
+          style={{ borderColor: "rgba(74,158,203,0.4)", backgroundColor: "rgba(74,158,203,0.12)" }}
+        >
           Yes — 3 fabrics in stock. Want to try it on virtually?
         </span>
       </motion.div>
       <svg viewBox="0 0 120 22" fill="none" className="h-5 w-full">
         <motion.path
           d="M2 18 L24 14 L44 16 L66 9 L88 11 L118 3"
-          stroke="var(--color-accent)"
+          stroke="#4A9ECB"
           strokeWidth="1.5"
           strokeLinecap="round"
           variants={{
@@ -555,8 +558,8 @@ function VignettePipeline() {
       <div className="relative flex items-center justify-between px-1">
         {["Lead", "Approve", "Invoice"].map((label) => (
           <div key={label} className="relative z-10 flex flex-col items-center gap-1.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[rgba(120,180,220,0.3)] bg-[#0B1B2B]">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[rgba(201,169,97,0.35)] bg-[#15110A]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#C9A961]" />
             </span>
             <span className="text-[9px] text-text-muted">{label}</span>
           </div>
@@ -580,7 +583,7 @@ function VignettePipeline() {
               },
             },
           }}
-          className="absolute top-[11px] h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(255,107,0,0.8)]"
+          className="absolute top-[11px] h-1.5 w-1.5 rounded-full bg-[#C9A961] shadow-[0_0_8px_rgba(201,169,97,0.8)]"
         />
       </div>
       <p className="mt-2.5 text-[10px] text-text-muted">
@@ -717,7 +720,7 @@ export default function V2Client() {
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 70% 50% at 70% 20%, rgba(255,107,0,0.07), transparent 60%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(56,130,180,0.06), transparent 60%)",
+                "radial-gradient(ellipse 70% 50% at 70% 20%, rgba(255,107,0,0.14), transparent 60%), radial-gradient(ellipse 60% 50% at 15% 75%, rgba(56,130,180,0.13), transparent 60%)",
             }}
           />
           <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-6 md:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
@@ -734,7 +737,7 @@ export default function V2Client() {
                 <br />
                 {HERO.headlineLines[1]}
                 <br />
-                <span className="text-accent">{HERO.headlineAccent}</span>
+                <span className="bg-gradient-to-r from-accent via-accent-light to-[#FFB347] bg-clip-text text-transparent">{HERO.headlineAccent}</span>
               </h1>
               <p
                 className="v2-rise mt-6 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl"
@@ -939,10 +942,22 @@ export default function V2Client() {
                   <motion.div
                     variants={fadeInUp}
                     transition={{ duration: DUR_REVEAL, ease: EASE, delay: i * STAG_CARD }}
-                    className="flex h-full flex-col p-7 md:p-8"
+                    className="relative flex h-full flex-col p-7 md:p-8"
                   >
+                    <div
+                      aria-hidden
+                      className="absolute inset-x-6 top-0 h-[2px] rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, transparent, ${item.tint}, transparent)`,
+                      }}
+                    />
                     {VIGNETTES[item.key]}
-                    <h3 className="mt-6 font-[family-name:var(--font-heading)] text-xl font-bold md:text-2xl">
+                    <h3 className="mt-6 flex items-center gap-2.5 font-[family-name:var(--font-heading)] text-xl font-bold md:text-2xl">
+                      <span
+                        aria-hidden
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{ backgroundColor: item.tint }}
+                      />
                       {item.title}
                     </h3>
                     <p className="mt-3 flex-1 text-sm leading-relaxed text-text-secondary md:text-base">
@@ -1025,8 +1040,15 @@ export default function V2Client() {
         <Seam />
 
         {/* ======================================================== */}
-        {/* S7 · THE MATH                                             */}
+        {/* S7 · THE MATH — deep-ocean band for contrast              */}
         {/* ======================================================== */}
+        <Seam />
+        <div
+          style={{
+            background:
+              "linear-gradient(180deg, var(--color-bg-primary) 0%, #071321 35%, #0A2236 100%)",
+          }}
+        >
         <SectionWrapper>
           <FadeInWhenVisible>
             <span className={eyebrowCls}>The math</span>
@@ -1038,14 +1060,14 @@ export default function V2Client() {
             />
           </div>
           <StaggerChildren
-            className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-card)] border border-border bg-border sm:grid-cols-2 lg:grid-cols-4"
+            className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-card)] border border-[rgba(120,180,220,0.2)] bg-[rgba(120,180,220,0.2)] sm:grid-cols-2 lg:grid-cols-4"
             stagger={STAG_CARD}
           >
             {MATH_STATS.map((stat) => (
               <StaggerItem key={stat.figure} className="min-w-0">
                 <Link
                   href={stat.href}
-                  className="block h-full bg-bg-card p-7 transition-colors duration-200 hover:bg-bg-card-hover"
+                  className="block h-full bg-[#0A1622] p-7 transition-colors duration-200 hover:bg-[#0E1C2C]"
                 >
                   <motion.p
                     variants={scaleIn}
@@ -1065,6 +1087,8 @@ export default function V2Client() {
             ))}
           </StaggerChildren>
         </SectionWrapper>
+        </div>
+        <Seam />
 
         {/* ======================================================== */}
         {/* S8 · BUILD LOG (honest social proof)                      */}
@@ -1252,7 +1276,13 @@ export default function V2Client() {
         {/* ======================================================== */}
         {/* S11 · FINAL CTA + CONTACT                                 */}
         {/* ======================================================== */}
-        <section className="border-t border-border bg-bg-secondary">
+        <section
+          className="border-t border-border"
+          style={{
+            background:
+              "linear-gradient(180deg, #0D0703 0%, rgba(255,107,0,0.05) 35%, var(--color-bg-primary) 100%)",
+          }}
+        >
           <SectionWrapper>
             <div className="grid items-start gap-12 lg:grid-cols-2">
               <div>
