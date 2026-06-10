@@ -1,0 +1,69 @@
+{
+  "project": "mws",
+  "description": "Modern Web Systems — agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
+  "started": "2026-06-10",
+  "updated": "2026-06-10",
+  "currentPhase": "live",
+  "phases": [],
+  "tasks": [
+    {
+      "id": "T-001",
+      "title": "Victor & Ian proposal + Stripe invoice page (/invoices/victor-ian)",
+      "status": "done",
+      "note": "Shipped + deployed (c91dd48). Live Stripe invoice MDSEIGCQ-0001 ($2,000 due 2026-06-10) on Modernwebsystems account; page noindexed, not in nav. Key decision: $2,000 one-time build + $100/mo upkeep (Sam confirmed); customer has Sam's email (Stripe requires one for send_invoice — Sam delivers link himself)."
+    }
+  ],
+  "features": [
+    {
+      "name": "Client proposal/invoice pages",
+      "what": "One-off noindexed proposal pages under /invoices/<client> with hard-coded Stripe hosted-invoice facts in page.tsx (single INVOICE object) and the full design in a sibling 'use client' file",
+      "how": "Pattern reference: src/app/invoices/victor-ian/ — copy the folder for future invoices; fleet imagery via nano-banana into public/invoices/<client>/",
+      "connections": "Reuses ui kit (SectionWrapper, GlowCard, AnimatedHeading, Stagger*), lib/animations variants, Stripe MCP (stripe-modernwebsystems) for invoice creation"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "date": "2026-06-10",
+      "title": "Stripe customer email workaround",
+      "decision": "Stripe rejects send_invoice invoices for email-less customers; created customer 'Victor & Ian' with sam@ovington.io so Stripe emails route to Sam and he shares the hosted link directly (Sam chose no client email).",
+      "consequence": "First customer record cus_Ug4M80pbLl4PLJ is orphaned (no email, no invoice) — harmless; deletable in dashboard."
+    },
+    {
+      "id": "ADR-002",
+      "date": "2026-06-10",
+      "title": "Page-local design system extensions",
+      "decision": "Proposal page keeps ocean-blue palette, wave dividers, icons, and vignettes in-file (no globals.css/Navbar/Footer edits); shared token VALUES referenced via CSS vars, never re-hard-coded.",
+      "consequence": "Future invoices copy the folder; globals stay untouched."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "Q-001",
+      "question": "Repo ZeroPercentSam/mws is PUBLIC — live Stripe hosted-invoice URL + client names/pricing are world-readable in source. Make repo private, or accept exposure?",
+      "raised": "2026-06-10"
+    }
+  ],
+  "assumptions": [],
+  "sessions": [
+    {
+      "id": "S069",
+      "date": "2026-06-10",
+      "completed": [
+        "Live Stripe invoice MDSEIGCQ-0001 created via MCP ($2,000, due 2026-06-10, customer cus_Ug4NvOkhzdr1Io, product prod_Ug4MkQKJR2lFMv, price price_1TgiDoCzuo5EmjWW53SKhOJU)",
+        "Built /invoices/victor-ian (page.tsx + proposal-client.tsx) — hero, exec-summary letter, fleet cards w/ nano-banana imagery, animated approval-flow stepper, sitemap showcase (16 pages), 1-week timeline, pricing, glowing Pay Invoice CTA",
+        "Full code review (7 angles, motion semantics source-verified) + fixes: per-value transitions, variant-embedded delays, dasharray/pathLength conflict, wave overscan + whileInView gating, CSS-var tokens, printable PDF CSS, single INVOICE config object",
+        "Deployed to production: https://www.modernwebsystems.com/invoices/victor-ian (commits 4ceb98a, c91dd48)"
+      ],
+      "inProgress": [],
+      "blocked": [],
+      "nextStep": "Sam: rotate the Stripe restricted key pasted in chat (dashboard.stripe.com/acct_1NZ1pCCzuo5EmjWW/apikeys) and decide Q-001 (repo visibility). Optional: backfill this dashboard via /dashboard-backfill."
+    }
+  ],
+  "tests": {
+    "report": "",
+    "linkTag": "@<taskId>"
+  },
+  "risks": [],
+  "secretsRef": ".project/secrets.local.json"
+}
