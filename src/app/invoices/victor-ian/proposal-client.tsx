@@ -13,6 +13,7 @@ import { fadeInUp, scaleIn, defaultViewport } from "@/lib/animations";
 interface InvoiceFacts {
   url: string;
   amountLabel: string;
+  remainingLabel: string;
   totalLabel: string;
   number: string;
   dueLabel: string;
@@ -1268,8 +1269,8 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
             <FadeInWhenVisible delay={0.2}>
               <p className="mt-5 text-sm text-text-muted">
                 Secure checkout via Stripe · Invoice {invoice.number} ·{" "}
-                {invoice.amountLabel} due {invoice.dueLabel} — remaining $1,000
-                invoiced on completion
+                {invoice.amountLabel} due {invoice.dueLabel} — remaining{" "}
+                {invoice.remainingLabel} invoiced on completion
               </p>
             </FadeInWhenVisible>
           </div>

@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 const INVOICE = {
   url: "https://invoice.stripe.com/i/acct_1NZ1pCCzuo5EmjWW/live_YWNjdF8xTloxcENDenVvNUVtaldXLF9VZzl1Y3QzeWZZWGJRWFdMbXlyQzlXZUxac1ZTM0ZDLDE3MTY0NDQwMQ0200UYcmzMXs?s=ap",
   amountLabel: "$1,000",
+  remainingLabel: "$1,000",
   totalLabel: "$2,000",
   number: "MDSEIGCQ-0002",
   dueLabel: "June 10, 2026",
