@@ -461,12 +461,15 @@ export default function HomeClient() {
         {/* Hero text entrance — CSS so the LCP heading never waits on JS;
             placed BEFORE the hero so streamed rendering can't paint
             unstyled text first. globals.css reduced-motion neutralizes it. */}
+        {/* fill:backwards, from-only keyframe: `both`/`forwards` HOLDS the
+            animated transform forever (computed matrix(1,0,0,1,0,0), never
+            "none") — five permanently composited hero elements on iOS.
+            backwards still hides pre-delay, then releases to base styles. */}
         <style>{`
           @keyframes hero-rise {
             from { opacity: 0; transform: translate3d(0, 16px, 0); }
-            to { opacity: 1; transform: translate3d(0, 0, 0); }
           }
-          .hero-rise { animation: hero-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} both; }
+          .hero-rise { animation: hero-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} backwards; }
         `}</style>
         {/* ======================================================== */}
         {/* S1 · HERO                                                 */}

@@ -42,7 +42,7 @@ if (!gov.includes("Florida")) failures.push("/terms §12 missing Florida");
 await page.goto(BASE + "/work", { waitUntil: "networkidle" });
 await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 await page.waitForTimeout(2200);
-const ribbon = await page.locator("section.border-y").textContent();
+const ribbon = await page.locator("section.border-t.bg-bg-secondary").textContent();
 console.log("work ribbon sample:", ribbon.slice(0, 120));
 console.log("comma in counters:", /\d,\d{3}/.test(ribbon));
 

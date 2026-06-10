@@ -42,13 +42,13 @@ export default function BlogCard({ post }: BlogCardProps) {
             <div className="absolute inset-0 bg-gradient-to-t from-bg-card/60 via-transparent to-transparent" />
             {/* Category pill */}
             <div className="absolute top-4 left-4">
-              <span className="text-[10px] uppercase tracking-wider font-semibold bg-bg-primary/70 backdrop-blur-sm text-text-secondary px-3 py-1 rounded-full border border-border">
+              <span className="text-[10px] uppercase tracking-wider font-semibold bg-[rgba(5,5,5,0.85)] text-text-secondary px-3 py-1 rounded-full border border-border">
                 {categoryLabels[post.category] || post.category}
               </span>
             </div>
             {/* Read time pill */}
             <div className="absolute top-4 right-4">
-              <span className="text-[10px] uppercase tracking-wider font-semibold bg-bg-primary/70 backdrop-blur-sm text-text-secondary px-3 py-1 rounded-full border border-border">
+              <span className="text-[10px] uppercase tracking-wider font-semibold bg-[rgba(5,5,5,0.85)] text-text-secondary px-3 py-1 rounded-full border border-border">
                 {post.readTime}
               </span>
             </div>

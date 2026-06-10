@@ -44,7 +44,7 @@ export default function ProjectCard({ study }: ProjectCardProps) {
             )}
             {/* Category pill */}
             <div className="absolute top-4 left-4">
-              <span className="text-[10px] uppercase tracking-wider font-semibold bg-bg-primary/70 backdrop-blur-sm text-text-secondary px-3 py-1 rounded-full border border-border">
+              <span className="text-[10px] uppercase tracking-wider font-semibold bg-[rgba(5,5,5,0.85)] text-text-secondary px-3 py-1 rounded-full border border-border">
                 {study.category}
               </span>
             </div>

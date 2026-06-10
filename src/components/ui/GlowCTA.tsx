@@ -16,14 +16,20 @@ export default function GlowCTA({ label, href }: { label: string; href: string }
       className="relative inline-block rounded-[var(--radius-button)] shadow-[0_0_32px_rgba(255,107,0,0.25)]"
     >
       {/* glow pulse on a separate layer: opacity is compositor-friendly,
-          unlike animating boxShadow (paint) */}
+          unlike animating boxShadow (paint). Pre-blurred radial gradient,
+          NOT filter:blur — a live 40px blur re-renders on iOS scroll
+          frames (flicker; same fix as the old orb background) */}
       <motion.span
         aria-hidden
         initial={{ opacity: 0 }}
         whileInView={{ opacity: [0, 0.7, 0] }}
         viewport={{ once: true, amount: 0.6 }}
         transition={{ duration: 2.2, repeat: 1, ease: "easeInOut" }}
-        className="absolute -inset-3 -z-10 rounded-full bg-accent/40 blur-2xl"
+        className="absolute -inset-10 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse closest-side, rgba(255,107,0,0.45) 0%, rgba(255,107,0,0.18) 45%, transparent 75%)",
+        }}
       />
       <Link
         href={href}
