@@ -107,18 +107,18 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a
-              href="#"
+            <Link
+              href="/privacy#what-we-collect"
               className="text-text-muted hover:text-text-primary text-xs transition-colors duration-200"
             >
               Privacy Policy
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/terms"
               className="text-text-muted hover:text-text-primary text-xs transition-colors duration-200"
             >
               Terms of Service
-            </a>
+            </Link>
             <button
               onClick={() => {
                 if (typeof window !== "undefined") {

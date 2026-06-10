@@ -3,6 +3,7 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import CookieBanner from "@/components/ui/CookieBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,7 +19,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mws-sams-projects-4db6d193.vercel.app"),
+  metadataBase: new URL("https://www.modernwebsystems.com"),
   title: "Modern Web Systems | Business Consulting, AI Websites & Automation",
   description:
     "We build AI-driven websites, automation systems, and workflows that help businesses outcompete, increase efficiency, lower costs, and dramatically grow revenue.",
@@ -49,6 +50,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <CookieBanner />
       </body>
     </html>
   );
