@@ -18,7 +18,7 @@ export { CASE_STUDIES, WORK_METRICS } from "./work";
 export { SERVICE_DETAILS, TECH_STACK, FAQ_ITEMS } from "./services";
 
 // About
-export { STORY, VALUES, TEAM } from "./about";
+export { STORY, VALUES } from "./about";
 
 // Blog
 export { BLOG_POSTS, BLOG_CATEGORIES } from "./blog";

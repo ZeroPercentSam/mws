@@ -97,22 +97,6 @@ export default function Footer() {
                   hello@modernwebsystems.com
                 </a>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-text-secondary hover:text-text-primary text-sm transition-colors duration-200"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-text-secondary hover:text-text-primary text-sm transition-colors duration-200"
-                >
-                  Twitter / X
-                </a>
-              </li>
             </ul>
           </div>
         </div>

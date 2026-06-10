@@ -6,10 +6,9 @@ import PageHero from "@/components/ui/PageHero";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
 import GlowCard from "@/components/ui/GlowCard";
-import TeamCard from "@/components/ui/TeamCard";
 import StaggerChildren, { StaggerItem } from "@/components/ui/StaggerChildren";
 import CTABanner from "@/components/ui/CTABanner";
-import { STORY, VALUES, TEAM } from "@/lib/constants";
+import { STORY, VALUES } from "@/lib/constants";
 
 function StorySection() {
   const quoteRef = useRef<HTMLDivElement>(null);
@@ -119,34 +118,6 @@ function ValuesSection() {
   );
 }
 
-function TeamSection() {
-  return (
-    <SectionWrapper>
-      <FadeInWhenVisible>
-        <div className="text-center mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
-            The Founder
-          </span>
-          <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-800 mt-3 tracking-tight">
-            The person behind the work.
-          </h2>
-          <p className="text-text-secondary mt-4 text-lg max-w-2xl mx-auto">
-            One founder, AI-augmented workflows, and the output of an entire agency.
-          </p>
-        </div>
-      </FadeInWhenVisible>
-
-      <div className="flex justify-center">
-        <div className="w-full max-w-sm">
-          {TEAM.map((member, i) => (
-            <TeamCard key={member.name} member={member} delay={i * 0.1} />
-          ))}
-        </div>
-      </div>
-    </SectionWrapper>
-  );
-}
-
 export default function AboutPage() {
   return (
     <>
@@ -159,7 +130,6 @@ export default function AboutPage() {
 
       <StorySection />
       <ValuesSection />
-      <TeamSection />
 
       <CTABanner
         heading="Want to Work Together."

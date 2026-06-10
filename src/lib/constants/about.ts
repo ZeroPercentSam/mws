@@ -1,4 +1,4 @@
-import type { TeamMember, Value } from "@/lib/types";
+import type { Value } from "@/lib/types";
 
 export const STORY = {
   headline: "Built Different. On Purpose.",
@@ -38,13 +38,3 @@ export const VALUES: Value[] = [
   },
 ];
 
-export const TEAM: TeamMember[] = [
-  {
-    name: "Sam Ovington",
-    role: "Founder & Lead Strategist",
-    bio: "Solo founder and full-stack engineer who builds with the output of an agency and the accountability of a single point of contact. 16+ projects shipped across luxury e-commerce, pharmaceutical platforms, real estate investment tools, and more — all on Next.js and Vercel, augmented by AI-driven development workflows.",
-    initials: "SO",
-    gradient: "linear-gradient(135deg, #FF6B00, #FF8533)",
-    socials: { linkedin: "#" },
-  },
-];
