@@ -1,23 +1,8 @@
 // Homepage copy. Every displayed number either derives from CASE_STUDIES /
-// METRICS / FAQ_ITEMS at module load (see helpers) or quotes a published
-// blog-post stat with its source post linked. Nothing is invented here.
+// METRICS / FAQ_ITEMS at module load (via lib/derive helpers) or quotes a
+// published blog-post stat with its source post linked. Nothing is invented.
 import { CASE_STUDIES } from "@/lib/constants";
-import type { CaseStudy, MetricItem } from "@/lib/types";
-
-function study(slug: string): CaseStudy {
-  const s = CASE_STUDIES.find((c) => c.slug === slug);
-  if (!s) throw new Error(`home-data: unknown case study slug "${slug}"`);
-  return s;
-}
-
-function metric(slug: string, label: string): MetricItem {
-  const m = study(slug).results.find((r) => r.label === label);
-  if (!m) throw new Error(`home-data: no metric "${label}" on "${slug}"`);
-  return m;
-}
-
-const fmt = (m: MetricItem, prefix = "") =>
-  `${prefix}${m.value.toLocaleString("en-US")}${m.suffix}`;
+import { study, metric, fmt } from "@/lib/derive";
 
 /* ------------------------------------------------------------------ */
 /*  Hero                                                               */
@@ -265,25 +250,9 @@ export const BUILD_LOG = {
 /* ------------------------------------------------------------------ */
 /*  Investment (locked by Sam: $5K floor + retainers)                  */
 /* ------------------------------------------------------------------ */
-export const PRICING = {
-  eyebrow: "The investment",
-  heading: "Serious work, priced plainly.",
-  floorPrefix: "Engagements from ",
-  floorAmount: "$5,000",
-  floorNote: "Fixed scope, fixed price — agreed in writing before work begins.",
-  ranges: [
-    { label: "Websites", range: "Most land $15K–$50K" },
-    { label: "AI implementations", range: "$20K–$75K" },
-    { label: "Automation suites", range: "$25K–$100K+" },
-  ],
-  retainers:
-    "Monthly retainers available — ongoing development, AI agent orchestration, and fractional CTO.",
-  risk: [
-    "30-day post-launch support on every project",
-    "KPIs defined before a line of code is written",
-    "Fixed scope, fixed price — no surprise invoices",
-  ],
-} as const;
+// Engagement terms live in lib/constants/engagement.ts (shared with
+// /services); re-exported here for the homepage sections that render them.
+export { PRICING } from "@/lib/constants/engagement";
 
 /* ------------------------------------------------------------------ */
 /*  FAQ (objection-handling set; numbers match /services + PRICING)    */

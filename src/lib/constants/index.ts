@@ -14,4 +14,7 @@ export { SERVICE_DETAILS, TECH_STACK, FAQ_ITEMS } from "./services";
 export { STORY, VALUES } from "./about";
 
 // Blog
-export { BLOG_POSTS, BLOG_CATEGORIES } from "./blog";
+export { BLOG_POSTS, BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from "./blog";
+
+// Engagement terms
+export { PRICING, DELIVERY_WINDOWS } from "./engagement";

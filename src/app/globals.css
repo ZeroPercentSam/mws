@@ -51,6 +51,15 @@
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
+/* Hero text entrance (CSS so the LCP heading never waits on JS).
+   from-only keyframe + `backwards` fill: `both`/`forwards` would HOLD the
+   animated transform forever and permanently composite the element.
+   Curve = EASE token in lib/animations. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+}
+.hero-rise { animation: hero-rise 0.5s cubic-bezier(0.25, 0.4, 0.25, 1) backwards; }
+
 html {
   scroll-behavior: smooth;
 }

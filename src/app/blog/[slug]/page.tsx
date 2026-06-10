@@ -10,7 +10,7 @@ import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
 import BlogContent from "@/components/ui/BlogContent";
 import CTABanner from "@/components/ui/CTABanner";
 import GradientThumb from "@/components/ui/GradientThumb";
-import { BLOG_POSTS } from "@/lib/constants";
+import { BLOG_POSTS, BLOG_CATEGORY_LABELS } from "@/lib/constants";
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -23,13 +23,6 @@ export default function BlogPostPage() {
   const relatedPosts = post.relatedSlugs
     ?.map((s) => BLOG_POSTS.find((p) => p.slug === s))
     .filter(Boolean) ?? [];
-
-  const categoryLabels: Record<string, string> = {
-    websites: "Websites",
-    ai: "AI Intelligence",
-    automation: "Automation",
-    strategy: "Strategy",
-  };
 
   return (
     <>
@@ -83,7 +76,7 @@ export default function BlogPostPage() {
             </Link>
             <span className="text-text-muted">/</span>
             <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
-              {categoryLabels[post.category] || post.category}
+              {BLOG_CATEGORY_LABELS[post.category] || post.category}
             </span>
           </motion.div>
 
@@ -175,7 +168,7 @@ export default function BlogPostPage() {
                     </div>
                     <div className="p-5">
                       <p className="text-text-muted text-xs uppercase tracking-wider mb-1">
-                        {categoryLabels[related!.category] || related!.category}{" "}
+                        {BLOG_CATEGORY_LABELS[related!.category] || related!.category}{" "}
                         &middot; {related!.readTime}
                       </p>
                       <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-text-primary leading-snug group-hover:text-accent transition-colors duration-200">

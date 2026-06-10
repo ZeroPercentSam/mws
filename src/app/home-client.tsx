@@ -36,7 +36,9 @@ import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import GlowCTA from "@/components/ui/GlowCTA";
 import LineIcon, { type IconName } from "@/components/ui/LineIcon";
 import Seam from "@/components/ui/Seam";
+import { WarmBand, OceanBand } from "@/components/ui/Band";
 import OpsFlow from "@/components/sections/OpsFlow";
+import { VIGNETTES } from "@/components/sections/Vignettes";
 import ContactForm from "@/components/form/ContactForm";
 import { METRICS, TESTIMONIALS, TECH_STACK, CASE_STUDIES } from "@/lib/constants";
 import {
@@ -53,6 +55,7 @@ import {
   VIEW_TIGHT,
 } from "@/lib/animations";
 import { useInstantEntrance, INSTANT_TRANSITION } from "@/lib/use-instant-entrance";
+import { eyebrowCls, chipCls, headingCls } from "@/lib/design";
 import {
   HERO,
   RIG_THEMES,
@@ -67,27 +70,6 @@ import {
   HOME_FAQ,
   FINAL_CTA,
 } from "./home-data";
-
-/* ------------------------------------------------------------------ */
-/*  Page-local visual constants                                        */
-/* ------------------------------------------------------------------ */
-const BAND_WARM = "#0D0703";
-
-/* Blueprint grid texture for the two warm bands — static, zero cost */
-const BLUEPRINT: React.CSSProperties = {
-  backgroundImage:
-    "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 48px), repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 48px)",
-  maskImage: "radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%)",
-  WebkitMaskImage:
-    "radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%)",
-};
-
-const eyebrowCls =
-  "text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-accent";
-const chipCls =
-  "rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs";
-const headingCls =
-  "font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-extrabold tracking-tight";
 
 /* ------------------------------------------------------------------ */
 /*  S1 · HeroRig — THE signature moment: a site that builds itself     */
@@ -313,146 +295,6 @@ function HeroRig() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  S5 · Service vignettes — tiny fake-UI that shows the product       */
-/* ------------------------------------------------------------------ */
-function VignettePerf() {
-  return (
-    <div className="rounded-lg border border-border bg-[#0B0F14] p-3">
-      <div className="flex items-center gap-1.5 pb-2.5">
-        <span className="h-2 w-2 rounded-full bg-white/15" />
-        <span className="h-2 w-2 rounded-full bg-white/15" />
-        <div className="ml-2 h-4 flex-1 rounded bg-white/5" />
-      </div>
-      <div className="flex items-center gap-3">
-        <div className="h-2 flex-1 rounded-full bg-white/10 overflow-hidden">
-          <motion.div
-            variants={{
-              hidden: { scaleX: 0 },
-              visible: {
-                scaleX: 1,
-                transition: { duration: 0.9, ease: EASE, delay: 0.3 },
-              },
-            }}
-            className="h-full origin-left rounded-full bg-gradient-to-r from-accent to-accent-light"
-          />
-        </div>
-        <motion.span
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { duration: DUR_POP, ease: EASE, delay: 1.1 },
-            },
-          }}
-          className="text-xs font-bold text-accent tabular-nums"
-        >
-          &lt;2s
-        </motion.span>
-      </div>
-      <p className="mt-2 text-[10px] text-text-muted">Performance budget, every build</p>
-    </div>
-  );
-}
-
-function VignetteAI() {
-  return (
-    <div className="rounded-lg border border-border bg-[#0B0F14] p-3 space-y-2">
-      <div className="flex justify-end">
-        <span className="rounded-lg rounded-br-sm bg-white/8 px-2.5 py-1.5 text-[10px] text-text-secondary">
-          Do you have this in navy, slim cut?
-        </span>
-      </div>
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: DIST_SM / 2, scale: 0.96 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: { duration: DUR_POP, ease: EASE, delay: 0.4 },
-          },
-        }}
-        className="flex justify-start"
-      >
-        <span
-          className="rounded-lg rounded-bl-sm border px-2.5 py-1.5 text-[10px] text-text-primary"
-          style={{ borderColor: "rgba(74,158,203,0.4)", backgroundColor: "rgba(74,158,203,0.12)" }}
-        >
-          Yes — 3 fabrics in stock. Want to try it on virtually?
-        </span>
-      </motion.div>
-      <svg viewBox="0 0 120 22" fill="none" className="h-5 w-full">
-        <motion.path
-          d="M2 18 L24 14 L44 16 L66 9 L88 11 L118 3"
-          stroke="#4A9ECB"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          variants={{
-            hidden: { pathLength: 0, opacity: 0 },
-            visible: {
-              pathLength: 1,
-              opacity: 1,
-              transition: { duration: 0.9, ease: EASE, delay: 0.7 },
-            },
-          }}
-        />
-      </svg>
-    </div>
-  );
-}
-
-function VignettePipeline() {
-  return (
-    <div className="rounded-lg border border-border bg-[#0B0F14] p-3">
-      <div className="relative flex items-center justify-between px-1">
-        {["Lead", "Approve", "Invoice"].map((label) => (
-          <div key={label} className="relative z-10 flex flex-col items-center gap-1.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[rgba(201,169,97,0.35)] bg-[#15110A]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#C9A961]" />
-            </span>
-            <span className="text-[9px] text-text-muted">{label}</span>
-          </div>
-        ))}
-        {/* connector track + transform-only fill (animating `left` is a
-            layout property -> mobile jank; scaleX stays on the compositor) */}
-        <div className="absolute left-8 right-8 top-3.5 h-px bg-white/10" />
-        <motion.span
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: {
-              scaleX: 1,
-              opacity: 1,
-              transition: { duration: 1.2, ease: EASE, delay: 0.4 },
-            },
-          }}
-          className="absolute left-8 right-8 top-3.5 h-px origin-left bg-gradient-to-r from-[rgba(201,169,97,0.2)] via-[#C9A961] to-[#C9A961]"
-        />
-        <motion.span
-          variants={{
-            hidden: { opacity: 0, scale: 1 },
-            visible: {
-              opacity: [0.7, 0],
-              scale: [1, 2],
-              transition: { ...PULSE, delay: 1.5 },
-            },
-          }}
-          className="absolute right-7 top-2.5 h-3 w-3 rounded-full border border-[#C9A961]"
-        />
-      </div>
-      <p className="mt-2.5 text-[10px] text-text-muted">
-        Zero hands between request and payment
-      </p>
-    </div>
-  );
-}
-
-const VIGNETTES: Record<string, React.ReactNode> = {
-  websites: <VignettePerf />,
-  ai: <VignetteAI />,
-  automation: <VignettePipeline />,
-};
-
-/* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 const slugByClient = new Map(CASE_STUDIES.map((c) => [c.client, c.slug]));
@@ -467,16 +309,6 @@ export default function HomeClient() {
         {/* Hero text entrance — CSS so the LCP heading never waits on JS;
             placed BEFORE the hero so streamed rendering can't paint
             unstyled text first. globals.css reduced-motion neutralizes it. */}
-        {/* fill:backwards, from-only keyframe: `both`/`forwards` HOLDS the
-            animated transform forever (computed matrix(1,0,0,1,0,0), never
-            "none") — five permanently composited hero elements on iOS.
-            backwards still hides pre-delay, then releases to base styles. */}
-        <style>{`
-          @keyframes hero-rise {
-            from { opacity: 0; transform: translate3d(0, 16px, 0); }
-          }
-          .hero-rise { animation: hero-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} backwards; }
-        `}</style>
         {/* ======================================================== */}
         {/* S1 · HERO                                                 */}
         {/* ======================================================== */}
@@ -746,10 +578,7 @@ export default function HomeClient() {
         {/* ======================================================== */}
         {/* S6 · OPERATING MODEL (warm band)                          */}
         {/* ======================================================== */}
-        <Seam />
-        <div className="relative" style={{ backgroundColor: BAND_WARM }}>
-          <div aria-hidden className="absolute inset-0 hidden md:block" style={BLUEPRINT} />
-          <SectionWrapper className="relative !py-20 md:!py-28">
+        <WarmBand>
             <div className="mx-auto max-w-3xl text-center">
               <FadeInWhenVisible>
                 <span className={eyebrowCls}>{OPS.eyebrow}</span>
@@ -801,21 +630,12 @@ export default function HomeClient() {
                   </StaggerItem>
                 ))}
             </StaggerChildren>
-          </SectionWrapper>
-        </div>
-        <Seam />
+        </WarmBand>
 
         {/* ======================================================== */}
         {/* S7 · THE MATH — deep-ocean band for contrast              */}
         {/* ======================================================== */}
-        <Seam />
-        <div
-          style={{
-            background:
-              "linear-gradient(180deg, var(--color-bg-primary) 0%, #071321 35%, #0A2236 100%)",
-          }}
-        >
-        <SectionWrapper>
+        <OceanBand>
           <FadeInWhenVisible>
             <span className={eyebrowCls}>The math</span>
           </FadeInWhenVisible>
@@ -852,9 +672,7 @@ export default function HomeClient() {
               </StaggerItem>
             ))}
           </StaggerChildren>
-        </SectionWrapper>
-        </div>
-        <Seam />
+        </OceanBand>
 
         {/* ======================================================== */}
         {/* S8 · BUILD LOG (honest social proof)                      */}
@@ -912,10 +730,7 @@ export default function HomeClient() {
         {/* ======================================================== */}
         {/* S9 · INVESTMENT (warm band)                               */}
         {/* ======================================================== */}
-        <Seam />
-        <div className="relative" style={{ backgroundColor: BAND_WARM }}>
-          <div aria-hidden className="absolute inset-0 hidden md:block" style={BLUEPRINT} />
-          <SectionWrapper className="relative !py-20 md:!py-28">
+        <WarmBand>
             <div className="mx-auto max-w-3xl text-center">
               <FadeInWhenVisible>
                 <span className={eyebrowCls}>{PRICING.eyebrow}</span>
@@ -1012,9 +827,7 @@ export default function HomeClient() {
                 <p className="mt-4 text-sm text-text-muted">{HERO.risk}</p>
               </FadeInWhenVisible>
             </div>
-          </SectionWrapper>
-        </div>
-        <Seam />
+        </WarmBand>
 
         {/* ======================================================== */}
         {/* S10 · FAQ                                                 */}

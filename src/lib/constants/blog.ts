@@ -886,3 +886,10 @@ export const BLOG_POSTS: BlogPost[] = [
 ];
 
 export const BLOG_CATEGORIES = ["all", "websites", "ai", "automation", "strategy"] as const;
+
+export const BLOG_CATEGORY_LABELS: Record<string, string> = {
+  websites: "Websites",
+  ai: "AI Intelligence",
+  automation: "Automation",
+  strategy: "Strategy",
+};

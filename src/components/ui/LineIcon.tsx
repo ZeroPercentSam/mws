@@ -8,7 +8,10 @@ export type IconName =
   | "blueprint"
   | "build"
   | "rocket"
-  | "arrow";
+  | "arrow"
+  | "target"
+  | "shield"
+  | "send";
 
 const ICONS: Record<IconName, React.ReactNode> = {
   browser: (
@@ -54,6 +57,25 @@ const ICONS: Record<IconName, React.ReactNode> = {
     </>
   ),
   arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
+  target: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="0.5" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+      <path d="M9 12l2 2 4-4" />
+    </>
+  ),
+  send: (
+    <>
+      <path d="M21 3L10 14" />
+      <path d="M21 3l-7 18-3.5-7.5L3 10l18-7z" />
+    </>
+  ),
 };
 
 export default function LineIcon({

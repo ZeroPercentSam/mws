@@ -8,7 +8,15 @@ import { useInstantEntrance } from "@/lib/use-instant-entrance";
 
 /* Primary CTA with finite glow pulse (proposal PayButton pattern).
    Per-value transition keeps hover at DUR_TAP. */
-export default function GlowCTA({ label, href }: { label: string; href: string }) {
+export default function GlowCTA({
+  label,
+  href,
+  size = "md",
+}: {
+  label: string;
+  href: string;
+  size?: "md" | "sm";
+}) {
   // mobile: skip the timed opacity pulse — mid-scroll opacity animation
   // is the iOS Safari flicker trigger; the static shadow glow stays
   const instant = useInstantEntrance();
@@ -17,7 +25,11 @@ export default function GlowCTA({ label, href }: { label: string; href: string }
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: DUR_TAP, ease: "easeOut" }}
-      className="relative inline-block rounded-[var(--radius-button)] shadow-[0_0_32px_rgba(255,107,0,0.25)]"
+      className={`relative inline-block rounded-[var(--radius-button)] ${
+        size === "sm"
+          ? "shadow-[0_0_24px_rgba(255,107,0,0.2)]"
+          : "shadow-[0_0_32px_rgba(255,107,0,0.25)]"
+      }`}
     >
       {/* glow pulse on a separate layer: opacity is compositor-friendly,
           unlike animating boxShadow (paint). Pre-blurred radial gradient,
@@ -41,7 +53,9 @@ export default function GlowCTA({ label, href }: { label: string; href: string }
       />
       <Link
         href={href}
-        className="inline-flex items-center gap-3 rounded-[var(--radius-button)] bg-gradient-to-r from-accent to-accent-light px-8 py-4 font-bold text-white md:px-10"
+        className={`inline-flex items-center gap-3 rounded-[var(--radius-button)] bg-gradient-to-r from-accent to-accent-light font-bold text-white ${
+          size === "sm" ? "px-5 py-2.5 text-sm" : "px-8 py-4 md:px-10"
+        }`}
       >
         {label}
         <LineIcon name="arrow" className="w-4 h-4" />

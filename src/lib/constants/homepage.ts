@@ -3,6 +3,7 @@ export const SITE = {
   tagline: ["Build Smarter.", "Grow Faster."],
   description:
     "We consult businesses, build AI-driven websites, and create automation systems that dramatically increase revenue and efficiency.",
+  email: "hello@modernwebsystems.com",
 };
 
 export const METRICS = [
