@@ -8,8 +8,14 @@ import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
 import StaggerChildren, { StaggerItem } from "@/components/ui/StaggerChildren";
 import GlowCard from "@/components/ui/GlowCard";
 import Button from "@/components/ui/Button";
-import DrawCheckmark from "@/components/ui/DrawCheckmark";
-import { fadeInUp, scaleIn, drawPath } from "@/lib/animations";
+import { fadeInUp, scaleIn, defaultViewport } from "@/lib/animations";
+
+interface InvoiceFacts {
+  url: string;
+  amountLabel: string;
+  number: string;
+  dueLabel: string;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Page-local palette: deep-ocean blues, scoped to this proposal only */
@@ -43,21 +49,24 @@ function WaveDivider({
       className={`relative h-16 md:h-20 overflow-hidden ${flip ? "rotate-180" : ""}`}
       style={{ backgroundColor: bg }}
     >
+      {/* Overscan (left -3% / width 106%) so the ±24px drift never exposes the
+          svg's clipped edge; whileInView keeps the loop off when offscreen. */}
       <motion.svg
         viewBox="0 0 1440 90"
         preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full opacity-40"
-        animate={{ x: [0, -24, 0] }}
+        className="absolute inset-y-0 left-[-3%] h-full w-[106%] opacity-40"
+        initial={{ x: 0 }}
+        whileInView={{ x: [0, -24, 0] }}
         transition={{ duration: 11, ease: "easeInOut", repeat: Infinity }}
       >
-        <path d={waveBack} fill={fill} />
+        <path d={waveBack} style={{ fill }} />
       </motion.svg>
       <svg
         viewBox="0 0 1440 90"
         preserveAspectRatio="none"
         className="absolute inset-0 h-full w-full"
       >
-        <path d={wave} fill={fill} />
+        <path d={wave} style={{ fill }} />
       </svg>
     </div>
   );
@@ -513,14 +522,21 @@ function MiniInvoice() {
         <div className="h-2 w-1/2 rounded bg-accent/70" />
       </div>
       <svg viewBox="0 0 120 40" fill="none" className="flex-1 h-10">
+        {/* opacity reveal (not pathLength — motion's pathLength rewrites
+            stroke-dasharray and would erase the dash pattern) */}
         <motion.path
           d="M4 20 H78"
           stroke="rgba(255,107,0,0.5)"
           strokeWidth="1.5"
           strokeDasharray="4 5"
           strokeLinecap="round"
-          variants={drawPath}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.5 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { duration: 0.6, ease: EASE, delay: 0.4 },
+            },
+          }}
         />
         <motion.g
           variants={{
@@ -534,10 +550,12 @@ function MiniInvoice() {
         >
           <path
             d="M115 8 L88 22 L98 25 L101 33 L106 26 Z"
-            stroke="#FF8533"
             strokeWidth="1.5"
             strokeLinejoin="round"
-            fill="rgba(255,107,0,0.15)"
+            style={{
+              stroke: "var(--color-accent-light)",
+              fill: "var(--color-accent-glow)",
+            }}
           />
         </motion.g>
       </svg>
@@ -559,9 +577,15 @@ function MiniEnvelope() {
           <rect x="2" y="5" width="20" height="14" rx="2" />
           <motion.path
             d="M2 7l10 7 10-7"
-            stroke="#FF6B00"
-            variants={drawPath}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
+            style={{ stroke: "var(--color-accent)" }}
+            variants={{
+              hidden: { pathLength: 0, opacity: 0 },
+              visible: {
+                pathLength: 1,
+                opacity: 1,
+                transition: { duration: 0.7, ease: EASE, delay: 0.5 },
+              },
+            }}
           />
         </svg>
         <motion.span
@@ -640,7 +664,7 @@ function FleetCard({
         {/* Gradient fallback (also the blend bed under the photo) */}
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(160deg, #0A2236 0%, #050505 80%)" }}
+          style={{ background: "linear-gradient(160deg, #0A2236 0%, var(--color-bg-primary) 80%)" }}
         />
         <Image
           src={img}
@@ -651,7 +675,7 @@ function FleetCard({
         />
         <div
           className="absolute inset-x-0 bottom-0 h-24"
-          style={{ background: "linear-gradient(180deg, transparent, #111111)" }}
+          style={{ background: "linear-gradient(180deg, transparent, var(--color-bg-card))" }}
         />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
       </div>
@@ -757,26 +781,30 @@ const CHECKLIST = [
 /* ------------------------------------------------------------------ */
 /*  Pay button                                                         */
 /* ------------------------------------------------------------------ */
-function PayButton({ href }: { href: string }) {
+function PayButton({ invoice }: { invoice: InvoiceFacts }) {
   return (
     <motion.a
-      href={href}
+      href={invoice.url}
       target="_blank"
       rel="noopener noreferrer"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       initial={{ boxShadow: "0 0 40px rgba(255,107,0,0.25)" }}
-      animate={{
+      whileInView={{
         boxShadow: [
           "0 0 40px rgba(255,107,0,0.25)",
           "0 0 80px rgba(255,107,0,0.5)",
           "0 0 40px rgba(255,107,0,0.25)",
         ],
       }}
-      transition={{ duration: 2.2, repeat: 2, ease: "easeInOut" }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{
+        boxShadow: { duration: 2.2, repeat: 2, ease: "easeInOut" },
+        default: { duration: 0.2, ease: "easeOut" },
+      }}
       className="inline-flex items-center gap-3 rounded-[var(--radius-button)] bg-gradient-to-r from-accent to-accent-light px-10 py-5 text-lg font-bold text-white md:px-14"
     >
-      Pay Invoice Now — $2,000
+      Pay Invoice Now — {invoice.amountLabel}
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -795,11 +823,7 @@ function PayButton({ href }: { href: string }) {
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
-export default function ProposalClient({
-  stripeInvoiceUrl,
-}: {
-  stripeInvoiceUrl: string;
-}) {
+export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
   return (
     <div>
       {/* ---------------------------------------------------------- */}
@@ -810,7 +834,7 @@ export default function ProposalClient({
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, #050505 0%, #071321 55%, #0A2236 100%)",
+              "linear-gradient(180deg, var(--color-bg-primary) 0%, #071321 55%, #0A2236 100%)",
           }}
         />
         <SeaGlow />
@@ -863,7 +887,7 @@ export default function ProposalClient({
           </div>
         </SectionWrapper>
         <div className="relative z-10 mt-16 md:mt-24">
-          <WaveDivider bg="transparent" fill="#050505" />
+          <WaveDivider bg="transparent" fill="var(--color-bg-primary)" />
         </div>
       </section>
 
@@ -965,7 +989,7 @@ export default function ProposalClient({
       {/* ---------------------------------------------------------- */}
       {/* 4 · The platform                                            */}
       {/* ---------------------------------------------------------- */}
-      <WaveDivider bg="#050505" fill={BAND} />
+      <WaveDivider bg="var(--color-bg-primary)" fill={BAND} />
       <div id="platform" style={{ backgroundColor: BAND }}>
         <SectionWrapper className="!py-20 md:!py-28">
           <div className="text-center max-w-3xl mx-auto">
@@ -1014,7 +1038,7 @@ export default function ProposalClient({
           </StaggerChildren>
         </SectionWrapper>
       </div>
-      <WaveDivider bg="#050505" fill={BAND} flip />
+      <WaveDivider bg="var(--color-bg-primary)" fill={BAND} flip />
 
       {/* ---------------------------------------------------------- */}
       {/* 5 · The website                                             */}
@@ -1141,11 +1165,11 @@ export default function ProposalClient({
       {/* ---------------------------------------------------------- */}
       {/* 7 + 8 · Investment + Pay                                    */}
       {/* ---------------------------------------------------------- */}
-      <WaveDivider bg="#050505" fill={BAND} />
+      <WaveDivider bg="var(--color-bg-primary)" fill={BAND} />
       <div
         id="investment"
         style={{
-          background: `linear-gradient(180deg, ${BAND} 0%, #0A2236 45%, #050505 100%)`,
+          background: `linear-gradient(180deg, ${BAND} 0%, #0A2236 45%, var(--color-bg-primary) 100%)`,
         }}
       >
         <SectionWrapper className="!py-20 md:!py-28">
@@ -1172,7 +1196,7 @@ export default function ProposalClient({
                     transition={{ duration: 0.6, ease: EASE }}
                     className="font-[family-name:var(--font-heading)] text-6xl md:text-7xl font-800 tracking-tight"
                   >
-                    $2,000
+                    {invoice.amountLabel}
                   </motion.p>
                   <p className="mt-2 text-text-secondary">
                     Complete build — one-time
@@ -1181,9 +1205,38 @@ export default function ProposalClient({
                   <ul className="space-y-4 text-left">
                     {CHECKLIST.map((item, i) => (
                       <li key={item} className="flex items-start gap-3">
-                        <span className="mt-0.5 shrink-0 text-accent">
-                          <DrawCheckmark size={20} delay={i * 0.12} />
-                        </span>
+                        {/* inline check: delay must live in the variant —
+                            drawPath's embedded transition ignores the prop */}
+                        <motion.svg
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={defaultViewport}
+                          width={20}
+                          height={20}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="mt-0.5 shrink-0 text-accent"
+                        >
+                          <motion.path
+                            d="M5 13L9 17L19 7"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            variants={{
+                              hidden: { pathLength: 0, opacity: 0 },
+                              visible: {
+                                pathLength: 1,
+                                opacity: 1,
+                                transition: {
+                                  duration: 0.6,
+                                  ease: EASE,
+                                  delay: i * 0.12,
+                                },
+                              },
+                            }}
+                          />
+                        </motion.svg>
                         <span className="text-text-secondary">{item}</span>
                       </li>
                     ))}
@@ -1205,11 +1258,12 @@ export default function ProposalClient({
 
           <div className="mt-14 md:mt-16 text-center">
             <FadeInWhenVisible>
-              <PayButton href={stripeInvoiceUrl} />
+              <PayButton invoice={invoice} />
             </FadeInWhenVisible>
             <FadeInWhenVisible delay={0.2}>
               <p className="mt-5 text-sm text-text-muted">
-                Secure checkout via Stripe · Invoice MDSEIGCQ-0001 · Due June 10, 2026
+                Secure checkout via Stripe · Invoice {invoice.number} · Due{" "}
+                {invoice.dueLabel}
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1232,7 +1286,11 @@ export default function ProposalClient({
       </SectionWrapper>
 
       {/* Print: hide site chrome, keep the document */}
-      <style>{`@media print { nav, footer { display: none !important; } }`}</style>
+      <style>{`@media print {
+        nav, footer { display: none !important; }
+        * { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+        body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      }`}</style>
     </div>
   );
 }

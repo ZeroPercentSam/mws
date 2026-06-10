@@ -13,10 +13,15 @@ export const metadata: Metadata = {
   },
 };
 
-// Live Stripe hosted invoice — MDSEIGCQ-0001, $2,000.00 USD, due June 10, 2026
-const STRIPE_INVOICE_URL =
-  "https://invoice.stripe.com/i/acct_1NZ1pCCzuo5EmjWW/live_YWNjdF8xTloxcENDenVvNUVtaldXLF9VZzROc1ZqbEVHWEJiWUFYOWVFeFJVZmZPaUdFcm1tLDE3MTYyMzc4NQ0200AR7EfM9h?s=ap";
+// Live Stripe hosted invoice — single source of truth for every invoice fact
+// shown on the page. Re-issuing the invoice means updating only this object.
+const INVOICE = {
+  url: "https://invoice.stripe.com/i/acct_1NZ1pCCzuo5EmjWW/live_YWNjdF8xTloxcENDenVvNUVtaldXLF9VZzROc1ZqbEVHWEJiWUFYOWVFeFJVZmZPaUdFcm1tLDE3MTYyMzc4NQ0200AR7EfM9h?s=ap",
+  amountLabel: "$2,000",
+  number: "MDSEIGCQ-0001",
+  dueLabel: "June 10, 2026",
+};
 
 export default function VictorIanProposalPage() {
-  return <ProposalClient stripeInvoiceUrl={STRIPE_INVOICE_URL} />;
+  return <ProposalClient invoice={INVOICE} />;
 }
