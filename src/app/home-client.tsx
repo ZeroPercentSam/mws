@@ -452,9 +452,9 @@ const VIGNETTES: Record<string, React.ReactNode> = {
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
-export default function HomeClient() {
-  const slugByClient = new Map(CASE_STUDIES.map((c) => [c.client, c.slug]));
+const slugByClient = new Map(CASE_STUDIES.map((c) => [c.client, c.slug]));
 
+export default function HomeClient() {
   return (
     <MotionConfig reducedMotion="user">
       <div>
@@ -1033,7 +1033,10 @@ export default function HomeClient() {
         {/* ======================================================== */}
         {/* S11 · FINAL CTA + CONTACT                                 */}
         {/* ======================================================== */}
+        {/* id: the pre-redesign homepage exposed /#contact — keep external
+            deep links landing on the form */}
         <section
+          id="contact"
           className="border-t border-border"
           style={{
             background:

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion, animate } from "motion/react";
-import { EASE } from "@/lib/animations";
+import { EASE, VIEW_TIGHT } from "@/lib/animations";
 
 interface AnimatedCounterProps {
   target: number;
@@ -16,26 +16,38 @@ export default function AnimatedCounter({
   duration = 1.4,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, VIEW_TIGHT);
   const reduceMotion = useReducedMotion();
+  // SSR and the first client paint must both render "0" — branching the
+  // JSX on useReducedMotion() (null on the server) is a hydration mismatch
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
-    // standalone animate() bypasses MotionConfig — reduced-motion users get
-    // the final value straight from render below, no animation started
-    if (!isInView || reduceMotion) return;
+    if (!isInView) return;
+    // keep the target's own precision: 99.7 must never publish as 100
+    const decimals = (String(target).split(".")[1] ?? "").length;
+    const fmt = (n: number) =>
+      n.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+    if (reduceMotion) {
+      // no animation started — snap to the final value
+      setDisplay(fmt(target));
+      return;
+    }
     const controls = animate(0, target, {
       duration,
       ease: EASE,
-      onUpdate: (latest) =>
-        setDisplay(Math.round(latest).toLocaleString("en-US")),
+      onUpdate: (latest) => setDisplay(fmt(latest)),
+      onComplete: () => setDisplay(fmt(target)),
     });
     return () => controls.stop();
   }, [isInView, target, duration, reduceMotion]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      {reduceMotion ? target.toLocaleString("en-US") : display}
+      {display}
       {suffix}
     </span>
   );

@@ -1,12 +1,5 @@
 // Homepage
-export {
-  SITE,
-  PAIN_POINTS,
-  SERVICES,
-  CAPABILITIES,
-  PROCESS_STEPS,
-  METRICS,
-} from "./homepage";
+export { SITE, METRICS } from "./homepage";
 
 // Shared
 export { NAV_LINKS, CLIENTS, TESTIMONIALS } from "./shared";

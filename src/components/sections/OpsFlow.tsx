@@ -65,19 +65,26 @@ function FlowCaption({ index, step }: { index: number; step: FlowStep }) {
 }
 
 export default function OpsFlow({ steps }: { steps: readonly FlowStep[] }) {
+  // connector endpoints sit at the centers of the first/last columns
+  const railInset = `${100 / (2 * steps.length)}%`;
+  const cols = { gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` };
   return (
     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
       {/* Desktop */}
       <div className="relative hidden md:block">
-        <div className="absolute left-[12.5%] right-[12.5%] top-6 h-px bg-white/10" />
+        <div
+          className="absolute top-6 h-px bg-white/10"
+          style={{ left: railInset, right: railInset }}
+        />
         <motion.div
           variants={{
             hidden: { scaleX: 0 },
             visible: { scaleX: 1, transition: { duration: DUR_DRAW, ease: EASE } },
           }}
-          className="absolute left-[12.5%] right-[12.5%] top-6 h-px origin-left bg-gradient-to-r from-accent/40 via-accent to-accent-light"
+          className="absolute top-6 h-px origin-left bg-gradient-to-r from-accent/40 via-accent to-accent-light"
+          style={{ left: railInset, right: railInset }}
         />
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid gap-8" style={cols}>
           {steps.map((step, i) => (
             <div key={step.title} className="flex flex-col items-center text-center">
               <FlowNode index={i} icon={step.icon} isLast={i === steps.length - 1} />

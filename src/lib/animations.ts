@@ -1,8 +1,27 @@
 import type { Variants, Transition } from "motion/react";
 
+/* ------------------------------------------------------------------ */
+/*  Interaction tokens — promoted from the homepage redesign.          */
+/*  All timings/easings/distances come from these named tokens;        */
+/*  no literal animation numbers in components.                        */
+/* ------------------------------------------------------------------ */
+export const EASE: [number, number, number, number] = [0.25, 0.4, 0.25, 1];
+export const DUR_TAP = 0.2;
+export const DUR_POP = 0.45;
+export const DUR_REVEAL = 0.6;
+export const DUR_DRAW = 1.8;
+export const DIST_SM = 12;
+export const STAG_GRID = 0.08;
+export const STAG_CARD = 0.15;
+export const STAG_FLOW = 0.35;
+export const LAG_CAPTION = 0.15;
+// repeat is ADDITIONAL iterations: 1 => plays twice total
+export const PULSE = { duration: 1.1, repeat: 1, ease: "easeOut" as const };
+export const VIEW_TIGHT = { once: true, amount: 0.5 } as const;
+
 export const defaultTransition: Transition = {
-  duration: 0.6,
-  ease: [0.25, 0.4, 0.25, 1],
+  duration: DUR_REVEAL,
+  ease: EASE,
 };
 
 export const defaultViewport = {
@@ -50,34 +69,26 @@ export const clipReveal: Variants = {
   hidden: { clipPath: "inset(100% 0 0 0)" },
   visible: {
     clipPath: "inset(0 0 0 0)",
-    transition: { duration: 0.8, ease: [0.25, 0.4, 0.25, 1] },
+    transition: { duration: 0.8, ease: EASE },
   },
 };
 
+// Carries its own transition: motion ignores a sibling `transition` prop
+// next to this variant — pass `delay` via drawPathDelayed instead.
 export const drawPath: Variants = {
   hidden: { pathLength: 0, opacity: 0 },
   visible: {
     pathLength: 1,
     opacity: 1,
-    transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
+    transition: { duration: DUR_REVEAL, ease: EASE },
   },
 };
 
-/* ------------------------------------------------------------------ */
-/*  Interaction tokens — promoted from the homepage redesign.          */
-/*  All timings/easings/distances come from these named tokens;        */
-/*  no literal animation numbers in components.                        */
-/* ------------------------------------------------------------------ */
-export const EASE: [number, number, number, number] = [0.25, 0.4, 0.25, 1];
-export const DUR_TAP = 0.2;
-export const DUR_POP = 0.45;
-export const DUR_REVEAL = 0.6;
-export const DUR_DRAW = 1.8;
-export const DIST_SM = 12;
-export const STAG_GRID = 0.08;
-export const STAG_CARD = 0.15;
-export const STAG_FLOW = 0.35;
-export const LAG_CAPTION = 0.15;
-// repeat is ADDITIONAL iterations: 1 => plays twice total
-export const PULSE = { duration: 1.1, repeat: 1, ease: "easeOut" as const };
-export const VIEW_TIGHT = { once: true, amount: 0.5 } as const;
+export const drawPathDelayed = (delay: number): Variants => ({
+  hidden: { pathLength: 0, opacity: 0 },
+  visible: {
+    pathLength: 1,
+    opacity: 1,
+    transition: { duration: DUR_REVEAL, ease: EASE, delay },
+  },
+});

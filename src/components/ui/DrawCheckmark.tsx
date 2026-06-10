@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { drawPath, defaultViewport } from "@/lib/animations";
+import { drawPathDelayed, defaultViewport } from "@/lib/animations";
 
 interface DrawCheckmarkProps {
   className?: string;
@@ -26,18 +26,15 @@ export default function DrawCheckmark({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
+      {/* delay must live INSIDE the variant — drawPath-style variants
+          carry their own transition, so a sibling prop is ignored */}
       <motion.path
         d="M5 13L9 17L19 7"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        variants={drawPath}
-        transition={{
-          duration: 0.6,
-          ease: [0.25, 0.4, 0.25, 1],
-          delay,
-        }}
+        variants={drawPathDelayed(delay)}
       />
     </motion.svg>
   );
