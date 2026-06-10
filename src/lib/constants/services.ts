@@ -142,7 +142,7 @@ export const FAQ_ITEMS: FAQItem[] = [
   {
     question: "What does a project typically cost?",
     answer:
-      "Our engagements start at $15,000 for focused projects and scale based on complexity. Website builds typically range from $15K-$50K. AI implementations from $20K-$75K. Full automation suites from $25K-$100K+. We scope precisely so there are no surprises.",
+      "Our engagements start at $5,000 for focused projects and scale based on complexity. Most website builds land in the $15K-$50K range. AI implementations from $20K-$75K. Full automation suites from $25K-$100K+. Monthly retainers are available for ongoing development, AI agent orchestration, and fractional CTO needs. We scope precisely so there are no surprises.",
   },
   {
     question: "Do you work with businesses of all sizes?",
