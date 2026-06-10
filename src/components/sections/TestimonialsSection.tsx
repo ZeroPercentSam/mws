@@ -17,7 +17,7 @@ export default function TestimonialsSection() {
         <AnimatedHeading
           text="What We've Built."
           as="h2"
-          className="text-3xl md:text-5xl font-800 leading-[1.1] tracking-tight"
+          className="text-3xl md:text-5xl font-extrabold leading-[1.1] tracking-tight"
           accentLastPeriod
         />
       </div>

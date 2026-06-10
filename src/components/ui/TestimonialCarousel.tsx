@@ -36,7 +36,7 @@ export default function TestimonialCarousel() {
             className="border border-border rounded-[var(--radius-card)] p-8 bg-bg-card relative"
           >
             {/* Quote mark */}
-            <span className="absolute top-6 left-8 text-5xl font-800 text-accent/20 font-[family-name:var(--font-heading)] leading-none select-none">
+            <span className="absolute top-6 left-8 text-5xl font-extrabold text-accent/20 font-[family-name:var(--font-heading)] leading-none select-none">
               &ldquo;
             </span>
             <p className="text-text-secondary text-sm leading-relaxed mt-6 mb-6">
@@ -64,7 +64,7 @@ export default function TestimonialCarousel() {
               transition={{ duration: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
               className="border border-border rounded-[var(--radius-card)] p-6 bg-bg-card relative"
             >
-              <span className="absolute top-4 left-6 text-5xl font-800 text-accent/20 font-[family-name:var(--font-heading)] leading-none select-none">
+              <span className="absolute top-4 left-6 text-5xl font-extrabold text-accent/20 font-[family-name:var(--font-heading)] leading-none select-none">
                 &ldquo;
               </span>
               <p className="text-text-secondary text-sm leading-relaxed mt-8 mb-6">

@@ -23,7 +23,7 @@ function StorySection() {
             <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
               Our Story
             </span>
-            <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-800 mt-3 tracking-tight">
+            <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-extrabold mt-3 tracking-tight">
               {STORY.headline}
             </h2>
           </FadeInWhenVisible>
@@ -69,7 +69,7 @@ function ValuesSection() {
             <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
               What We Stand For
             </span>
-            <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-800 mt-3 tracking-tight">
+            <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-extrabold mt-3 tracking-tight">
               Our Values.
             </h2>
           </div>

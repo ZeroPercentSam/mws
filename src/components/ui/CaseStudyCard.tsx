@@ -42,7 +42,7 @@ export default function CaseStudyCard({ study }: CaseStudyCardProps) {
           </h3>
           {primaryMetric && (
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-800 text-accent font-[family-name:var(--font-heading)]">
+              <span className="text-2xl font-extrabold text-accent font-[family-name:var(--font-heading)]">
                 {primaryMetric.value}{primaryMetric.suffix}
               </span>
               <span className="text-xs text-text-muted">{primaryMetric.label}</span>

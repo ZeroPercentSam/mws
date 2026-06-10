@@ -91,7 +91,7 @@ export default function BlogPostPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1], delay: 0.2 }}
-            className="font-[family-name:var(--font-heading)] text-4xl md:text-5xl lg:text-6xl font-800 tracking-tight mt-5 max-w-4xl leading-[1.08]"
+            className="font-[family-name:var(--font-heading)] text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mt-5 max-w-4xl leading-[1.08]"
           >
             {post.title}
           </motion.h1>

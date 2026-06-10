@@ -59,7 +59,7 @@ function ServiceSection({
               <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
                 {service.number}
               </span>
-              <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-800 mt-3 tracking-tight">
+              <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-extrabold mt-3 tracking-tight">
                 {service.title}
               </h2>
               <p className="text-text-muted text-lg mt-2 italic">
@@ -129,7 +129,7 @@ function TechGrid() {
             <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
               Our Stack
             </span>
-            <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-800 mt-3 tracking-tight">
+            <h2 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-extrabold mt-3 tracking-tight">
               Tools we trust.
             </h2>
           </div>
