@@ -967,20 +967,20 @@ export default function ProposalClient({ invoice }: { invoice: InvoiceFacts }) {
         <StaggerChildren className="mt-12 grid gap-6 md:grid-cols-2" stagger={0.2}>
           <StaggerItem>
             <FleetCard
-              img="/invoices/victor-ian/yacht-44.jpg"
-              alt="The 44-foot yacht at anchor at dusk"
+              img="/invoices/victor-ian/schaefer-450.jpg"
+              alt="The 44-foot Schaefer 450 flybridge with navy hull at sea"
               title="The 44′ Yacht"
               tagline="Your flagship — charters, celebrations, and full-day events on the water."
-              chips={["Dedicated page", "Photo gallery", "Live booking calendar"]}
+              chips={["Schaefer 450", "Dedicated page", "Photo gallery", "Live booking calendar"]}
             />
           </StaggerItem>
           <StaggerItem>
             <FleetCard
-              img="/invoices/victor-ian/boat-33.jpg"
-              alt="The 33-foot boat cutting through water at sunset"
+              img="/invoices/victor-ian/schaefer-v33.jpg"
+              alt="The 33-foot Schaefer V33 day boat on calm morning water"
               title="The 33′ Boat"
               tagline="Nimble and quick — day trips, sunset runs, and intimate outings."
-              chips={["Dedicated page", "Photo gallery", "Live booking calendar"]}
+              chips={["Schaefer V33", "Dedicated page", "Photo gallery", "Live booking calendar"]}
             />
           </StaggerItem>
         </StaggerChildren>
