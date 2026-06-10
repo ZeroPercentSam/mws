@@ -40,10 +40,10 @@ export default function ContactForm({
           <DrawCheckmark size={32} className="text-accent" />
         </div>
         <h3 className="font-[family-name:var(--font-heading)] text-2xl font-bold mb-2">
-          Message Sent
+          Received
         </h3>
         <p className="text-text-secondary">
-          We&apos;ll get back to you within 24 hours.
+          Next: your written build plan — scope, price, timeline.
         </p>
       </motion.div>
     );
