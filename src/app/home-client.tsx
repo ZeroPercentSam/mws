@@ -1,7 +1,7 @@
 "use client";
 
 /* ====================================================================
- * MWS HOMEPAGE V2 — MOTION CONTRACT
+ * MWS HOMEPAGE — MOTION CONTRACT
  * --------------------------------------------------------------------
  * 1. ONE signature moment: the HeroRig build sequence. Everything else
  *    is transform/opacity-only, fires once (viewport once:true).
@@ -10,8 +10,8 @@
  * 3. Every loop is finite (repeat: 2) and whileInView-gated where it
  *    sits below the fold. Ambient budget: logo marquee (existing CSS),
  *    hero morph ×2, two pulse rings ×2.
- * 4. All timings/easings/distances come from the named tokens below —
- *    no literal animation numbers in components.
+ * 4. All timings/easings/distances come from the named interaction
+ *    tokens in lib/animations — no literal animation numbers here.
  * 5. <MotionConfig reducedMotion="user"> covers JS-driven motion;
  *    globals.css already neutralizes CSS keyframes.
  * 6. Known-gotcha guards (see inline comments): drawPath-style variants
@@ -21,14 +21,7 @@
  *    sections, never a page root.
  * ==================================================================== */
 
-import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  MotionConfig,
-  useInView,
-  useReducedMotion,
-  animate as motionAnimate,
-} from "motion/react";
+import { motion, MotionConfig } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import SectionWrapper from "@/components/ui/SectionWrapper";
@@ -39,9 +32,26 @@ import GlowCard from "@/components/ui/GlowCard";
 import Button from "@/components/ui/Button";
 import LogoMarquee from "@/components/ui/LogoMarquee";
 import Accordion from "@/components/ui/Accordion";
+import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import GlowCTA from "@/components/ui/GlowCTA";
+import LineIcon, { type IconName } from "@/components/ui/LineIcon";
+import Seam from "@/components/ui/Seam";
+import OpsFlow from "@/components/sections/OpsFlow";
 import ContactForm from "@/components/form/ContactForm";
 import { METRICS, TESTIMONIALS, TECH_STACK, CASE_STUDIES } from "@/lib/constants";
-import { fadeInUp, scaleIn } from "@/lib/animations";
+import {
+  fadeInUp,
+  scaleIn,
+  EASE,
+  DUR_POP,
+  DUR_REVEAL,
+  DUR_DRAW,
+  DIST_SM,
+  STAG_GRID,
+  STAG_CARD,
+  PULSE,
+  VIEW_TIGHT,
+} from "@/lib/animations";
 import {
   HERO,
   RIG_THEMES,
@@ -53,26 +63,13 @@ import {
   OPS,
   BUILD_LOG,
   PRICING,
-  FAQ_V2,
+  HOME_FAQ,
   FINAL_CTA,
-} from "./v2-data";
+} from "./home-data";
 
 /* ------------------------------------------------------------------ */
-/*  Interaction tokens                                                 */
+/*  Page-local visual constants                                        */
 /* ------------------------------------------------------------------ */
-const EASE: [number, number, number, number] = [0.25, 0.4, 0.25, 1];
-const DUR_TAP = 0.2;
-const DUR_POP = 0.45;
-const DUR_REVEAL = 0.6;
-const DUR_DRAW = 1.8;
-const DIST_SM = 12;
-const STAG_GRID = 0.08;
-const STAG_CARD = 0.15;
-const STAG_FLOW = 0.35;
-const LAG_CAPTION = 0.15;
-// repeat is ADDITIONAL iterations: 1 => plays twice total
-const PULSE = { duration: 1.1, repeat: 1, ease: "easeOut" as const };
-const VIEW_TIGHT = { once: true, amount: 0.5 } as const;
 const BAND_WARM = "#0D0703";
 
 /* Blueprint grid texture for the two warm bands — static, zero cost */
@@ -90,158 +87,6 @@ const chipCls =
   "rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs";
 const headingCls =
   "font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-extrabold tracking-tight";
-
-/* ------------------------------------------------------------------ */
-/*  Seam — 1px gradient hairline (replaces decorative dividers)        */
-/* ------------------------------------------------------------------ */
-function Seam() {
-  return (
-    <div
-      aria-hidden
-      className="h-px w-full bg-gradient-to-r from-transparent via-accent/30 to-transparent"
-    />
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Icons (page-local path map, proposal TileIcon pattern)             */
-/* ------------------------------------------------------------------ */
-type IconName =
-  | "browser"
-  | "clock"
-  | "trend"
-  | "search"
-  | "blueprint"
-  | "build"
-  | "rocket"
-  | "arrow";
-
-const ICONS: Record<IconName, React.ReactNode> = {
-  browser: (
-    <>
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="M3 9h18M6 7h.01M8.5 7h.01" />
-    </>
-  ),
-  clock: (
-    <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3.5 2" />
-    </>
-  ),
-  trend: (
-    <>
-      <path d="M3 17l6-6 4 4 7-8" />
-      <path d="M14 7h6v6" />
-    </>
-  ),
-  search: (
-    <>
-      <circle cx="11" cy="11" r="6" />
-      <path d="M21 21l-5-5" />
-    </>
-  ),
-  blueprint: (
-    <>
-      <rect x="4" y="4" width="16" height="16" rx="2" />
-      <path d="M4 10h16M10 10v10" />
-    </>
-  ),
-  build: (
-    <>
-      <path d="M14.5 4.5a4 4 0 0 0-5.6 5L4 14.4V20h5.6l4.9-4.9a4 4 0 0 0 5-5.6L16 13l-3-3z" />
-    </>
-  ),
-  rocket: (
-    <>
-      <path d="M12 16c5-3 7-8 7-12-4 0-9 2-12 7l-3 1 4 4 1 4z" />
-      <path d="M6 15l-2 5 5-2" />
-      <circle cx="14" cy="9" r="1.4" />
-    </>
-  ),
-  arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
-};
-
-function V2Icon({ name, className = "w-5 h-5" }: { name: IconName; className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      {ICONS[name]}
-    </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  V2Counter — animated count-up WITH locale commas (the shared       */
-/*  AnimatedCounter drops them; promote this on rollout)               */
-/* ------------------------------------------------------------------ */
-function V2Counter({ value, suffix }: { value: number; suffix: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState("0");
-
-  useEffect(() => {
-    // standalone animate() bypasses MotionConfig — reduced-motion users get
-    // the final value straight from render below, no animation started
-    if (!inView || reduceMotion) return;
-    const controls = motionAnimate(0, value, {
-      duration: 1.4,
-      ease: EASE,
-      onUpdate: (latest) =>
-        setDisplay(Math.round(latest).toLocaleString("en-US")),
-    });
-    return () => controls.stop();
-  }, [inView, value, reduceMotion]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {reduceMotion ? value.toLocaleString("en-US") : display}
-      {suffix}
-    </span>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  GlowCTA — primary CTA with finite glow pulse (proposal PayButton   */
-/*  pattern). Per-value transition keeps hover at DUR_TAP.             */
-/* ------------------------------------------------------------------ */
-function GlowCTA({ label, href }: { label: string; href: string }) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      transition={{ duration: DUR_TAP, ease: "easeOut" }}
-      className="relative inline-block rounded-[var(--radius-button)] shadow-[0_0_32px_rgba(255,107,0,0.25)]"
-    >
-      {/* glow pulse on a separate layer: opacity is compositor-friendly,
-          unlike animating boxShadow (paint) */}
-      <motion.span
-        aria-hidden
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: [0, 0.7, 0] }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 2.2, repeat: 1, ease: "easeInOut" }}
-        className="absolute -inset-3 -z-10 rounded-full bg-accent/40 blur-2xl"
-      />
-      <Link
-        href={href}
-        className="inline-flex items-center gap-3 rounded-[var(--radius-button)] bg-gradient-to-r from-accent to-accent-light px-8 py-4 font-bold text-white md:px-10"
-      >
-        {label}
-        <V2Icon name="arrow" className="w-4 h-4" />
-      </Link>
-    </motion.div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  S1 · HeroRig — THE signature moment: a site that builds itself     */
@@ -605,102 +450,9 @@ const VIGNETTES: Record<string, React.ReactNode> = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  S6 · OpsFlow — generalized proposal flow diagram                   */
-/* ------------------------------------------------------------------ */
-function FlowNode({ index, icon, isLast }: { index: number; icon: IconName; isLast: boolean }) {
-  return (
-    <div className="relative h-12 w-12 shrink-0">
-      <motion.div
-        variants={scaleIn}
-        transition={{ duration: DUR_POP, ease: EASE, delay: STAG_FLOW * index }}
-        className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-accent/30 bg-[#160B02] text-accent"
-      >
-        <V2Icon name={icon} />
-      </motion.div>
-      {isLast && (
-        <motion.span
-          variants={{
-            hidden: { opacity: 0, scale: 1 },
-            visible: {
-              opacity: [0.7, 0],
-              scale: [1, 1.9],
-              transition: { ...PULSE, delay: STAG_FLOW * index + DUR_DRAW * 0.7 },
-            },
-          }}
-          className="absolute inset-0 rounded-full border border-accent"
-        />
-      )}
-    </div>
-  );
-}
-
-function FlowCaption({ index, step }: { index: number; step: (typeof OPS.steps)[number] }) {
-  return (
-    <motion.div
-      variants={fadeInUp}
-      transition={{ duration: DUR_REVEAL, ease: EASE, delay: STAG_FLOW * index + LAG_CAPTION }}
-    >
-      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-text-muted">
-        Step {index + 1}
-      </p>
-      <h3 className="mt-1 font-semibold text-text-primary">{step.title}</h3>
-      <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{step.caption}</p>
-      <p className="mt-1.5 text-xs leading-relaxed text-accent/90">{step.artifact}</p>
-    </motion.div>
-  );
-}
-
-function OpsFlow() {
-  return (
-    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
-      {/* Desktop */}
-      <div className="relative hidden md:block">
-        <div className="absolute left-[12.5%] right-[12.5%] top-6 h-px bg-white/10" />
-        <motion.div
-          variants={{
-            hidden: { scaleX: 0 },
-            visible: { scaleX: 1, transition: { duration: DUR_DRAW, ease: EASE } },
-          }}
-          className="absolute left-[12.5%] right-[12.5%] top-6 h-px origin-left bg-gradient-to-r from-accent/40 via-accent to-accent-light"
-        />
-        <div className="grid grid-cols-4 gap-8">
-          {OPS.steps.map((step, i) => (
-            <div key={step.title} className="flex flex-col items-center text-center">
-              <FlowNode index={i} icon={step.icon as IconName} isLast={i === OPS.steps.length - 1} />
-              <div className="mt-5">
-                <FlowCaption index={i} step={step} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Mobile rail */}
-      <div className="relative md:hidden">
-        <div className="absolute bottom-6 left-6 top-6 w-px bg-white/10" />
-        <motion.div
-          variants={{
-            hidden: { scaleY: 0 },
-            visible: { scaleY: 1, transition: { duration: DUR_DRAW, ease: EASE } },
-          }}
-          className="absolute bottom-6 left-6 top-6 w-px origin-top bg-gradient-to-b from-accent/40 via-accent to-accent-light"
-        />
-        <div className="flex flex-col gap-10">
-          {OPS.steps.map((step, i) => (
-            <div key={step.title} className="flex gap-5">
-              <FlowNode index={i} icon={step.icon as IconName} isLast={i === OPS.steps.length - 1} />
-              <FlowCaption index={i} step={step} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
-export default function V2Client() {
+export default function HomeClient() {
   const slugByClient = new Map(CASE_STUDIES.map((c) => [c.client, c.slug]));
 
   return (
@@ -710,11 +462,11 @@ export default function V2Client() {
             placed BEFORE the hero so streamed rendering can't paint
             unstyled text first. globals.css reduced-motion neutralizes it. */}
         <style>{`
-          @keyframes v2-rise {
+          @keyframes hero-rise {
             from { opacity: 0; transform: translate3d(0, 16px, 0); }
             to { opacity: 1; transform: translate3d(0, 0, 0); }
           }
-          .v2-rise { animation: v2-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} both; }
+          .hero-rise { animation: hero-rise 0.5s ${`cubic-bezier(${EASE.join(",")})`} both; }
         `}</style>
         {/* ======================================================== */}
         {/* S1 · HERO                                                 */}
@@ -731,11 +483,11 @@ export default function V2Client() {
           <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-6 md:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
             {/* Text column — CSS entrance (LCP must not wait on hydration) */}
             <div>
-              <p className="v2-rise text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-accent">
+              <p className="hero-rise text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-accent">
                 {HERO.eyebrow}
               </p>
               <h1
-                className="v2-rise mt-5 font-[family-name:var(--font-heading)] text-4xl font-extrabold leading-[1.06] tracking-tight md:text-6xl lg:text-[4.2rem]"
+                className="hero-rise mt-5 font-[family-name:var(--font-heading)] text-4xl font-extrabold leading-[1.06] tracking-tight md:text-6xl lg:text-[4.2rem]"
                 style={{ animationDelay: "0.08s" }}
               >
                 {HERO.headlineLines[0]}
@@ -745,13 +497,13 @@ export default function V2Client() {
                 <span className="inline-block bg-gradient-to-r from-accent via-accent-light to-[#FFB347] bg-clip-text text-transparent [backface-visibility:hidden] [transform:translateZ(0)]">{HERO.headlineAccent}</span>
               </h1>
               <p
-                className="v2-rise mt-6 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl"
+                className="hero-rise mt-6 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl"
                 style={{ animationDelay: "0.16s" }}
               >
                 {HERO.subline}
               </p>
               <div
-                className="v2-rise mt-9 flex flex-wrap items-center gap-4"
+                className="hero-rise mt-9 flex flex-wrap items-center gap-4"
                 style={{ animationDelay: "0.28s" }}
               >
                 <Button variant="primary" href="/contact">
@@ -762,7 +514,7 @@ export default function V2Client() {
                 </Button>
               </div>
               <p
-                className="v2-rise mt-5 text-sm text-text-muted"
+                className="hero-rise mt-5 text-sm text-text-muted"
                 style={{ animationDelay: "0.36s" }}
               >
                 {HERO.risk}
@@ -786,7 +538,7 @@ export default function V2Client() {
               {METRICS.map((m) => (
                 <StaggerItem key={m.label} className="text-center">
                   <p className="font-[family-name:var(--font-heading)] text-4xl font-extrabold text-accent md:text-5xl">
-                    <V2Counter value={m.value} suffix={m.suffix} />
+                    <AnimatedCounter target={m.value} suffix={m.suffix} />
                   </p>
                   <p className="mt-2 text-sm text-text-secondary">{m.label}</p>
                 </StaggerItem>
@@ -811,7 +563,7 @@ export default function V2Client() {
                 <GlowCard className="h-full">
                   <div className="p-7 md:p-8">
                     <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
-                      <V2Icon name={card.icon as IconName} />
+                      <LineIcon name={card.icon as IconName} />
                     </span>
                     <h3 className="mt-5 font-[family-name:var(--font-heading)] text-lg font-bold md:text-xl">
                       {card.title}
@@ -918,7 +670,7 @@ export default function V2Client() {
                 className="flex h-full items-center justify-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-4 py-3.5 text-sm font-semibold text-accent transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/15"
               >
                 {`View all ${CASE_STUDIES.length} live platforms`}
-                <V2Icon name="arrow" className="h-4 w-4" />
+                <LineIcon name="arrow" className="h-4 w-4" />
               </Link>
             </StaggerItem>
           </StaggerChildren>
@@ -1004,7 +756,7 @@ export default function V2Client() {
             </div>
 
             <div className="mt-16 md:mt-20">
-              <OpsFlow />
+              <OpsFlow steps={OPS.steps} />
             </div>
 
             <FadeInWhenVisible delay={0.2} className="mt-10 text-center">
@@ -1273,7 +1025,7 @@ export default function V2Client() {
               </FadeInWhenVisible>
             </div>
             <FadeInWhenVisible delay={0.1}>
-              <Accordion items={[...FAQ_V2]} />
+              <Accordion items={[...HOME_FAQ]} />
             </FadeInWhenVisible>
           </div>
         </SectionWrapper>

@@ -1,4 +1,4 @@
-// v2-only copy. Every displayed number either derives from CASE_STUDIES /
+// Homepage copy. Every displayed number either derives from CASE_STUDIES /
 // METRICS / FAQ_ITEMS at module load (see helpers) or quotes a published
 // blog-post stat with its source post linked. Nothing is invented here.
 import { CASE_STUDIES } from "@/lib/constants";
@@ -6,13 +6,13 @@ import type { CaseStudy, MetricItem } from "@/lib/types";
 
 function study(slug: string): CaseStudy {
   const s = CASE_STUDIES.find((c) => c.slug === slug);
-  if (!s) throw new Error(`v2-data: unknown case study slug "${slug}"`);
+  if (!s) throw new Error(`home-data: unknown case study slug "${slug}"`);
   return s;
 }
 
 function metric(slug: string, label: string): MetricItem {
   const m = study(slug).results.find((r) => r.label === label);
-  if (!m) throw new Error(`v2-data: no metric "${label}" on "${slug}"`);
+  if (!m) throw new Error(`home-data: no metric "${label}" on "${slug}"`);
   return m;
 }
 
@@ -288,7 +288,7 @@ export const PRICING = {
 /* ------------------------------------------------------------------ */
 /*  FAQ (objection-handling set; numbers match /services + PRICING)    */
 /* ------------------------------------------------------------------ */
-export const FAQ_V2 = [
+export const HOME_FAQ = [
   {
     question: "What does this cost?",
     answer:

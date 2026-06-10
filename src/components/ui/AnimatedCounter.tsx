@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useMotionValue, animate } from "motion/react";
+import { useInView, useReducedMotion, animate } from "motion/react";
+import { EASE } from "@/lib/animations";
 
 interface AnimatedCounterProps {
   target: number;
@@ -12,30 +13,29 @@ interface AnimatedCounterProps {
 export default function AnimatedCounter({
   target,
   suffix = "",
-  duration = 2,
+  duration = 1.4,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const motionValue = useMotionValue(0);
+  const reduceMotion = useReducedMotion();
   const [display, setDisplay] = useState("0");
 
   useEffect(() => {
-    if (!isInView) return;
-
-    const controls = animate(motionValue, target, {
+    // standalone animate() bypasses MotionConfig — reduced-motion users get
+    // the final value straight from render below, no animation started
+    if (!isInView || reduceMotion) return;
+    const controls = animate(0, target, {
       duration,
-      ease: [0.25, 0.4, 0.25, 1],
-      onUpdate: (latest) => {
-        setDisplay(Math.round(latest).toString());
-      },
+      ease: EASE,
+      onUpdate: (latest) =>
+        setDisplay(Math.round(latest).toLocaleString("en-US")),
     });
-
     return () => controls.stop();
-  }, [isInView, target, duration, motionValue]);
+  }, [isInView, target, duration, reduceMotion]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      {display}
+      {reduceMotion ? target.toLocaleString("en-US") : display}
       {suffix}
     </span>
   );

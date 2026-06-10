@@ -62,3 +62,22 @@ export const drawPath: Variants = {
     transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
   },
 };
+
+/* ------------------------------------------------------------------ */
+/*  Interaction tokens — promoted from the homepage redesign.          */
+/*  All timings/easings/distances come from these named tokens;        */
+/*  no literal animation numbers in components.                        */
+/* ------------------------------------------------------------------ */
+export const EASE: [number, number, number, number] = [0.25, 0.4, 0.25, 1];
+export const DUR_TAP = 0.2;
+export const DUR_POP = 0.45;
+export const DUR_REVEAL = 0.6;
+export const DUR_DRAW = 1.8;
+export const DIST_SM = 12;
+export const STAG_GRID = 0.08;
+export const STAG_CARD = 0.15;
+export const STAG_FLOW = 0.35;
+export const LAG_CAPTION = 0.15;
+// repeat is ADDITIONAL iterations: 1 => plays twice total
+export const PULSE = { duration: 1.1, repeat: 1, ease: "easeOut" as const };
+export const VIEW_TIGHT = { once: true, amount: 0.5 } as const;
