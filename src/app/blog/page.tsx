@@ -24,7 +24,7 @@ export default function BlogPage() {
         label="Insights"
         heading="Ideas That Move Needles."
         subtext="Actionable insights on web performance, AI implementation, automation strategy, and digital transformation. No fluff — just the thinking behind the work."
-        showOrbs
+        showGlow
       />
 
       {/* Filter + Grid */}

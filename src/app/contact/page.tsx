@@ -37,7 +37,7 @@ export default function ContactPage() {
         label="Contact"
         heading="Let's Build Together."
         subtext="Tell us about your project and we'll get back to you within 24 hours with a tailored plan of action."
-        showOrbs
+        showGlow
       />
 
       {/* Contact Grid */}

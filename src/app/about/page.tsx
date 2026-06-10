@@ -9,6 +9,7 @@ import GlowCard from "@/components/ui/GlowCard";
 import StaggerChildren, { StaggerItem } from "@/components/ui/StaggerChildren";
 import CTABanner from "@/components/ui/CTABanner";
 import { STORY, VALUES } from "@/lib/constants";
+import { EASE } from "@/lib/animations";
 
 function StorySection() {
   const quoteRef = useRef<HTMLDivElement>(null);
@@ -41,12 +42,13 @@ function StorySection() {
         {/* Pull quote with animated border */}
         <div className="md:col-span-5 flex items-center">
           <div ref={quoteRef} className="relative pl-6">
-            {/* Animated accent border-left line */}
+            {/* Animated accent border-left line — scaleY, not height
+                (height is a layout prop: main-thread jank on mobile) */}
             <motion.div
-              initial={{ height: 0 }}
-              animate={quoteInView ? { height: "100%" } : {}}
-              transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1], delay: 0.3 }}
-              className="absolute left-0 top-0 w-[2px] bg-accent"
+              initial={{ scaleY: 0 }}
+              animate={quoteInView ? { scaleY: 1 } : {}}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
+              className="absolute left-0 top-0 h-full w-[2px] origin-top bg-accent"
             />
             <FadeInWhenVisible delay={0.4}>
               <blockquote className="text-xl md:text-2xl text-text-primary font-medium leading-relaxed italic">
@@ -125,7 +127,7 @@ export default function AboutPage() {
         label="About"
         heading="Technology That Means Business."
         subtext="A solo founder with AI-augmented workflows, building digital solutions that actually move the needle — across 16+ projects and 8 industries."
-        showOrbs
+        showGlow
       />
 
       <StorySection />

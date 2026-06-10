@@ -11,6 +11,7 @@ import Accordion from "@/components/ui/Accordion";
 import CTABanner from "@/components/ui/CTABanner";
 import StaggerChildren, { StaggerItem } from "@/components/ui/StaggerChildren";
 import { SERVICE_DETAILS, TECH_STACK, FAQ_ITEMS } from "@/lib/constants";
+import { EASE } from "@/lib/animations";
 
 function ServiceSection({
   service,
@@ -42,7 +43,7 @@ function ServiceSection({
         style={{ y: numberY }}
         className="absolute top-12 right-6 md:right-16 pointer-events-none select-none"
       >
-        <span className="font-[family-name:var(--font-heading)] text-[10rem] md:text-[16rem] font-900 leading-none text-white/[0.02]">
+        <span className="font-[family-name:var(--font-heading)] text-[10rem] md:text-[16rem] font-black leading-none text-white/[0.02]">
           {service.number}
         </span>
       </motion.div>
@@ -143,7 +144,7 @@ function TechGrid() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
                 duration: 0.5,
-                ease: [0.25, 0.4, 0.25, 1],
+                ease: EASE,
                 delay: catIndex * 0.1,
               }}
             >
@@ -179,7 +180,7 @@ export default function ServicesPage() {
         label="What We Do"
         heading="Services Built for Growth."
         subtext="Three pillars of digital transformation. Each one designed to solve real business problems with technology that actually works."
-        showOrbs
+        showGlow
       />
 
       {/* Service Deep-Dives */}

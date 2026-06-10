@@ -27,7 +27,7 @@ export default function WorkPage() {
         label="Our Work"
         heading="Built to Perform."
         subtext="Every project starts with a problem worth solving. Here's how we've helped businesses transform their digital presence, automate operations, and leverage AI."
-        showOrbs
+        showGlow
       />
 
       {/* Filter + Grid */}
@@ -55,8 +55,9 @@ export default function WorkPage() {
         </LayoutGroup>
       </SectionWrapper>
 
-      {/* Results Ribbon */}
-      <section className="border-y border-border bg-bg-secondary">
+      {/* Results Ribbon — border-t only: CTABanner below brings its own
+          top hairline, border-y would stack a 2px double line */}
+      <section className="border-t border-border bg-bg-secondary">
         <div className="max-w-7xl mx-auto py-16 px-6 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {WORK_METRICS.map((metric, i) => (

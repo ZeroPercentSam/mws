@@ -1,11 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "motion/react";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import FadeInWhenVisible from "@/components/ui/FadeInWhenVisible";
-import Button from "@/components/ui/Button";
+import GlowCTA from "@/components/ui/GlowCTA";
 
 interface CTABannerProps {
   heading?: string;
@@ -20,11 +18,14 @@ export default function CTABanner({
   buttonText = "Start a Conversation",
   buttonHref = "/contact",
 }: CTABannerProps) {
-  const lineRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(lineRef, { once: true, amount: 0.5 });
-
   return (
-    <section className="relative bg-bg-secondary">
+    <section
+      className="relative border-t border-border"
+      style={{
+        background:
+          "linear-gradient(180deg, #0D0703 0%, rgba(255,107,0,0.05) 35%, var(--color-bg-primary) 100%)",
+      }}
+    >
       <SectionWrapper>
         <div className="text-center max-w-2xl mx-auto">
           <AnimatedHeading
@@ -34,24 +35,12 @@ export default function CTABanner({
             accentLastPeriod
           />
 
-          {/* Animated line */}
-          <div ref={lineRef} className="flex justify-center my-8">
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={isInView ? { width: "4rem", opacity: 1 } : {}}
-              transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1], delay: 0.4 }}
-              className="h-[1px] bg-accent"
-            />
-          </div>
-
-          <FadeInWhenVisible delay={0.3}>
-            <p className="text-text-secondary text-lg mb-10">{subtext}</p>
+          <FadeInWhenVisible delay={0.2}>
+            <p className="text-text-secondary text-lg mt-6 mb-10">{subtext}</p>
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.5}>
-            <Button href={buttonHref} variant="primary" className="px-10 py-4 text-base">
-              {buttonText}
-            </Button>
+          <FadeInWhenVisible delay={0.35}>
+            <GlowCTA label={buttonText} href={buttonHref} />
           </FadeInWhenVisible>
         </div>
       </SectionWrapper>
