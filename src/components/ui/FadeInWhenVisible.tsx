@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { fadeInUp, fadeIn, defaultTransition, defaultViewport } from "@/lib/animations";
+import { fadeInUp, defaultTransition, defaultViewport } from "@/lib/animations";
 import { useInstantEntrance, INSTANT_TRANSITION } from "@/lib/use-instant-entrance";
 
 interface FadeInWhenVisibleProps {
@@ -16,14 +16,16 @@ export default function FadeInWhenVisible({
   className = "",
 }: FadeInWhenVisibleProps) {
   // mobile: snap visible in one write — timed opacity/transform entrances
-  // flicker on iOS Safari while scrolling
+  // flicker on iOS Safari while scrolling. Swap ONLY the transition, never
+  // the variants: the SSR HTML carries the hidden variant's transform, and
+  // motion only clears style keys its current variants own.
   const instant = useInstantEntrance();
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={defaultViewport}
-      variants={instant ? fadeIn : fadeInUp}
+      variants={fadeInUp}
       transition={instant ? INSTANT_TRANSITION : { ...defaultTransition, delay }}
       className={className}
     >

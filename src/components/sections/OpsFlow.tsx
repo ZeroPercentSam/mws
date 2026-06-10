@@ -4,7 +4,6 @@ import { motion } from "motion/react";
 import LineIcon, { type IconName } from "@/components/ui/LineIcon";
 import {
   fadeInUp,
-  fadeIn,
   scaleIn,
   EASE,
   DUR_POP,
@@ -23,6 +22,11 @@ export interface FlowStep {
   icon: IconName;
 }
 
+/* Mobile (`instant`): identical element tree and variants — ONLY timings
+   collapse to duration 0. Swapping variants or elements leaves the SSR'd
+   hidden styles (transforms, scaleX(0) rails) permanently applied, because
+   motion only clears style keys its current variants own. */
+
 function FlowNode({
   index,
   icon,
@@ -37,7 +41,7 @@ function FlowNode({
   return (
     <div className="relative h-12 w-12 shrink-0">
       <motion.div
-        variants={instant ? fadeIn : scaleIn}
+        variants={scaleIn}
         transition={
           instant
             ? INSTANT_TRANSITION
@@ -47,15 +51,17 @@ function FlowNode({
       >
         <LineIcon name={icon} />
       </motion.div>
-      {isLast && !instant && (
+      {isLast && (
         <motion.span
           variants={{
             hidden: { opacity: 0, scale: 1 },
-            visible: {
-              opacity: [0.7, 0],
-              scale: [1, 1.9],
-              transition: { ...PULSE, delay: STAG_FLOW * index + DUR_DRAW * 0.7 },
-            },
+            visible: instant
+              ? { opacity: 0, transition: INSTANT_TRANSITION }
+              : {
+                  opacity: [0.7, 0],
+                  scale: [1, 1.9],
+                  transition: { ...PULSE, delay: STAG_FLOW * index + DUR_DRAW * 0.7 },
+                },
           }}
           className="absolute inset-0 rounded-full border border-accent"
         />
@@ -75,7 +81,7 @@ function FlowCaption({
 }) {
   return (
     <motion.div
-      variants={instant ? fadeIn : fadeInUp}
+      variants={fadeInUp}
       transition={
         instant
           ? INSTANT_TRANSITION
@@ -93,12 +99,24 @@ function FlowCaption({
 }
 
 export default function OpsFlow({ steps }: { steps: readonly FlowStep[] }) {
-  // mobile: timed entrances + rail draws flicker on iOS Safari — render
-  // the rails static and snap nodes/captions visible
   const instant = useInstantEntrance();
   // connector endpoints sit at the centers of the first/last columns
   const railInset = `${100 / (2 * steps.length)}%`;
   const cols = { gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` };
+  const railX = {
+    hidden: { scaleX: 0 },
+    visible: {
+      scaleX: 1,
+      transition: instant ? INSTANT_TRANSITION : { duration: DUR_DRAW, ease: EASE },
+    },
+  };
+  const railY = {
+    hidden: { scaleY: 0 },
+    visible: {
+      scaleY: 1,
+      transition: instant ? INSTANT_TRANSITION : { duration: DUR_DRAW, ease: EASE },
+    },
+  };
   return (
     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
       {/* Desktop */}
@@ -107,21 +125,11 @@ export default function OpsFlow({ steps }: { steps: readonly FlowStep[] }) {
           className="absolute top-6 h-px bg-white/10"
           style={{ left: railInset, right: railInset }}
         />
-        {instant ? (
-          <div
-            className="absolute top-6 h-px bg-gradient-to-r from-accent/40 via-accent to-accent-light"
-            style={{ left: railInset, right: railInset }}
-          />
-        ) : (
-          <motion.div
-            variants={{
-              hidden: { scaleX: 0 },
-              visible: { scaleX: 1, transition: { duration: DUR_DRAW, ease: EASE } },
-            }}
-            className="absolute top-6 h-px origin-left bg-gradient-to-r from-accent/40 via-accent to-accent-light"
-            style={{ left: railInset, right: railInset }}
-          />
-        )}
+        <motion.div
+          variants={railX}
+          className="absolute top-6 h-px origin-left bg-gradient-to-r from-accent/40 via-accent to-accent-light"
+          style={{ left: railInset, right: railInset }}
+        />
         <div className="grid gap-8" style={cols}>
           {steps.map((step, i) => (
             <div key={step.title} className="flex flex-col items-center text-center">
@@ -136,17 +144,10 @@ export default function OpsFlow({ steps }: { steps: readonly FlowStep[] }) {
       {/* Mobile rail */}
       <div className="relative md:hidden">
         <div className="absolute bottom-6 left-6 top-6 w-px bg-white/10" />
-        {instant ? (
-          <div className="absolute bottom-6 left-6 top-6 w-px bg-gradient-to-b from-accent/40 via-accent to-accent-light" />
-        ) : (
-          <motion.div
-            variants={{
-              hidden: { scaleY: 0 },
-              visible: { scaleY: 1, transition: { duration: DUR_DRAW, ease: EASE } },
-            }}
-            className="absolute bottom-6 left-6 top-6 w-px origin-top bg-gradient-to-b from-accent/40 via-accent to-accent-light"
-          />
-        )}
+        <motion.div
+          variants={railY}
+          className="absolute bottom-6 left-6 top-6 w-px origin-top bg-gradient-to-b from-accent/40 via-accent to-accent-light"
+        />
         <div className="flex flex-col gap-10">
           {steps.map((step, i) => (
             <div key={step.title} className="flex gap-5">

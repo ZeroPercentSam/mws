@@ -4,7 +4,6 @@ import { motion } from "motion/react";
 import {
   staggerContainer,
   fadeInUp,
-  fadeIn,
   defaultTransition,
   defaultViewport,
 } from "@/lib/animations";
@@ -42,11 +41,12 @@ export function StaggerItem({
   children: React.ReactNode;
   className?: string;
 }) {
-  // mobile: snap visible — timed entrances flicker on iOS Safari (see hook)
+  // mobile: snap visible — transition swap only, variants stay constant
+  // (the SSR transform must be cleared by a variant that owns the key)
   const instant = useInstantEntrance();
   return (
     <motion.div
-      variants={instant ? fadeIn : fadeInUp}
+      variants={fadeInUp}
       transition={instant ? INSTANT_TRANSITION : defaultTransition}
       className={className}
     >

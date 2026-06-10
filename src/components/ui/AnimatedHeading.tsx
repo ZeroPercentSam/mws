@@ -39,17 +39,15 @@ export default function AnimatedHeading({
           const displayWord =
             accentLastPeriod && endsWithPeriod ? word.slice(0, -1) : word;
 
+          // variants constant, transition-only swap: the SSR'd hidden
+          // transform must be cleared by a variant that owns the key
           return (
             <motion.span
               key={i}
-              variants={
-                instant
-                  ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
-                  : {
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 },
-                    }
-              }
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
               transition={instant ? INSTANT_TRANSITION : { duration: 0.5, ease: EASE }}
               className="inline-block mr-[0.25em]"
             >

@@ -22,21 +22,23 @@ export default function GlowCTA({ label, href }: { label: string; href: string }
       {/* glow pulse on a separate layer: opacity is compositor-friendly,
           unlike animating boxShadow (paint). Pre-blurred radial gradient,
           NOT filter:blur — a live 40px blur re-renders on iOS scroll
-          frames (flicker; same fix as the old orb background) */}
-      {!instant && (
-        <motion.span
-          aria-hidden
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: [0, 0.7, 0] }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 2.2, repeat: 1, ease: "easeInOut" }}
-          className="absolute -inset-10 -z-10"
-          style={{
-            background:
-              "radial-gradient(ellipse closest-side, rgba(255,107,0,0.45) 0%, rgba(255,107,0,0.18) 45%, transparent 75%)",
-          }}
-        />
-      )}
+          frames (flicker; same fix as the old orb background).
+          Mobile: same element, animation stays at opacity 0 — removing the
+          element instead would mismatch the SSR'd (desktop-snapshot) tree */}
+      <motion.span
+        aria-hidden
+        initial={{ opacity: 0 }}
+        whileInView={instant ? { opacity: 0 } : { opacity: [0, 0.7, 0] }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={
+          instant ? { duration: 0 } : { duration: 2.2, repeat: 1, ease: "easeInOut" }
+        }
+        className="absolute -inset-10 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse closest-side, rgba(255,107,0,0.45) 0%, rgba(255,107,0,0.18) 45%, transparent 75%)",
+        }}
+      />
       <Link
         href={href}
         className="inline-flex items-center gap-3 rounded-[var(--radius-button)] bg-gradient-to-r from-accent to-accent-light px-8 py-4 font-bold text-white md:px-10"

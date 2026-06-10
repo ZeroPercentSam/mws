@@ -34,9 +34,11 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
         // transition-colors, NOT transition-all: an all-property CSS
         // transition on the same element motion animates (entrance y/opacity)
-        // races motion's per-frame style writes — Safari flickers
-        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-          scrolled || mobileOpen ? "border-b border-border" : "bg-transparent"
+        // races motion's per-frame style writes — Safari flickers.
+        // border-b is permanent; only its COLOR animates (border-width isn't
+        // a color property, toggling the class would pop)
+        className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${
+          scrolled || mobileOpen ? "border-border" : "border-transparent bg-transparent"
         }`}
         style={
           // solid fill, no backdrop-filter: a live blur on a fixed bar

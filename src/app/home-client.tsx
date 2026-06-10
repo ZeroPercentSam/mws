@@ -970,34 +970,29 @@ export default function HomeClient() {
                           fill="none"
                           className="mt-0.5 shrink-0 text-accent"
                         >
+                          {/* pathLength variant stays on mobile (SSR writes
+                              its dasharray; only a pathLength-owning variant
+                              rewrites it) — instant just zeroes the timing */}
                           <motion.path
                             d="M5 13L9 17L19 7"
                             stroke="currentColor"
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            variants={
-                              instant
-                                ? {
-                                    hidden: { opacity: 0 },
-                                    visible: {
-                                      opacity: 1,
-                                      transition: INSTANT_TRANSITION,
+                            variants={{
+                              hidden: { pathLength: 0, opacity: 0 },
+                              visible: {
+                                pathLength: 1,
+                                opacity: 1,
+                                transition: instant
+                                  ? INSTANT_TRANSITION
+                                  : {
+                                      duration: DUR_REVEAL,
+                                      ease: EASE,
+                                      delay: i * STAG_CARD,
                                     },
-                                  }
-                                : {
-                                    hidden: { pathLength: 0, opacity: 0 },
-                                    visible: {
-                                      pathLength: 1,
-                                      opacity: 1,
-                                      transition: {
-                                        duration: DUR_REVEAL,
-                                        ease: EASE,
-                                        delay: i * STAG_CARD,
-                                      },
-                                    },
-                                  }
-                            }
+                              },
+                            }}
                           />
                         </motion.svg>
                         <span className="text-sm leading-relaxed text-text-secondary">
