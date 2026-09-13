@@ -5,7 +5,7 @@ const BASE = process.env.SHOT_BASE || "http://localhost:3000";
 const PATH = process.env.SHOT_PATH || "/invoices/victor-ian";
 const URL = `${BASE}${PATH}`;
 // one output dir per proposal, so shooting a second page never overwrites the first
-const OUT = `/tmp/${PATH.split("/").filter(Boolean).pop()}-shots`;
+const OUT = `/tmp/${PATH.split("/").filter(Boolean).pop() || "root"}-shots`;
 mkdirSync(OUT, { recursive: true });
 
 const browser = await chromium.launch();

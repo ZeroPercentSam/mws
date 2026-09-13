@@ -545,9 +545,11 @@ function MiniSearch() {
           <TileIcon name="search" className="w-4 h-4" />
         </span>
         <span className="text-xs text-text-primary">
+          <span className="sr-only">{SEARCH_QUERY}</span>
           {SEARCH_QUERY.split("").map((char, i) => (
             <motion.span
               key={`${char}-${i}`}
+              aria-hidden
               variants={{
                 hidden: { opacity: 0 },
                 visible: {
@@ -1119,9 +1121,9 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
             <StaggerItem key={item.n}>
               <div className="flex h-full items-start gap-2.5 rounded-lg border border-border bg-bg-card px-4 py-3.5 transition-all duration-200 hover:border-border-hover hover:-translate-y-0.5">
                 <span
+                  aria-hidden
                   className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
                   style={{ backgroundColor: STATUS[item.status].fg }}
-                  title={STATUS[item.status].label}
                 />
                 <span className="min-w-0">
                   <span className="block text-[10px] font-semibold tracking-[0.12em] text-text-muted">
@@ -1129,6 +1131,9 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
                   </span>
                   <span className="block text-sm text-text-primary leading-snug">
                     {item.label}
+                    <span className="sr-only">
+                      {" "}— {STATUS[item.status].label} today
+                    </span>
                   </span>
                 </span>
               </div>

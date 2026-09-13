@@ -2,7 +2,7 @@
   "project": "mws",
   "description": "Modern Web Systems — agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
   "started": "2026-06-10",
-  "updated": "2026-06-10",
+  "updated": "2026-09-13",
   "currentPhase": "live",
   "phases": [],
   "tasks": [
@@ -29,6 +29,12 @@
       "title": "Site-wide redesign: every page to homepage design level",
       "status": "done",
       "note": "Sam approved plan (full set pieces + copy rewrite, all surfaces). Shipped per-page: /services Stack Rig + tinted deep-dives w/ derived proof chips; /work wireframe-reveal cards (ProjectCard deleted); /work/[slug] Case File + BuildLogStamp + LiveBadge; /blog Signal Board (FeaturedSignal + stat strip from posts' own stat blocks); /blog/[slug] ReadingProgress seam + static prose + ocean stat cards; /about Studio OS diagram (10 real tiles light up) + voice-of-studio story; /contact After You Hit Send rig + locked-copy FAQ (invented 24h/2-3wk/geo claims deleted); Footer Blueprint Close. Shared: lib/derive (all numbers build-time enforced), lib/design, Band/LiveBadge/WireframeCard/ReadingProgress/Vignettes/BuildLogStamp, engagement.ts. Per-route metadata everywhere (blog/work-slug had NONE). Commits 0202e51..fba39f2, each gated: build + iPhone compositing probe (residue=hamburger-only, filters/blends 0) + smoke + reduced-motion."
+    },
+    {
+      "id": "T-005",
+      "title": "Patriot Bio proposal page (/invoices/patriot-bio)",
+      "status": "done",
+      "note": "Private, noindexed client proposal built on the Victor & Ian pattern: page.tsx (metadata + PROPOSAL facts object), proposal-client.tsx (hero with page-local navy/red palette, letter from Sam, 8-card inspection with pass/fail pills, navy band with the 4-step customer journey + MiniPopup/MiniCOA/MiniSearch/MiniInbox vignettes, the 23-point checklist, 4-column plan timeline, 11 client asks, investment band, print CSS), opengraph-image.tsx. Pass/partial/fail tallies derive from the data tables so the headline pills cannot drift. Money fields (total, deposit, terms, Stripe URL, upkeep) left empty pending Sam's numbers; the page renders 'Invoice link follows once scope is agreed' instead of a pay button. scripts/shoot-proposal.mjs now takes SHOT_PATH and writes to a per-proposal output dir. Verified on a local production build (Vercel preview is behind project SSO): 7 shots at /tmp/patriot-bio-shots, tsc + lint clean. Fix pass: checklist status no longer colour-only (sr-only label), MiniSearch query aria-hidden per char."
     }
   ],
   "features": [
@@ -86,6 +92,13 @@
       "title": "No Stripe key rotation",
       "decision": "Sam declined rotating the restricted Stripe key that appeared in chat history ('not rotating keys stop asking').",
       "consequence": "Standing: do not re-raise unless a NEW exposure event occurs. Recorded in auto-memory."
+    },
+    {
+      "id": "ADR-006",
+      "date": "2026-09-13",
+      "title": "Client proposals reuse the Victor & Ian page pattern",
+      "decision": "The Patriot Bio proposal at /invoices/patriot-bio reuses the Victor & Ian structure and components verbatim (SectionWrapper, AnimatedHeading, FadeInWhenVisible, StaggerChildren, GlowCard, Button, lib/animations tokens, lib/design class strings), swapping only the page-local palette (deep navy #070D1C + Patriot red over the site accent), the letter watermark (peptide hexagon, not a compass rose) and the section seam (chromatogram peaks, not waves). Nothing was promoted to shared components.",
+      "consequence": "/invoices/<client> is now the proposal pattern: copy the newest proposal, restyle page-locally, keep money facts in a single object in page.tsx so an unpriced proposal renders a fallback line instead of a pay button. Two proposals is not yet enough duplication to justify extracting a shared Proposal shell."
     }
   ],
   "openQuestions": [
