@@ -708,25 +708,25 @@ const CHECKLIST_23: { n: number; label: string; status: Status }[] = [
 /* ------------------------------------------------------------------ */
 const TIMELINE: { days: string; title: string; detail: string }[] = [
   {
-    days: "Days 1–2",
+    days: "Day 1 · AM",
     title: "Safety net + stop the bleed",
     detail:
       "Backups, every snippet under version control, the 100%-off coupon and 13 test orders gone, old admin access closed, Omnisend authorised to send.",
   },
   {
-    days: "Days 3–9",
+    days: "Day 1 · PM → Day 2",
     title: "Account gate, designed checkout, COA v2",
     detail:
       "The welcome popup and the automatic 10%, the checkout you approved, and a COA library with unlimited batches, documents and bulk upload.",
   },
   {
-    days: "Days 10–14",
+    days: "Day 3 · AM",
     title: "Search, homepage, SEO",
     detail:
       "Header search across products, batches and research; clickable product cards; titles, descriptions, schema, favicon and a real 404 page.",
   },
   {
-    days: "Days 15–16",
+    days: "Day 3 · PM",
     title: "Clean-up + the full test order",
     detail:
       "Dead plugins and 3.9 GB of stale backups gone, custom code in one maintained plugin — then we buy something with a real card, together.",
@@ -876,12 +876,12 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
               <p className="mt-6 text-lg md:text-xl text-text-secondary leading-relaxed max-w-2xl">
                 A full repair of patriotbio.com: the checkout and account flow you
                 designed, a COA library that never loses a document, site search,
-                clean SEO, and every integration verified with a real order. About
-                three and a half weeks, with the store trading throughout.
+                clean SEO, and every integration verified with a real order. Three
+                days, with the store trading throughout.
               </p>
             </FadeInWhenVisible>
             <StaggerChildren className="mt-8 flex flex-wrap gap-3" stagger={0.1}>
-              {["14 real orders already paid", "8 phases · ~3.5 weeks", "Zero downtime"].map(
+              {["14 real orders already paid", "8 phases · 3 days", "Zero downtime"].map(
                 (chip) => (
                   <StaggerItem key={chip}>
                     <span
@@ -956,8 +956,8 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
                     and one paid order (#2378) still waiting to ship.
                   </p>
                   <p>
-                    Here is the plan — eight phases, about three and a half weeks, your
-                    store trading the whole time. Then the part I am looking forward to:
+                    Here is the plan — eight phases, three days, your store trading the
+                    whole time. Then the part I am looking forward to:
                     the full test order, with you on the call, from creating the account
                     to the tracking email landing in your inbox.
                   </p>
@@ -1165,7 +1165,7 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
           </FadeInWhenVisible>
           <div className="mt-3">
             <AnimatedHeading
-              text="Eight phases, about three and a half weeks."
+              text="Eight phases, three days."
               className={headingCls}
             />
           </div>
@@ -1242,7 +1242,7 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
           </div>
           <FadeInWhenVisible delay={0.2}>
             <span className="rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent">
-              Items 1–5 in week one
+              Items 1–5 before kickoff
             </span>
           </FadeInWhenVisible>
         </div>
