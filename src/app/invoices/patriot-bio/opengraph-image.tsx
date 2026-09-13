@@ -132,7 +132,7 @@ export default async function Image() {
             </span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ color: "#FF6B00", fontSize: "32px", fontWeight: 800 }}>3.5</span>
+            <span style={{ color: "#FF6B00", fontSize: "32px", fontWeight: 800 }}>3</span>
             <span
               style={{
                 color: "rgba(255,255,255,0.4)",
@@ -141,7 +141,7 @@ export default async function Image() {
                 letterSpacing: "0.1em",
               }}
             >
-              Weeks
+              Days
             </span>
           </div>
         </div>
