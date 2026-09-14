@@ -291,7 +291,7 @@ const FLOW_STEPS: { title: string; caption: string; icon: IconName }[] = [
   {
     title: "Creates an account",
     caption:
-      "The welcome popup, in your words. Their own one-time 10% code lands in the welcome email — it cannot be used twice or passed on.",
+      "The welcome popup, in your words. Their own 10% code lands in the welcome email — it cannot be used twice, passed on, or used after 30 days.",
     icon: "userPlus",
   },
   {
@@ -651,7 +651,7 @@ const FEATURES: { title: string; caption: string; vignette: React.ReactNode }[] 
   {
     title: "The welcome offer, automatic",
     caption:
-      "Your wording in the popup, and a unique code generated for that customer alone — no shared code to leak onto a coupon site.",
+      "Your wording in the popup, and a unique code generated for that customer alone — no shared code to leak onto a coupon site, and it runs out after 30 days.",
     vignette: <MiniPopup />,
   },
   {
@@ -833,7 +833,7 @@ const ASKS_DONE = ASKS.filter((a) => a.done).length;
 /*  Section 8 · Investment checklist                                   */
 /* ------------------------------------------------------------------ */
 const INCLUDED = [
-  "Designed checkout, account gate, and a unique one-time 10% code per customer",
+  "Designed checkout, account gate, and a unique 30-day 10% code per customer",
   "COA library v2 — unlimited batches and documents, with bulk upload",
   "Site-wide search across products, batches and research pages",
   "Affiliate landing page and application form, wired to Dub for tracking and payouts",
