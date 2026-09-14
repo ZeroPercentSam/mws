@@ -711,7 +711,7 @@ const TIMELINE: { days: string; title: string; detail: string }[] = [
     days: "Day 1 · AM",
     title: "Safety net + stop the bleed",
     detail:
-      "Backups, every snippet under version control, the 100%-off coupon and 13 test orders gone, old admin access closed, Omnisend authorised to send.",
+      "Backups, every snippet under version control, the 13 test orders cancelled once stock counts are confirmed, old admin access closed, Omnisend authorised to send. The testing coupon stays live until you sign off on it.",
   },
   {
     days: "Day 1 · PM → Day 2",
@@ -736,19 +736,58 @@ const TIMELINE: { days: string; title: string; detail: string }[] = [
 /* ------------------------------------------------------------------ */
 /*  Section 7 · What we need from you                                  */
 /* ------------------------------------------------------------------ */
-const ASKS = [
-  "Access to the Figma design file — the handover link sits under hello@patriotbio.com.",
-  "Confirmation of who owns the Elementor Pro, AST Pro and migration-plugin licences, and the 10Web account. All four should be in Patriot Bio's name.",
-  "Your OK to remove the previous developer's administrator account.",
-  "The business phone number and postal address to publish — a card-network requirement for this type of store.",
-  "GoDaddy DNS access, or ten minutes on a call to add the Omnisend records together. Also confirm support@patriotbio.com exists.",
-  "A decision on collecting California sales tax (currently off).",
-  "Your OK to cancel the 13 test orders, plus the current physical stock counts for the products they touched.",
-  "Certificates for the 12 products that have none, and the batch numbers for the 18 PDFs already uploaded.",
-  "Corrected descriptions for the 8 products whose copy mentions liquids or capsules, and the spelling “Cagrilintide”.",
-  "Google Analytics or ad-pixel accounts, if you want tracking installed — there is none today.",
-  "Whether the affiliate programme in the banner is real. If not, we remove the banner item.",
+const ASKS: { text: string; done: boolean }[] = [
+  {
+    text: "Access to the Figma design file — the handover link sits under hello@patriotbio.com.",
+    done: true,
+  },
+  {
+    text: "Confirmation of who owns the Elementor Pro, AST Pro and migration-plugin licences, and the 10Web account. All four should be in Patriot Bio's name.",
+    done: true,
+  },
+  {
+    text: "Your OK to remove the previous developer's administrator account — taken after the backup, not before.",
+    done: true,
+  },
+  {
+    text: "The business phone number and postal address to publish — a card-network requirement for this type of store.",
+    done: true,
+  },
+  {
+    text: "Confirmation that the affiliate programme in the banner is real and staying.",
+    done: true,
+  },
+  {
+    text: "GoDaddy DNS access, or ten minutes on a call to add the Omnisend and sender-subdomain records together.",
+    done: false,
+  },
+  {
+    text: "Current physical stock counts for the products the 13 test orders touched, so cancelling them leaves inventory correct.",
+    done: false,
+  },
+  {
+    text: "Certificates for the 12 products that have none, and the batch numbers for the 18 PDFs already uploaded.",
+    done: false,
+  },
+  {
+    text: "Written sign-off to retire the testing coupon once your backend testing is finished.",
+    done: false,
+  },
+  {
+    text: "A decision on collecting California sales tax (currently off).",
+    done: false,
+  },
+  {
+    text: "Corrected descriptions for the 8 products whose copy mentions liquids or capsules, and the spelling \u201cCagrilintide\u201d.",
+    done: false,
+  },
+  {
+    text: "Google Analytics or ad-pixel accounts, if you want tracking installed — there is none today.",
+    done: false,
+  },
 ];
+
+const ASKS_DONE = ASKS.filter((a) => a.done).length;
 
 /* ------------------------------------------------------------------ */
 /*  Section 8 · Investment checklist                                   */
@@ -1237,24 +1276,46 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
               <span className={eyebrowCls}>What We Need From You</span>
             </FadeInWhenVisible>
             <div className="mt-3">
-              <AnimatedHeading text="Eleven things, most of them quick." className={headingCls} />
+              <AnimatedHeading text="What is still outstanding." className={headingCls} />
             </div>
           </div>
           <FadeInWhenVisible delay={0.2}>
             <span className="rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent">
-              Items 1–5 before kickoff
+              {ASKS_DONE} of {ASKS.length} answered
             </span>
           </FadeInWhenVisible>
         </div>
         <StaggerChildren className="mt-10 grid gap-x-10 gap-y-0 md:grid-cols-2" stagger={0.05}>
           {ASKS.map((ask, i) => (
-            <StaggerItem key={ask}>
+            <StaggerItem key={ask.text}>
               <div className="flex items-start gap-4 border-t border-border py-4">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-accent/10 text-[11px] font-semibold text-accent">
-                  {i + 1}
+                <span
+                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold"
+                  style={
+                    ask.done
+                      ? {
+                          color: STATUS.pass.fg,
+                          backgroundColor: STATUS.pass.bg,
+                          border: `1px solid ${STATUS.pass.bd}`,
+                        }
+                      : {
+                          color: "var(--color-accent)",
+                          backgroundColor: "rgba(255,107,0,0.10)",
+                          border: "1px solid rgba(255,107,0,0.40)",
+                        }
+                  }
+                >
+                  {ask.done ? <TileIcon name="check" className="w-3.5 h-3.5" /> : i + 1}
+                  <span className="sr-only">
+                    {ask.done ? "Received" : "Still outstanding"}
+                  </span>
                 </span>
-                <p className="text-sm md:text-base text-text-secondary leading-relaxed">
-                  {ask}
+                <p
+                  className={`text-sm md:text-base leading-relaxed ${
+                    ask.done ? "text-text-muted" : "text-text-secondary"
+                  }`}
+                >
+                  {ask.text}
                 </p>
               </div>
             </StaggerItem>
