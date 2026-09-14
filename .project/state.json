@@ -2,7 +2,7 @@
   "project": "mws",
   "description": "Modern Web Systems — agency marketing site (Next.js 16, Tailwind 4, motion/react) at modernwebsystems.com",
   "started": "2026-06-10",
-  "updated": "2026-09-13",
+  "updated": "2026-09-14",
   "currentPhase": "live",
   "phases": [],
   "tasks": [
@@ -34,7 +34,7 @@
       "id": "T-005",
       "title": "Patriot Bio proposal page (/invoices/patriot-bio)",
       "status": "done",
-      "note": "Private, noindexed client proposal built on the Victor & Ian pattern: page.tsx (metadata + PROPOSAL facts object), proposal-client.tsx (hero with page-local navy/red palette, letter from Sam, 8-card inspection with pass/fail pills, navy band with the 4-step customer journey + MiniPopup/MiniCOA/MiniSearch/MiniInbox vignettes, the 23-point checklist, 4-column plan timeline, 11 client asks, investment band, print CSS), opengraph-image.tsx. Pass/partial/fail tallies derive from the data tables so the headline pills cannot drift. Money fields (total, deposit, terms, Stripe URL, upkeep) left empty pending Sam's numbers; the page renders 'Invoice link follows once scope is agreed' instead of a pay button. scripts/shoot-proposal.mjs now takes SHOT_PATH and writes to a per-proposal output dir. Verified on a local production build (Vercel preview is behind project SSO): 7 shots at /tmp/patriot-bio-shots, tsc + lint clean. Fix pass: checklist status no longer colour-only (sr-only label), MiniSearch query aria-hidden per char."
+      "note": "Private, noindexed client proposal built on the Victor & Ian pattern: page.tsx (metadata + PROPOSAL facts object), proposal-client.tsx (hero with page-local navy/red palette, letter from Sam, 8-card inspection with pass/fail pills, navy band with the 4-step customer journey + MiniPopup/MiniCOA/MiniSearch/MiniInbox vignettes, the 23-point checklist, 4-column plan timeline, 11 client asks, investment band, print CSS), opengraph-image.tsx. Pass/partial/fail tallies derive from the data tables so the headline pills cannot drift. Money fields (total, deposit, terms, Stripe URL, upkeep) left empty pending Sam's numbers; the page renders 'Invoice link follows once scope is agreed' instead of a pay button. scripts/shoot-proposal.mjs now takes SHOT_PATH and writes to a per-proposal output dir. Verified on a local production build (Vercel preview is behind project SSO): 7 shots at /tmp/patriot-bio-shots, tsc + lint clean. Fix pass: checklist status no longer colour-only (sr-only label), MiniSearch query aria-hidden per char. Rev 2 (2026-09-14, after Katelen's reply): timeline cut to 3 days of build and gated on her outstanding items; her answers folded into the asks (5 of 12 ticked); the testing coupon is now HELD at her written instruction instead of deleted on Day 1; new 'Your Questions' section carries Sam's calls — ConvertFlow skipped, Dub adopted, chatbot scoped to orders/shipping/COA with a hard medical refusal, inventory staying on WooCommerce; scope adds unique one-time 10% codes, sender subdomain architecture, affiliate landing page + form, contact-form acknowledgement, inventory review."
     }
   ],
   "features": [
@@ -99,6 +99,13 @@
       "title": "Client proposals reuse the Victor & Ian page pattern",
       "decision": "The Patriot Bio proposal at /invoices/patriot-bio reuses the Victor & Ian structure and components verbatim (SectionWrapper, AnimatedHeading, FadeInWhenVisible, StaggerChildren, GlowCard, Button, lib/animations tokens, lib/design class strings), swapping only the page-local palette (deep navy #070D1C + Patriot red over the site accent), the letter watermark (peptide hexagon, not a compass rose) and the section seam (chromatogram peaks, not waves). Nothing was promoted to shared components.",
       "consequence": "/invoices/<client> is now the proposal pattern: copy the newest proposal, restyle page-locally, keep money facts in a single object in page.tsx so an unpriced proposal renders a fallback line instead of a pay button. Two proposals is not yet enough duplication to justify extracting a shared Proposal shell."
+    },
+    {
+      "id": "ADR-007",
+      "date": "2026-09-14",
+      "title": "Patriot Bio tooling calls: Omnisend over ConvertFlow, Dub for affiliates, scoped assistant",
+      "decision": "Declined ConvertFlow (Omnisend already connected and does popups + A/B; a second script fights the bundle-size fix the proposal promises, and the account gate must stay in WooCommerce). Adopted Dub for affiliate links, tracking, payouts and tax admin. Support assistant limited to order status, shipping and COA-by-batch lookups with a hard refusal on anything medical, on top of a contact-form acknowledgement. Inventory stays on WooCommerce per-product stock; the SKU and weight gaps are the real defect, and Phase 4 batch numbers become the lot field later.",
+      "consequence": "One new subscription (Dub), not four. The welcome offer becomes a unique one-time coupon per customer rather than a shared welcome10, which needs an expiry policy so the coupon table does not grow without bound. Marketing mail moves to its own authenticated subdomain so campaigns cannot damage the reputation transactional mail depends on."
     }
   ],
   "openQuestions": [
