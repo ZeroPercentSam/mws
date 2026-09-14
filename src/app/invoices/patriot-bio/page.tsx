@@ -4,7 +4,7 @@ import ProposalClient from "./proposal-client";
 export const metadata: Metadata = {
   title: "Proposal — Patriot Bio | Modern Web Systems",
   description:
-    "Private proposal: full repair of patriotbio.com — account gate and designed checkout, COA library v2, site search, SEO, and a verified test order.",
+    "Private proposal: full repair of patriotbio.com — account gate and designed checkout, COA library v2, site search, affiliate programme, SEO, and a verified test order.",
   robots: {
     index: false,
     follow: false,

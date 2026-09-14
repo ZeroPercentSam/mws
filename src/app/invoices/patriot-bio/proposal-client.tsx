@@ -291,7 +291,7 @@ const FLOW_STEPS: { title: string; caption: string; icon: IconName }[] = [
   {
     title: "Creates an account",
     caption:
-      "The welcome popup, in your words. 10% comes off their first order automatically — once, and only for a first order.",
+      "The welcome popup, in your words. Their own one-time 10% code lands in the welcome email — it cannot be used twice or passed on.",
     icon: "userPlus",
   },
   {
@@ -651,7 +651,7 @@ const FEATURES: { title: string; caption: string; vignette: React.ReactNode }[] 
   {
     title: "The welcome offer, automatic",
     caption:
-      "Your wording in the popup, the 10% applied the moment the account exists — and never again on a second order.",
+      "Your wording in the popup, and a unique code generated for that customer alone — no shared code to leak onto a coupon site.",
     vignette: <MiniPopup />,
   },
   {
@@ -669,8 +669,44 @@ const FEATURES: { title: string; caption: string; vignette: React.ReactNode }[] 
   {
     title: "Email that reaches the inbox",
     caption:
-      "Omnisend authorised to send as patriotbio.com, so the welcome flow and every campaign pass authentication.",
+      "Marketing on its own authenticated subdomain, order mail on yours — so a campaign can never damage the reputation your receipts depend on.",
     vignette: <MiniInbox />,
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Section 4b · Your questions, answered                              */
+/*  Katelen asked four judgement calls in her reply; each gets a        */
+/*  verdict and the reasoning, reusing the inspection card's tones.     */
+/* ------------------------------------------------------------------ */
+const ANSWERS: { question: string; verdict: string; tone: Status; answer: string }[] = [
+  {
+    question: "ConvertFlow for the welcome popup",
+    verdict: "Skip it",
+    tone: "fail",
+    answer:
+      "Omnisend is already connected, already paid for, and already does popups and A/B tests. A second tool is a second subscription and another script on a homepage carrying 645 KB of JavaScript — which is one of the eleven fails on the checklist above. The account gate itself has to live in WooCommerce either way: a marketing popup cannot enforce checkout.",
+  },
+  {
+    question: "Dub for the affiliate programme",
+    verdict: "Worth it",
+    tone: "pass",
+    answer:
+      "The part of an affiliate programme that actually hurts is payouts and tax paperwork, and that is exactly what Dub takes off you. Links, tracking, commissions and payouts in one place, with the landing page and application form on your site feeding it and short links on their own subdomain.",
+  },
+  {
+    question: "An AI chatbot or support agent",
+    verdict: "Scoped, not open",
+    tone: "partial",
+    answer:
+      "The automatic acknowledgement on the contact form is going in regardless, and for two people that covers most of it. The assistant on top is limited to order status, shipping and certificate lookups, and refuses anything medical. On a research-use-only store, an assistant that free-texts an answer about a compound is a liability, not a help.",
+  },
+  {
+    question: "Centralised inventory management",
+    verdict: "Not yet",
+    tone: "partial",
+    answer:
+      "WooCommerce per-product stock is the right size for 30 SKUs in one place. What is actually costing you is six products with no SKU and none with a weight, so shipping rates fall back to a default package — that gets fixed here. The batch numbers from the certificate work become the lot field an inventory system needs later, so this is the right order to do it in.",
   },
 ];
 
@@ -711,25 +747,25 @@ const TIMELINE: { days: string; title: string; detail: string }[] = [
     days: "Day 1 · AM",
     title: "Safety net + stop the bleed",
     detail:
-      "Backups, every snippet under version control, the 13 test orders cancelled once stock counts are confirmed, old admin access closed, Omnisend authorised to send. The testing coupon stays live until you sign off on it.",
+      "Backups, every snippet under version control, the 13 test orders cancelled once stock counts are confirmed, old admin access closed, and the sending subdomains authenticated. The testing coupon stays live until you sign off on it.",
   },
   {
     days: "Day 1 · PM → Day 2",
     title: "Account gate, designed checkout, COA v2",
     detail:
-      "The welcome popup and the automatic 10%, the checkout you approved, and a COA library with unlimited batches, documents and bulk upload.",
+      "The welcome popup with a unique one-time code per customer, the checkout you approved, and a COA library with unlimited batches, documents and bulk upload.",
   },
   {
     days: "Day 3 · AM",
-    title: "Search, homepage, SEO",
+    title: "Search, homepage, SEO, affiliates",
     detail:
-      "Header search across products, batches and research; clickable product cards; titles, descriptions, schema, favicon and a real 404 page.",
+      "Header search across products, batches and research; clickable product cards; the affiliate landing page and application form wired to Dub; titles, descriptions, schema, favicon and a real 404 page.",
   },
   {
     days: "Day 3 · PM",
-    title: "Clean-up + the full test order",
+    title: "Support, clean-up, the full test order",
     detail:
-      "Dead plugins and 3.9 GB of stale backups gone, custom code in one maintained plugin — then we buy something with a real card, together.",
+      "The contact-form acknowledgement and the scoped assistant go live, dead plugins and 3.9 GB of stale backups go, custom code lands in one maintained plugin — then we buy something with a real card, together.",
   },
 ];
 
@@ -774,6 +810,10 @@ const ASKS: { text: string; done: boolean }[] = [
     done: false,
   },
   {
+    text: "A Dub account opened in Patriot Bio's name, so the affiliate links, commissions and payout details belong to you from day one.",
+    done: false,
+  },
+  {
     text: "A decision on collecting California sales tax (currently off).",
     done: false,
   },
@@ -793,12 +833,16 @@ const ASKS_DONE = ASKS.filter((a) => a.done).length;
 /*  Section 8 · Investment checklist                                   */
 /* ------------------------------------------------------------------ */
 const INCLUDED = [
-  "Designed checkout, account gate and the automatic 10% welcome offer",
+  "Designed checkout, account gate, and a unique one-time 10% code per customer",
   "COA library v2 — unlimited batches and documents, with bulk upload",
   "Site-wide search across products, batches and research pages",
+  "Affiliate landing page and application form, wired to Dub for tracking and payouts",
+  "Email structure — separate authenticated subdomains for marketing and order mail",
+  "Contact-form acknowledgement, plus an assistant scoped to orders, shipping and COAs",
   "Homepage and mobile conversion fixes",
   "Full SEO pass — titles, descriptions, schema, favicon, sitemap, 404",
-  "Security and clean-up: access, coupons, test orders, dead plugins",
+  "Security and clean-up: access, test orders, dead plugins",
+  "Inventory review and written recommendation, with the SKU and weight fixes behind it",
   "The full test order, together — plus an updated operations guide",
 ];
 
@@ -915,12 +959,13 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
               <p className="mt-6 text-lg md:text-xl text-text-secondary leading-relaxed max-w-2xl">
                 A full repair of patriotbio.com: the checkout and account flow you
                 designed, a COA library that never loses a document, site search,
-                clean SEO, and every integration verified with a real order. Three
-                days, with the store trading throughout.
+                clean SEO, and the affiliate programme — every integration verified
+                with a real order. Three days of build, starting once your
+                outstanding items land, with the store trading throughout.
               </p>
             </FadeInWhenVisible>
             <StaggerChildren className="mt-8 flex flex-wrap gap-3" stagger={0.1}>
-              {["14 real orders already paid", "8 phases · 3 days", "Zero downtime"].map(
+              {["14 real orders already paid", "8 phases · 3 days of build", "Zero downtime"].map(
                 (chip) => (
                   <StaggerItem key={chip}>
                     <span
@@ -995,8 +1040,10 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
                     and one paid order (#2378) still waiting to ship.
                   </p>
                   <p>
-                    Here is the plan — eight phases, three days, your store trading the
-                    whole time. Then the part I am looking forward to:
+                    Your four questions — ConvertFlow, Dub, a chatbot, inventory —
+                    are answered below, in their own section, with what I would do and
+                    why. Here is the plan — eight phases, three days of build, your
+                    store trading the whole time. Then the part I am looking forward to:
                     the full test order, with you on the call, from creating the account
                     to the tracking email landing in your inbox.
                   </p>
@@ -1130,6 +1177,55 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
       <PeakDivider bg="var(--color-bg-primary)" fill={BAND} flip />
 
       {/* ---------------------------------------------------------- */}
+      {/* 4b · Your questions, answered                               */}
+      {/* ---------------------------------------------------------- */}
+      <SectionWrapper id="answers">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <FadeInWhenVisible>
+              <span className={eyebrowCls}>Your Questions</span>
+            </FadeInWhenVisible>
+            <div className="mt-3">
+              <AnimatedHeading
+                text="What I would do, and why."
+                className={headingCls}
+              />
+            </div>
+          </div>
+          <FadeInWhenVisible delay={0.2}>
+            <span className="rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent">
+              One new subscription, not four
+            </span>
+          </FadeInWhenVisible>
+        </div>
+        <StaggerChildren className="mt-12 grid gap-6 md:grid-cols-2" stagger={0.1}>
+          {ANSWERS.map((item) => {
+            const t = STATUS[item.tone];
+            return (
+              <StaggerItem key={item.question} className="min-w-0">
+                <GlowCard className="h-full">
+                  <div className="flex h-full flex-col p-6 md:p-8">
+                    <span
+                      className="self-start rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]"
+                      style={{ color: t.fg, backgroundColor: t.bg, border: `1px solid ${t.bd}` }}
+                    >
+                      {item.verdict}
+                    </span>
+                    <h3 className="mt-4 font-[family-name:var(--font-heading)] text-lg md:text-xl font-bold">
+                      {item.question}
+                    </h3>
+                    <p className="mt-2 text-sm md:text-base text-text-secondary leading-relaxed">
+                      {item.answer}
+                    </p>
+                  </div>
+                </GlowCard>
+              </StaggerItem>
+            );
+          })}
+        </StaggerChildren>
+      </SectionWrapper>
+
+      {/* ---------------------------------------------------------- */}
       {/* 5 · The 23-point checklist                                  */}
       {/* ---------------------------------------------------------- */}
       <SectionWrapper id="checklist">
@@ -1204,15 +1300,17 @@ export default function ProposalClient({ proposal }: { proposal: ProposalFacts }
           </FadeInWhenVisible>
           <div className="mt-3">
             <AnimatedHeading
-              text="Eight phases, three days."
+              text="Eight phases, three days of build."
               className={headingCls}
             />
           </div>
           <FadeInWhenVisible delay={0.2}>
             <p className="mt-5 text-text-secondary md:text-lg leading-relaxed">
-              In this order, because each phase protects the next. A backup before every
-              change, nothing deleted without your written OK, and a short written update
-              at the end of each phase.
+              In this order, because each phase protects the next. The three days start
+              once your outstanding items land — DNS access, stock counts, the Dub
+              account — and the certificate migration finishes when your lab sends the
+              last 12. A backup before every change, nothing deleted without your written
+              OK, and a short written update at the end of each phase.
             </p>
           </FadeInWhenVisible>
         </div>
